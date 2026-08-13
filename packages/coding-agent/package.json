@@ -29,7 +29,8 @@
 	"files": [
 		"dist",
 		"docs",
-		"CHANGELOG.md"
+		"CHANGELOG.md",
+		"npm-shrinkwrap.json"
 	],
 	"scripts": {
 		"clean": "shx rm -rf dist",

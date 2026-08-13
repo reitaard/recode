@@ -154,12 +154,17 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
 
 ### Phase 6 — package and platform certification (2 slices)
 
-15. **Package-content/install certification**
+15. **Package-content/install certification — complete**
    - inspect `npm pack --dry-run` and unpacked tarballs for every intended public package;
    - verify renamed dependency ranges, assets, executable permissions, shrinkwrap, runtime `package.json` resolution, and isolated local-tarball installation;
-   - prove no `repi-*` dependency leaks except approved compatibility identifiers.
+   - prove no `repi-*` dependency leaks except approved compatibility identifiers;
+   - inspected dry-run and real tarballs for all seven packages, including assets, declarations, maps, docs, SQLite migrations, and package manifests;
+   - coding-agent shrinkwrap is included in the final tarball and remains protected by the root drift check;
+   - all seven tarballs install together with lifecycle scripts disabled in an isolated project; twelve maintained root/subpath imports and the generated `recode`/`recode-maestro` command shims pass there;
+   - npm normalizes archived JavaScript files to `0644`; executable portability is provided by npm's generated platform command shims, which were verified in the isolated install;
+   - installed manifests are synchronized at `0.1.0`, renamed local dependency ranges resolve, and no `repi-*` package dependency leaks remain.
 
-16. **Platform/native/external boundaries**
+16. **Platform/native/external boundaries — active**
    - certify supported OS/Node/terminal paths;
    - either reproducibly rebuild/prove TUI native artifacts or omit them;
    - keep network providers, Telegram, Maestro native services, Termux, containers, custom providers, and external examples opt-in and separately evidenced.

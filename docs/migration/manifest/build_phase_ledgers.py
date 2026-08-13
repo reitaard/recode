@@ -7,7 +7,11 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 SOURCE = HERE / "transfer.tsv"
-PHASES = {"coding-agent.tsv": ("packages/coding-agent/", 794)}
+PHASES = {
+    "coding-agent.tsv": ("packages/coding-agent/", 794),
+    "telemetry.tsv": ("packages/telemetry/", 12),
+    "ai.tsv": ("packages/ai/", 372),
+}
 
 
 def main() -> None:

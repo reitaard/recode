@@ -28,7 +28,7 @@ Package directory names remain unchanged initially. Renaming directories adds no
 
 ## Remaining phases and slices
 
-The four documentation-closure slices are complete. The transfer/certification plan contains **7 phases and 17 bounded slices** in total. Phase 1's identity, ledger, copier, and dry-run work is complete; Slice 3 remains open only for the clean decision checkpoint and explicit apply approval. Coding-agent becomes runnable/certifiable only after the dependency and root-bootstrap slices in Phases 3–4.
+The four documentation-closure slices and transfer/certification Slices 1–6 are complete. The plan contains **7 phases and 17 bounded slices** in total. Coding-agent has been copied, rewritten to standalone identity, and statically audited; it becomes runnable/certifiable only after the dependency and root-bootstrap slices in Phases 3–4.
 
 ### Phase 1 — freeze the coding-agent-first boundary (3 slices)
 
@@ -44,32 +44,32 @@ The four documentation-closure slices are complete. The transfer/certification p
    - replace generic rewrite rows with an explicit destination map for the already-written 24 owner docs;
    - ensure `docs/docs.json`, broken `server/create-harness`, subprocess subagent, stale screenshots, generated output, and external/platform examples remain excluded or quarantined as classified.
 
-3. **Coding-agent copier and dry run — technical work complete; apply approval pending**
+3. **Coding-agent copier and dry run — complete**
    - extend the copier with an exact approved prefix/phase selector rather than copying all 1,243 transfer rows;
    - refuse paths outside `packages/coding-agent/` for this phase;
    - refuse existing rewritten docs and changelogs unless byte-identical or individually approved as skip-only;
    - record file count, byte count, collisions, and source cleanliness;
    - obtain explicit Creator approval for the coding-agent copy.
 
-**Safe coding-agent source-transfer point:** the scoped ledger/copier/dry run are complete and recorded in the [coding-agent transfer gate](CODING-AGENT-TRANSFER-GATE.md). The bootstrap and seven-package scope decisions are complete. Transfer waits for a clean decision checkpoint and explicit apply approval. The copied package will be present but intentionally not yet installed, built, or claimed runnable.
+**Coding-agent source-transfer gate — passed:** explicit approval copied and byte-verified 615 files, followed by raw provenance checkpoint `ac99921`.
 
 ### Phase 2 — transfer and neutralize coding-agent (3 slices)
 
-4. **Raw coding-agent transfer**
+4. **Raw coding-agent transfer — complete**
    - make a clean checkpoint;
    - copy only approved `transfer` rows;
    - do not overwrite current README/docs;
    - verify every copied byte against the source commit and ensure no unlisted path entered;
    - create a local provenance checkpoint.
 
-5. **Coding-agent identity rewrite**
+5. **Coding-agent identity rewrite — complete**
    - rename its manifest to `@reitaard/recode-coding-agent`;
    - replace internal package dependencies with their new Recode identities and the exact bootstrap range policy;
    - rewrite runtime package-name lookups, CLI/package metadata, shrinkwrap owner inputs, examples, and product-facing imports;
    - preserve `.pi`, `PI_*`, `pi.*`, or old identities only where verified compatibility schemas/configuration require them;
    - keep self-update, publication, install-lock, release endpoints, and remote mutation fail-closed.
 
-6. **Coding-agent static audit**
+6. **Coding-agent static audit — complete**
    - verify export map and executable-only `./rpc-entry` boundary;
    - scan stale package identities and machine/private paths;
    - verify assets/fixtures and excluded/quarantined paths;
@@ -78,7 +78,11 @@ The four documentation-closure slices are complete. The transfer/certification p
 
 ### Phase 3 — transfer dependency packages (4 slices)
 
-7. **Foundation:** transfer and rename telemetry plus AI.
+7. **Foundation — ledgers frozen; apply approval pending:** transfer and rename telemetry plus AI.
+   - telemetry: 12 rows = 10 transfer + 2 rewrite; 41,103 transfer bytes; derived ledger SHA-256 `61e468ee7b7bb05f13d71be8ad6ae14ea72bb7241849bbefbe200c3f48e7013d`;
+   - AI: 372 rows = 370 transfer + 2 rewrite; 2,684,905 transfer bytes; derived ledger SHA-256 `72feb8c3cf8e085565722a46e6aa8b3fca437ba750529dd60084d5187b5df19b`;
+   - preserve the rewritten package READMEs/manifests and reviewed telemetry changelog; copy only scoped transfer rows after explicit approval;
+   - checkpoint raw source, rewrite both packages to `@reitaard/recode-*@0.1.0`, keep publication fail-closed, and statically audit before closing Slice 7.
 8. **Runtime:** transfer and rename Agent core, preserving V3 versus isolated Session V4 boundaries and regenerating telemetry docs later.
 9. **Interface:** transfer and rename TUI, excluding all four uncertified native prebuilds from active package contents.
 10. **Services/storage:** transfer and rename orchestrator and SQLite; both participate in the initial public `0.1.0` train after certification.
@@ -141,11 +145,11 @@ Remote repository creation, push, npm publication, tags, releases, and dist-tag 
 
 ## Current remaining milestones
 
-From checkpoint `4ecb109`, Phase 1's planning/technical work is complete. The outstanding approval closes Slice 3; after that:
+From checkpoint `5ae80a8`, Slices 1–6 are complete and Slice 7's scoped ledgers/copier dry runs are frozen. Remaining work:
 
-- Slice 4 copies and verifies coding-agent source;
-- Slices 5–6 rename and statically audit coding-agent;
-- Slices 7–12 transfer dependencies and minimal root infrastructure;
+- explicit apply approval, transfer verification, identity rewrite, and static audit close Slice 7;
+- Slices 8–10 transfer the remaining dependency packages;
+- Slices 11–12 transfer minimal root infrastructure;
 - Slices 13–17 repair, certify, package, and complete public-readiness handoff.
 
 The plan remains 17 total transfer/certification slices; completed slices are not counted again as remaining work.

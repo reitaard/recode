@@ -1,6 +1,8 @@
 # Coding-Agent Transfer Gate
 
-This is the scoped approval boundary for transferring coding-agent implementation first. It does not authorize copying.
+> **Closed gate:** the Creator explicitly approved this scoped copy; 615 files were copied and byte-verified, with raw provenance checkpoint `ac99921`. Identity rewrite checkpoint `5445fac` and static-audit checkpoint `01832e3` completed the coding-agent transfer phase.
+
+This document preserves the scoped approval evidence for the completed coding-agent-first transfer.
 
 ## Frozen scope
 
@@ -54,14 +56,12 @@ Verified dry-run result:
 
 The copier requires `--phase` for `--apply`; bulk apply is forbidden. It validates the whole-ledger hash, source commit, derived phase prefix/count, source cleanliness, path containment, and destination collisions. It does not currently consume or hash-check `coding-agent.tsv`; that file/hash is review evidence reproducibly derived from the enforced whole ledger. It does not process non-transfer dispositions.
 
-## Remaining approval inputs
+## Closure evidence
 
-Before apply:
+1. Creator-approved bootstrap version `0.1.0` and seven-package graph were recorded.
+2. Phase-ledger generation and scoped dry run passed against clean repositories.
+3. Creator explicitly approved `--apply --phase coding-agent`.
+4. The copy produced 615 byte-identical files, 8,759,888 bytes, zero mismatches, zero missing files, and zero unclassified non-documentation files.
+5. Checkpoints: raw provenance `ac99921`, identity rewrite `5445fac`, static audit `01832e3`.
 
-1. Creator-approved bootstrap version `0.1.0` is recorded.
-2. Creator-approved initial publication graph includes all seven `@reitaard/recode-*` packages at `0.1.0`, including SQLite.
-3. Re-run phase-ledger generation and dry run with clean repositories.
-4. Commit the decision checkpoint.
-5. Creator explicitly approves `--apply --phase coding-agent`.
-
-After copy, verify bytes/path set, then checkpoint raw provenance before the identity rewrite. No install or build occurs until dependencies/root bootstrap are ready and separately approved.
+No install or build occurred; those remain gated on dependency/root bootstrap completion and separate approval.

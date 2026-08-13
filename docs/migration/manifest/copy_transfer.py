@@ -19,6 +19,8 @@ EXPECTED_LEDGER_SHA256 = "f208a4b67fba6174abc462ff72e8e3accd10335065babb1c1ebbc1
 EXPECTED_TRANSFER_ROWS = 1243
 APPROVED_PHASES = {
     "coding-agent": ("packages/coding-agent/", 615),
+    "telemetry": ("packages/telemetry/", 10),
+    "ai": ("packages/ai/", 370),
 }
 
 

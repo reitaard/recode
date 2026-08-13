@@ -2,9 +2,7 @@
 
 Read only the smallest relevant path.
 
-1. [About](project/ABOUT.md)
-2. [Current state](project/CURRENT.md) when status matters
-3. One task area:
+Choose one task area. Read [About](project/ABOUT.md) only for product identity, and [Current state](project/CURRENT.md) only when status matters.
 
 | Task | Read |
 |---|---|
@@ -17,9 +15,7 @@ Read only the smallest relevant path.
 | Code or tests | [Coding](coding/INDEX.md) |
 | Build, install, release, update | [Setup](setup/INDEX.md) |
 | Reconcile history or memory | [Evidence](project/EVIDENCE.md) |
-| Continue repository transfer | [Migration index](migration/INDEX.md) |
-| Check migration completeness | [Coverage](migration/COVERAGE.md) |
 
 [Old documents](old/README.md) are evidence only. Read a specific old file only when a current guide requires it.
 
-Reading order: `identity -> current state -> task guide -> narrow evidence`.
+Do not preload identity, status, or archive documents for unrelated work.

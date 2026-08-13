@@ -1,7 +1,5 @@
 # Use Workers
 
-> **Pre-transfer status:** these worker commands and tools describe the audited migration-source interface. They are not executable in this documentation repository and require post-transfer certification.
-
 ## Choose a worker
 
 | Worker | ID | Use for | Tools |

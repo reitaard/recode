@@ -1,14 +1,12 @@
 # Tests
 
-> **Pre-transfer status:** the root workspace, dependencies, and test scripts are absent here. These are audited target commands and must not run until approved source transfer and command verification.
-
 ## After code changes
 
 ```text
 npm run check
 ```
 
-`check` formats with Biome, validates pinned dependencies/imports/generated locks, type-checks, and runs browser smoke checks. It may modify files; inspect Git status afterward.
+`check` validates identity, migration safety, generated locks/docs, maintained examples, imports, and TypeScript. Inspect Git status afterward.
 
 Do not use the root build merely to type-check.
 

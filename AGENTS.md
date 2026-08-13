@@ -18,4 +18,4 @@ Recode is a coding harness. Aizen is its main agent; Pi is an integration source
 - Never commit, publish, install, deploy, or access remotes without approval.
 - Never store secrets in the repository or memory.
 
-Authority: Creator-approved policy -> verified implementation, public exports, and reproducible tests -> focused current documentation -> archive/memory. During migration, `AGENTS.md` supplies repository safety rules but does not make prose outrank verified code.
+Authority: Creator instructions -> this file -> focused current documentation -> verified implementation and tests -> archive/memory.

@@ -32,4 +32,4 @@ Unknown/malformed handwritten data is not a supported editing interface. Parsing
 
 Use exported `SessionManager`, `SessionEntry`, `FileEntry`, migration, tree, and context helpers rather than reimplementing traversal. Preserve unknown generic `details` data when transforming files. Do not assume file order alone is the active conversation; follow the selected leaf's parent chain and compaction rules.
 
-This document must gain a drift check against the exported discriminated union after source transfer.
+Changes to the exported discriminated union must update this document and its focused format tests.

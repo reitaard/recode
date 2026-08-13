@@ -4,4 +4,4 @@
 - [Tests](TESTS.md) — validation commands and test placement
 - [Documentation contract](DOCS.md) — authority, ownership, status, and update protocol
 
-Read Rules and Tests for production code changes. Read the Documentation Contract before changing canonical docs or public behavior.
+For production code, read Rules plus the relevant part of Tests. Read the Documentation Contract only when changing canonical docs or public behavior.

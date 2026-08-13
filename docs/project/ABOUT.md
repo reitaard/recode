@@ -18,4 +18,4 @@ Recode is a coding harness derived from Pi and developed as its own product.
 - Load only task-relevant context and tools.
 - Verify old claims against code, tests, Git, or runtime evidence.
 
-This repository is the migration target, not yet the source authority. Unapproved product possibilities are kept separately in [Future Possibilities](FUTURE.md); they are not current features or commitments.
+Unapproved product possibilities are kept separately in [Future Possibilities](FUTURE.md); they are not current features or commitments.

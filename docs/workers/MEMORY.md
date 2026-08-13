@@ -1,7 +1,5 @@
 # Memory and Shiori
 
-> **Pre-transfer status:** these commands and runtime contracts describe the audited migration-source interface. They are not executable in this documentation repository and require post-transfer certification.
-
 ## Parts
 
 - **Kioku:** Markdown memory plus SQLite search index

@@ -108,7 +108,7 @@ See [Session V4](docs/session-v4.md). Do not mix V4 entry/record types with the 
 
 ## Build and test
 
-After source transfer:
+From the workspace root:
 
 ```sh
 npm run build -w @reitaard/recode-agent-core
@@ -116,4 +116,4 @@ npm test -w @reitaard/recode-agent-core
 npm run test:harness -w @reitaard/recode-agent-core
 ```
 
-At the audited upstream checkpoint `fbd6b5b3`, active AgentHarness focused tests passed 19 cases and Session V4/storage/telemetry focused tests passed 258 cases. Re-run all declared gates after transfer.
+Run the declared gates after changing harness, session, storage, or telemetry behavior.

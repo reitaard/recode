@@ -20,6 +20,7 @@ Everything below this directory is historical source material copied from the ol
 - `update/` — old updater context, decisions, plans, and logs
 - `packages/orchestrator/` — old Maestro package docs and changelog
 - `scripts/` — old platform instructions
+- `migration/` — completed standalone transfer ledgers, inventories, plans, and manifest tooling
 
 ## Authority
 

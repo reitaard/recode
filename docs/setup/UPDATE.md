@@ -2,12 +2,10 @@
 
 Recode and upstream Pi are separate authorities.
 
-> **Pre-transfer status:** this repository has no executable product update path. The behavior below was verified against the audited source checkpoint and must be rechecked after transfer and `@reitaard/recode-*` identity rewriting.
-
 ## Current behavior
 
 - Extension/package updates remain separate from core source updates.
-- Built-in self-update is disabled until validated Recode-owned release metadata exists.
+- Built-in self-update remains fail-closed until validated Recode-owned release metadata exists.
 - Foreign package identity must fail closed.
 - Linked/source checkouts require a clean, non-destructive source-update strategy.
 

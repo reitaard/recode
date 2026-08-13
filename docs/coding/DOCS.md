@@ -13,13 +13,12 @@ This file governs Recode documentation updates.
 | CLI behavior and customization | `packages/coding-agent/docs/` |
 | Approved unfinished work | owning topic's `TODO.md` |
 | Archived evidence | `docs/old/` |
-| Migration classification | `docs/migration/COVERAGE.md` until final cleanup |
 
 One fact has one canonical explanation. Other files link to it and add only local context.
 
 ## Admission gate
 
-During migration, canonical documentation may contain a claim only after Aizen, acting as the current repository reviewer:
+Canonical documentation may contain a claim only after the reviewer:
 
 1. identifies the owning package and public boundary;
 2. reads the implementation and focused tests;
@@ -28,9 +27,9 @@ During migration, canonical documentation may contain a claim only after Aizen, 
 5. confirms the claim describes current behavior or Creator-approved work;
 6. updates affected indexes and links.
 
-Creator-approved policy defines product intent. Verified current source, public exports, and reproducible tests outrank prose. Future public maintainer/reviewer authority is established by approved governance rather than assigned permanently to Aizen by this migration document.
+Creator-approved policy defines product intent. Verified current source, public exports, and reproducible tests outrank prose. Maintainer/reviewer authority follows repository governance.
 
-Claims that are superseded, rejected, inherited, contradictory, or unverified do not enter canonical docs. During transfer, Aizen records their disposition only in `docs/migration/COVERAGE.md`. After complete certification and Creator-approved archive removal, Git history replaces the migration ledger.
+Claims that are superseded, rejected, inherited, contradictory, or unverified do not enter canonical docs. Git history and `docs/old/` preserve historical evidence.
 
 ## Public contributor standard
 

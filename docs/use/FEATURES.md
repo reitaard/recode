@@ -1,7 +1,5 @@
 # Recode Features
 
-> **Pre-transfer status:** these features and commands describe the audited migration-source interface. They are not executable in this documentation repository and require post-transfer identity/runtime certification.
-
 Use this map to find the smallest relevant guide.
 
 | Feature | Purpose | Read next |
@@ -10,10 +8,10 @@ Use this map to find the smallest relevant guide.
 | Workers | Focused research, audit, and private knowledge conversations | [Worker use](../workers/USE.md) |
 | Memory | Project/global recall and reviewed durable knowledge | [Worker memory](../workers/MEMORY.md) |
 | Maestro | Durable full-session processes | [Maestro use](../maestro/USE.md) |
-| LSP | Definitions, references, symbols, diagnostics, and edits | coding-agent docs after source migration |
-| MCP and packages | Optional external tools, providers, and services | package docs after source migration |
+| LSP | Definitions, references, symbols, diagnostics, and edits | [Coding-agent docs](../../packages/coding-agent/docs/index.md) |
+| MCP and packages | Optional external tools, providers, and services | [Packages](../../packages/coding-agent/docs/packages.md) |
 | Doctor | Read-only product diagnostics | `recode doctor` or `recode doctor --json` |
-| Sessions | Resume, continue, fork, export, and RPC modes | coding-agent docs after source migration |
+| Sessions | Resume, continue, fork, export, and RPC modes | [Sessions](../../packages/coding-agent/docs/sessions.md) |
 
 ## Common commands
 

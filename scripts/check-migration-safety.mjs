@@ -3,7 +3,7 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 
-const roots = ["package.json", "packages", "scripts"];
+const roots = ["package.json", "packages", "scripts"]; // Historical docs are intentionally outside active safety scanning.
 const forbiddenFiles = [
 	"scripts/publish.mjs",
 	"scripts/release.mjs",
@@ -48,4 +48,4 @@ if (failures.length) {
 	console.error(failures.join("\n"));
 	process.exit(1);
 }
-console.log("migration safety check passed: mutation automation absent and active inherited endpoints removed");
+console.log("standalone safety check passed: mutation automation absent and active inherited endpoints removed");

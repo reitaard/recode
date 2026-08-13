@@ -39,4 +39,3 @@ Follow [Documentation Contract](DOCS.md). In particular:
 - Plans and current behavior must not share an unlabeled section.
 - Keep core contracts beside their owning package; top-level docs route them.
 - Archive old evidence without rewriting it.
-- Update `docs/migration/COVERAGE.md` when an old source is handled.

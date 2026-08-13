@@ -2,7 +2,7 @@
 
 Requires Node `>=22.19.0`.
 
-> **Bootstrap status:** the seven-package root workspace and lockfile are present. `npm install --ignore-scripts` completed with lifecycle scripts disabled. Identity, migration-safety, and relative-import checks pass, and the complete dependency-order build passes for all seven packages. Package tests and certification gates remain pending.
+> The seven-package workspace, lockfile, checks, builds, deterministic tests, tarballs, and isolated lifecycle-disabled installation are certified for the standalone `0.1.0` boundary.
 
 ## Installed dependencies and validation
 
@@ -34,7 +34,7 @@ The root build uses reviewed checked-in model data and does not refresh provider
 
 The first build in the standalone repository is a **from-scratch bootstrap**, not an incremental continuation of an inherited RePi build or release.
 
-The first standalone build was attempted at checkpoint `64f02ac`; it is not yet complete. The bootstrap requirements remain:
+The completed standalone bootstrap followed these requirements:
 
 1. transfer only approved source inputs;
 2. remove or refuse inherited `dist/`, binaries, package tarballs, caches, generated declarations/maps, temporary release directories, and copied package output;
@@ -43,16 +43,9 @@ The first standalone build was attempted at checkpoint `64f02ac`; it is not yet 
 5. use the deterministic build path that consumes reviewed checked-in catalogs without a network refresh;
 6. build in a clean environment and inspect all generated diffs before running tests.
 
-The first standalone build must not inherit the migration source's `0.83.x`/`0.84.x` values. Use only the approved standalone bootstrap version `0.1.0` recorded through the [versioning and package-lineage plan](../migration/plans/VERSIONING.md), after availability is verified before publication. All seven workspace and intended public packages in the initial fixed train must agree on that value, including SQLite.
+The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All seven workspace packages use the synchronized `0.1.0` train, including SQLite.
 
-After compilation succeeds, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
-
-Current certification order:
-
-1. coding-agent shrinkwrap generation and verification — complete;
-2. Agent telemetry documentation generation and drift gate — complete;
-3. classify and repair the focused AI and coding-agent failures from the first package test census;
-4. run full repository checks, exports/imports, examples, and package-content certification.
+After compilation, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
 
 ## Local binary install
 

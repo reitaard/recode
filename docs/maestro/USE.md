@@ -1,7 +1,5 @@
 # Use Maestro
 
-> **Pre-transfer status:** Maestro is not executable from this documentation repository. These commands are audited interface references, not currently supported operations; service, recovery, installed-TUI, artifact, and platform behavior require post-transfer certification.
-
 ## Service interface
 
 ```text

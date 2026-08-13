@@ -164,10 +164,13 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
    - npm normalizes archived JavaScript files to `0644`; executable portability is provided by npm's generated platform command shims, which were verified in the isolated install;
    - installed manifests are synchronized at `0.1.0`, renamed local dependency ranges resolve, and no `repi-*` package dependency leaks remain.
 
-16. **Platform/native/external boundaries — active**
+16. **Platform/native/external boundaries — complete for the standalone `0.1.0` boundary**
    - certify supported OS/Node/terminal paths;
    - either reproducibly rebuild/prove TUI native artifacts or omit them;
-   - keep network providers, Telegram, Maestro native services, Termux, containers, custom providers, and external examples opt-in and separately evidenced.
+   - keep network providers, Telegram, Maestro native services, Termux, containers, custom providers, and external examples opt-in and separately evidenced;
+   - Windows x64 with Node `26.5.0` passes the workspace/build/test/install gates, npm command shims, credential-free CLI help/version/model listing, and TUI no-addon fallback smoke check;
+   - TUI package contents omit `native/` and all `.node` prebuilds; reviewed native source/builders remain quarantined until reproducible builds and matching Windows/macOS architecture smoke tests exist;
+   - macOS, Linux, Windows arm64, Termux, containers, native addons, live providers, Telegram, Maestro services, local models, and executable third-party extensions are not claimed as certified by this Windows lane and remain explicit opt-in/external boundaries.
 
 ### Phase 7 — public repository and release readiness (2 slices)
 

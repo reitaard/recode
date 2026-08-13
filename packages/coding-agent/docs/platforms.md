@@ -8,7 +8,9 @@ Node.js must satisfy the root engine floor. Linux, Windows, and macOS require se
 
 ## Windows
 
-Shell selection, process replacement, clipboard/native helpers, file locking, and terminal key conflicts require Windows-specific tests. Stop running Recode before replacing binaries. Checked-in native TUI artifacts remain uncertified until provenance or reproducible rebuild is established.
+Shell selection, process replacement, clipboard/native helpers, file locking, and terminal key conflicts require Windows-specific tests. Stop running Recode before replacing binaries. The standalone `0.1.0` certification ran on Windows x64 with Node `26.5.0`: workspace checks/builds/tests, tarball installation, npm command shims, credential-free CLI help/version/model listing, and the no-addon TUI fallback passed. This is evidence for that environment, not a claim that every Windows terminal is certified.
+
+TUI native addons are deliberately omitted from package contents. The reviewed C sources/builders remain available for future reproducible certification, but no `.node` prebuild is shipped.
 
 ## tmux and terminals
 

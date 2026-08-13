@@ -2,7 +2,7 @@
 
 Terminal UI primitives and differential renderers used by Recode. Node `>=22.19.0` is required.
 
-> Source and manifest are present under the standalone `0.1.0` identity. Installation, build, tests, native certification, packing, and publication remain uncertified. Quarantined native addons were not transferred.
+> The standalone `0.1.0` JavaScript package has passed build, tests, packing, isolated installation, and Windows x64 fallback smoke checks. Native addons remain uncertified and are deliberately omitted. Publication remains disabled.
 
 ## Choose a renderer
 
@@ -86,18 +86,18 @@ The source contains optional helpers for:
 - Windows virtual-terminal input and modifier state;
 - Darwin modifier state through CoreGraphics.
 
-The current package manifest deliberately excludes native prebuilds. JavaScript fallback is therefore the only certifiable package behavior until reviewed source is reproducibly rebuilt and smoke-tested on Windows x64/arm64 and Darwin x64/arm64. See the platform guides:
+The current package manifest deliberately excludes native prebuilds; tarball inspection confirms that neither `native/` nor `.node` files ship. JavaScript fallback is the certified package behavior. On Windows x64 with Node `26.5.0`, loading the packaged TUI without an addon and querying all modifier keys returned the documented safe `false` fallback. Native support still requires reviewed, reproducible builds and matching-architecture smoke tests on Windows x64/arm64 and Darwin x64/arm64. See the platform guides:
 
 - [`native/win32/README.md`](native/win32/README.md)
 - [`native/darwin/README.md`](native/darwin/README.md)
 
 ## Build and test
 
-After root workspace infrastructure and dependencies are transferred:
+From the standalone workspace:
 
 ```sh
 npm run build -w @reitaard/recode-tui
 npm test -w @reitaard/recode-tui
 ```
 
-The declared test command uses Node's test runner over `test/*.test.ts`. Executable demos and diagnostic reproducers are not tests unless matched by that command. The audited upstream checkpoint at `fbd6b5b3` passed 52 suites and 878 tests; native rebuild and cross-platform execution were not run.
+The declared test command uses Node's test runner over `test/*.test.ts`. Executable demos and diagnostic reproducers are not tests unless matched by that command. The standalone suite and package/import gates pass on Windows x64; macOS, Linux, Windows arm64, and native-addon execution still require separate CI evidence.

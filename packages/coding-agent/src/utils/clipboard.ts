@@ -1,4 +1,4 @@
-import { execSync, spawn } from "child_process";
+import { execFileSync, execSync, spawn } from "child_process";
 import { platform } from "os";
 import { isWaylandSession } from "./clipboard-image.ts";
 import { clipboard } from "./clipboard-native.ts";
@@ -39,10 +39,19 @@ export type ClipboardTextReadResult =
 
 /** Read plain text and preserve whether the clipboard was empty or unavailable. */
 export async function readClipboardTextWithStatus(): Promise<ClipboardTextReadResult> {
-	if (!clipboard) {
-		return { status: "unavailable" };
+	if (platform() === "linux" && isWaylandSession() && process.env.WAYLAND_DISPLAY) {
+		try {
+			const text = execFileSync("wl-paste", ["--no-newline", "--type", "text"], {
+				encoding: "utf8",
+				maxBuffer: 50 * 1024 * 1024,
+				timeout: 5000,
+			});
+			return text ? { status: "text", text } : { status: "empty" };
+		} catch {
+			// wl-paste is unavailable; permit the native X11-compatible fallback.
+		}
 	}
-
+	if (!clipboard) return { status: "unavailable" };
 	try {
 		const text = await clipboard.getText();
 		return text ? { status: "text", text } : { status: "empty" };

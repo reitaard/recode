@@ -226,13 +226,15 @@ export class ModelSelectorComponent extends Container implements Focusable {
 		}
 	}
 
-	private filterModels(query: string): void {
+	private filterModels(query: string, resetSelection = false): void {
 		this.filteredModels = query
 			? fuzzyFilter(this.activeModels, query, ({ id, provider, model }) =>
 					getModelSelectorSearchText({ id, provider, name: model.name }),
 				)
 			: this.activeModels;
-		this.selectedIndex = Math.min(this.selectedIndex, Math.max(0, this.filteredModels.length - 1));
+		this.selectedIndex = resetSelection
+			? 0
+			: Math.min(this.selectedIndex, Math.max(0, this.filteredModels.length - 1));
 		this.updateList();
 	}
 
@@ -335,8 +337,10 @@ export class ModelSelectorComponent extends Container implements Focusable {
 		}
 		// Pass everything else to search input
 		else {
+			const previousQuery = this.searchInput.getValue();
 			this.searchInput.handleInput(keyData);
-			this.filterModels(this.searchInput.getValue());
+			const query = this.searchInput.getValue();
+			this.filterModels(query, query !== previousQuery);
 		}
 	}
 

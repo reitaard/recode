@@ -74,6 +74,7 @@ describe("Recode custom-first upstream planning", () => {
 		git(root, "switch", "-c", "recode", base);
 		writeFileSync(join(root, "custom.txt"), "recode\n");
 		mkdirSync(join(root, "repi"));
+		mkdirSync(join(root, "recode"));
 		writeFileSync(join(root, "recode", "product.json"), '{"productName":"Recode","appName":"recode"}\n');
 		writeFileSync(
 			join(root, "recode", "upstream-ownership.json"),
@@ -84,7 +85,7 @@ describe("Recode custom-first upstream planning", () => {
 				protectedPaths: ["repi/**"],
 			})}\n`,
 		);
-		git(root, "add", "custom.txt", "repi");
+		git(root, "add", "custom.txt", "repi", "recode");
 		git(root, "commit", "-m", "recode");
 		const before = git(root, "status", "--porcelain=v1");
 

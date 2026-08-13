@@ -1,0 +1,21 @@
+{
+	"extends": "../../tsconfig.base.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"lib": ["ES2024", "DOM", "DOM.Iterable"],
+		"paths": {
+			"@reitaard/recode-coding-agent": ["./dist/index.d.ts"],
+			"@reitaard/recode-coding-agent/*": ["./dist/*"],
+			"@reitaard/recode-agent-core": ["../agent/dist/index.d.ts"],
+			"@reitaard/recode-agent-core/*": ["../agent/dist/*"],
+			"@reitaard/recode-tui": ["../tui/dist/index.d.ts"],
+			"@reitaard/recode-tui/*": ["../tui/dist/*"],
+			"@reitaard/recode-ai": ["../ai/dist/index.d.ts"],
+			"@reitaard/recode-ai/*": ["../ai/dist/*"],
+			"typebox": ["../../node_modules/typebox"]
+		},
+		"skipLibCheck": true
+	},
+	"include": ["examples/**/*.ts"],
+	"exclude": ["node_modules", "dist"]
+}

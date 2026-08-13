@@ -6,6 +6,20 @@ import type { Tool, ToolCall } from "../types.ts";
 const validatorCache = new WeakMap<object, ReturnType<typeof Compile>>();
 const TYPEBOX_KIND = Symbol.for("TypeBox.Kind");
 
+function normalizePlainJsonSchemaForCompile(value: unknown): unknown {
+	if (Array.isArray(value)) return value.map(normalizePlainJsonSchemaForCompile);
+	if (!value || typeof value !== "object") return value;
+
+	const schema = Object.fromEntries(
+		Object.entries(value).map(([key, child]) => [key, normalizePlainJsonSchemaForCompile(child)]),
+	) as Record<string, unknown>;
+	if (!Array.isArray(schema.type) || schema.type.length < 2) return schema;
+
+	const types = schema.type.filter((type): type is string => typeof type === "string");
+	const { type: _type, ...shared } = schema;
+	return { anyOf: types.map((type) => ({ ...shared, type })) };
+}
+
 interface JsonSchemaObject {
 	type?: string | string[];
 	properties?: Record<string, JsonSchemaObject>;
@@ -242,7 +256,10 @@ function getValidator(schema: Tool["parameters"]): ReturnType<typeof Compile> {
 	if (cached) {
 		return cached;
 	}
-	const validator = Compile(schema);
+	const compileSchema = Object.getOwnPropertySymbols(schema).includes(TYPEBOX_KIND)
+		? schema
+		: (normalizePlainJsonSchemaForCompile(schema) as Tool["parameters"]);
+	const validator = Compile(compileSchema);
 	validatorCache.set(key, validator);
 	return validator;
 }

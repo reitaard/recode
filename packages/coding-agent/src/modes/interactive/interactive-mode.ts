@@ -420,9 +420,21 @@ export function createInteractiveTuiReference(getTui: () => TUI): TUI {
 	return new Proxy({} as TUI, {
 		get: (_target, property) => {
 			const tui = getTui();
-			const value = Reflect.get(tui, property, tui);
-			if (typeof value !== "function") return value;
-			return (...args: unknown[]) => Reflect.apply(Reflect.get(getTui(), property, getTui()), getTui(), args);
+			const captured = Reflect.get(tui, property, tui);
+			if (typeof captured !== "function") return captured;
+			let active = false;
+			const reference = (...args: unknown[]) => {
+				const currentTui = getTui();
+				if (active) return Reflect.apply(captured, currentTui, args);
+				const current = Reflect.get(currentTui, property, currentTui);
+				active = true;
+				try {
+					return Reflect.apply(current === reference ? captured : current, currentTui, args);
+				} finally {
+					active = false;
+				}
+			};
+			return reference;
 		},
 		set: (_target, property, value) => Reflect.set(getTui(), property, value, getTui()),
 		has: (_target, property) => Reflect.has(getTui(), property),
@@ -5082,8 +5094,15 @@ export class InteractiveMode {
 	}
 
 	private async findExactModelMatch(searchTerm: string): Promise<Model<any> | undefined> {
-		const models = await this.getModelCandidates();
-		return findExactModelReferenceMatch(searchTerm, models);
+		const scoped = this.session.scopedModels;
+		const cached = scoped.length > 0 ? scoped.map(({ model }) => model) : [...this.session.modelRuntime.getAvailableSnapshot()];
+		const match = findExactModelReferenceMatch(searchTerm, cached);
+		if (match) return match;
+
+		this.showStatus("Refreshing model catalogs…");
+		const signal = AbortSignal.timeout(5000);
+		await this.session.modelRuntime.refresh({ signal });
+		return findExactModelReferenceMatch(searchTerm, [...this.session.modelRuntime.getAvailableSnapshot()]);
 	}
 
 	private async getModelCandidates(): Promise<Model<any>[]> {

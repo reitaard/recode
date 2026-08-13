@@ -127,13 +127,16 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
 
 ### Phase 5 — repair and deterministic certification (2 slices)
 
-13. **Known-defect repair — active**
+13. **Known-defect repair — active; first-build blockers repaired**
    - keep the excluded `AgentHarness.create` adapter out unless deliberately repaired/adopted;
    - repair AI nullable-array generated-validator compatibility;
-   - align the direct Smithy type dependency with the AWS client's resolved type family and repair the Codex fetch-body typing mismatch found by the first build;
-   - approve and apply an `undici` security update from `8.5.0` before certification; the production audit currently reports one high-severity direct finding;
+   - first-build repairs complete: direct Smithy types aligned to `4.16.1`, Codex compressed bodies normalized to `ArrayBuffer`, and `undici` updated from `8.5.0` to `8.10.0`;
+   - all seven packages now compile in dependency order and production audit reports zero vulnerabilities;
    - repair or explicitly limit orchestrator completion restart recovery;
-   - regenerate Agent telemetry schema and add drift checks.
+   - Agent telemetry schema was regenerated and its drift check is active/passing;
+   - AI test repairs complete: nullable plain-JSON multi-type schemas compile safely and Codex body tests match the intentional `ArrayBuffer` boundary; all 895 active AI tests pass (713 explicitly skipped);
+   - telemetry, TUI, Agent core, and AI active suites pass; coding-agent is at 2,051 passing, 35 failing, and 52 skipped after focused identity/settings/examples/TUI repairs;
+   - four inherited coding-agent suites are explicitly outside the standalone test graph: one targets the manifest-excluded unsafe Git example and three target the excluded client package; the boundary and restoration requirements are recorded in `packages/coding-agent/test/EXCLUDED.md`.
 
 14. **Build/test/import certification**
    - fresh install with no inherited dependencies/output;
@@ -155,7 +158,7 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
    - either reproducibly rebuild/prove TUI native artifacts or omit them;
    - keep network providers, Telegram, Maestro native services, Termux, containers, custom providers, and external examples opt-in and separately evidenced.
 
-### Phase 7 — public repository and release readiness (1 slice)
+### Phase 7 — public repository and release readiness (2 slices)
 
 17. **Final authority handoff**
    - approve license, security channel, Code of Conduct contact, support/contribution policy, maintainers, and fork-safe pinned CI;
@@ -164,20 +167,31 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
    - remove migration-only material only after Creator approval;
    - make a final local certified checkpoint.
 
-Remote repository creation, push, npm publication, tags, releases, and dist-tag mutation remain separate explicit approvals after this phase.
+18. **GitHub repository and release**
+   - obtain explicit execution approval before each remote mutation boundary;
+   - create or verify the GitHub repository and protected default-branch settings;
+   - push the certified history without force, then verify the remote commit and repository metadata;
+   - create and push the approved `v0.1.0` tag from the certified commit;
+   - generate checksummed release artifacts and provenance from the certified source without enabling npm publication;
+   - create the GitHub Release with approved notes and artifacts, then verify tag, assets, checksums, links, and public installation guidance;
+   - record release URL, immutable commit/tag evidence, artifact hashes, and any intentionally omitted platforms.
+
+npm publication and dist-tag mutation remain separate explicit approvals. GitHub repository creation, push, tagging, and release creation are planned in Slice 18 but still require explicit approval when each remote mutation is about to run.
 
 ## Current remaining milestones
 
 From checkpoint `cb56e41`, package transfer and root bootstrap are complete through Slice 12. The approved first install added 306 packages with lifecycle scripts disabled and generated the standalone lockfile. Initial build evidence:
 
-- TUI and telemetry compile after aligning the workspace target/import-rewrite configuration with current source syntax;
-- AI compilation is blocked by an AWS/Smithy direct type-version mismatch and a fetch-body typing mismatch;
-- production audit reports one high-severity direct `undici@8.5.0` finding; no automated fix or version change was applied;
-- later package builds, shrinkwrap generation, tests, and Slices 13–17 remain pending.
+- workspace target/import-rewrite configuration is aligned with current source syntax;
+- Smithy/Codex first-build blockers and the direct `undici` vulnerability were repaired with approved version changes;
+- all seven packages compile in dependency order and `npm audit --omit=dev` reports zero vulnerabilities;
+- coding-agent shrinkwrap generation/check and Agent telemetry generation/check are active and passing;
+- package test progress and explicit boundary exclusions are recorded in `docs/project/CURRENT.md`; focused coding-agent repairs and Slices 13–18 remain pending.
 - Slices 11–12 transfer minimal root infrastructure;
-- Slices 13–17 repair, certify, package, and complete public-readiness handoff.
+- Slices 13–17 repair, certify, package, and complete public-readiness handoff;
+- Slice 18 performs the separately approved GitHub push, tag, and release.
 
-The plan remains 17 total transfer/certification slices; completed slices are not counted again as remaining work.
+The plan now contains 18 total transfer/certification/release slices; completed slices are not counted again as remaining work.
 
 These are bounded review slices, not time estimates. A failed gate adds a repair slice rather than being waived.
 

@@ -100,7 +100,7 @@ describe("extension package runtime resolution", () => {
 					extensions: ["./index.ts"],
 					runtime: {
 						contractVersion: 1,
-						codingAgent: ">=0.81.4 <0.83.0",
+						codingAgent: ">=0.1.0 <0.2.0",
 						extensions: [
 							{
 								source: "./index.ts",
@@ -134,7 +134,7 @@ describe("extension package runtime resolution", () => {
 				pi: {
 					runtime: {
 						contractVersion: 1,
-						codingAgent: ">=0.81.4 <0.83.0",
+						codingAgent: ">=0.1.0 <0.2.0",
 						extensions: [
 							{
 								source: "./index.ts",

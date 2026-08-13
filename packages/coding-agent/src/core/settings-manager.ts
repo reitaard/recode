@@ -147,35 +147,27 @@ export interface Settings {
 	fullscreenScrollbar?: ScrollViewScrollbar; // default: "auto"; no effect in regular TUI mode
 }
 
-/** Deep merge settings: project/overrides take precedence, nested objects merge recursively */
+/** Deep merge settings: project/overrides take precedence, nested objects merge recursively. */
 function deepMergeSettings(base: Settings, overrides: Settings): Settings {
-	const result: Settings = { ...base };
-
-	for (const key of Object.keys(overrides) as (keyof Settings)[]) {
-		const overrideValue = overrides[key];
-		const baseValue = base[key];
-
-		if (overrideValue === undefined) {
-			continue;
+	function mergeObjects(baseValue: Record<string, unknown>, overrideValue: Record<string, unknown>) {
+		const result: Record<string, unknown> = { ...baseValue };
+		for (const [key, value] of Object.entries(overrideValue)) {
+			if (value === undefined) continue;
+			const inherited = baseValue[key];
+			result[key] =
+				typeof value === "object" &&
+				value !== null &&
+				!Array.isArray(value) &&
+				typeof inherited === "object" &&
+				inherited !== null &&
+				!Array.isArray(inherited)
+					? mergeObjects(inherited as Record<string, unknown>, value as Record<string, unknown>)
+					: value;
 		}
-
-		// For nested objects, merge recursively
-		if (
-			typeof overrideValue === "object" &&
-			overrideValue !== null &&
-			!Array.isArray(overrideValue) &&
-			typeof baseValue === "object" &&
-			baseValue !== null &&
-			!Array.isArray(baseValue)
-		) {
-			(result as Record<string, unknown>)[key] = { ...baseValue, ...overrideValue };
-		} else {
-			// For primitives and arrays, override value wins
-			(result as Record<string, unknown>)[key] = overrideValue;
-		}
+		return result;
 	}
 
-	return result;
+	return mergeObjects(base as Record<string, unknown>, overrides as Record<string, unknown>) as Settings;
 }
 
 function parseTimeoutSetting(value: unknown, settingName: string): number | undefined {

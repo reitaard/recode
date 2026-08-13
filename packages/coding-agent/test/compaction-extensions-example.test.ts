@@ -5,6 +5,11 @@
 import { describe, expect, it, vi } from "vitest";
 import type { ExtensionAPI, SessionBeforeCompactEvent, SessionCompactEvent } from "../src/core/extensions/index.ts";
 
+const { completeMock } = vi.hoisted(() => ({
+	completeMock: vi.fn(),
+}));
+
+vi.mock("@reitaard/recode-ai/compat", () => ({ complete: completeMock }));
 vi.mock("@reitaard/recode-coding-agent", () => ({
 	convertToLlm: (messages: unknown) => messages,
 	serializeConversation: () => "conversation",
@@ -54,7 +59,7 @@ describe("Documentation example", () => {
 		expect(typeof exampleExtension).toBe("function");
 	});
 
-	it("custom compaction example dispatches through modelRegistry.complete", async () => {
+	it("custom compaction example resolves auth and dispatches through the AI compatibility API", async () => {
 		let handler: ((event: any, ctx: any) => Promise<any>) | undefined;
 		customCompactionExtension({
 			on(event, fn) {
@@ -64,7 +69,7 @@ describe("Documentation example", () => {
 
 		expect(handler).toBeDefined();
 
-		const complete = vi.fn(async () => ({
+		completeMock.mockResolvedValueOnce({
 			role: "assistant",
 			content: [{ type: "text", text: "custom provider summary" }],
 			provider: "example-custom",
@@ -80,7 +85,7 @@ describe("Documentation example", () => {
 				cost: { input: 0, output: 0, cacheRead: 0, cacheWrite: 0, total: 0 },
 			},
 			timestamp: Date.now(),
-		}));
+		});
 		const model = {
 			provider: "example-custom",
 			api: "example-custom-api",
@@ -109,20 +114,20 @@ describe("Documentation example", () => {
 				ui: { notify: vi.fn() },
 				modelRegistry: {
 					find: vi.fn(() => model),
-					complete,
+					getApiKeyAndHeaders: vi.fn(async () => ({ ok: true, apiKey: "test-key", headers: {}, env: {} })),
 				},
 			},
 		);
 
-		expect(complete).toHaveBeenCalledWith(
+		expect(completeMock).toHaveBeenCalledWith(
 			model,
 			expect.objectContaining({ messages: expect.any(Array) }),
 			expect.objectContaining({ maxTokens: 8192 }),
 		);
-		expect(complete).not.toHaveBeenCalledWith(
+		expect(completeMock).toHaveBeenCalledWith(
 			expect.anything(),
 			expect.anything(),
-			expect.objectContaining({ apiKey: expect.anything() }),
+			expect.objectContaining({ apiKey: "test-key" }),
 		);
 		expect(result).toMatchObject({
 			compaction: {

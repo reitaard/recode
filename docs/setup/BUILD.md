@@ -2,7 +2,7 @@
 
 Requires Node `>=22.19.0`.
 
-> **Bootstrap status:** the seven-package root workspace and lockfile are present. `npm install --ignore-scripts` completed with lifecycle scripts disabled. Identity, migration-safety, and relative-import checks pass; TUI and telemetry compile. The build currently stops in AI on an AWS/Smithy type-version mismatch and a fetch-body typing mismatch. Later packages and tests have not run.
+> **Bootstrap status:** the seven-package root workspace and lockfile are present. `npm install --ignore-scripts` completed with lifecycle scripts disabled. Identity, migration-safety, and relative-import checks pass, and the complete dependency-order build passes for all seven packages. Package tests and certification gates remain pending.
 
 ## Installed dependencies and validation
 
@@ -12,7 +12,7 @@ The first install used:
 npm install --ignore-scripts
 ```
 
-It added 306 packages and generated `package-lock.json`. Production audit currently reports one high-severity direct finding in `undici@8.5.0`; no automated audit fix or dependency-version change has been applied.
+It initially added 306 packages and generated `package-lock.json`. Approved dependency repairs aligned `@smithy/types` to `4.16.1` and updated `undici` from `8.5.0` to `8.10.0`; the regenerated lockfile now audits with zero production vulnerabilities.
 
 Current local checks:
 
@@ -47,13 +47,12 @@ The first standalone build must not inherit the migration source's `0.83.x`/`0.8
 
 After compilation succeeds, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
 
-Current repair order:
+Current certification order:
 
-1. approve and align the direct Smithy dependency with the AWS client's resolved type family;
-2. repair the Codex fetch-body typing without weakening runtime validation;
-3. approve an `undici` security update and regenerate the lockfile;
-4. resume the dependency-order build from AI through orchestrator;
-5. regenerate the coding-agent shrinkwrap only after the package graph builds.
+1. coding-agent shrinkwrap generation and verification — complete;
+2. Agent telemetry documentation generation and drift gate — complete;
+3. classify and repair the focused AI and coding-agent failures from the first package test census;
+4. run full repository checks, exports/imports, examples, and package-content certification.
 
 ## Local binary install
 

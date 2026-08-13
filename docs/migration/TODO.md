@@ -42,7 +42,7 @@ The selected direction is seven new `@reitaard/recode-*` identities on one synch
 
 ## 6. Transfer and rewrite in stages
 
-Use the [17-slice staged plan](plans/STAGED-TRANSFER.md). Package transfer and root bootstrap are complete through Slice 12: all seven packages, workspace graph, build order, TypeScript identity, safety checks, installed dependency tree, and generated root lockfile are present. The first build compiles TUI and telemetry, then stops in AI on Smithy type-version and fetch-body typing mismatches. Production audit also reports one high-severity direct `undici@8.5.0` finding. Dependency-version changes require Creator approval; no audit fix has run. Each future source copy remains manifest-scoped. Preserve provenance and leave the source repository unchanged.
+Use the [18-slice staged plan](plans/STAGED-TRANSFER.md). Package transfer and root bootstrap are complete through Slice 12. All seven packages build; production audit reports zero vulnerabilities; shrinkwrap, telemetry documentation, and maintained examples have active drift/compile checks. Slice 13 is repairing the remaining coding-agent failures. Slices 14–17 certify and prepare the repository; Slice 18 performs the explicitly approved GitHub push, `v0.1.0` tag, and GitHub Release. Each future source copy remains manifest-scoped. Preserve provenance and leave the source repository unchanged.
 
 Before the first standalone build, synchronize every connected identity/version file listed in the [versioning plan](plans/VERSIONING.md), remove inherited generated/build output, and follow the [from-scratch build procedure](../setup/BUILD.md#first-standalone-build-after-migration). The migration source's current custom version must not become the new release line implicitly.
 

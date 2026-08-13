@@ -66,7 +66,7 @@
 		"partial-json": "0.1.7",
 		"typebox": "1.1.38",
 		"@reitaard/recode-telemetry": "^0.1.0",
-		"@smithy/types": "4.14.1"
+		"@smithy/types": "4.16.1"
 	},
 	"keywords": [
 		"ai",

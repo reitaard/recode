@@ -19,8 +19,13 @@ Checked: 2026-08-13 against old source commit `fbd6b5b3a494d6c50bc5415eb3be2e436
 - TUI's four uncertified native prebuilds remain quarantined and absent; JavaScript fallback is the current package boundary.
 - Orchestrator completion restart recovery remains a visible known defect; SQLite remains optional and non-default.
 - The seven-package root workspace, TypeScript identity, deterministic build order, and pre-install safety checks are present. `npm install --ignore-scripts` completed and generated the first standalone lockfile (306 packages added; lifecycle scripts disabled).
-- The first build reaches AI after TUI and telemetry compile successfully. AI currently fails on a direct `@smithy/types`/AWS middleware type-version mismatch and a fetch-body typing mismatch; later packages and tests have not run.
-- Production audit reports one high-severity direct dependency finding in `undici@8.5.0`; no audit fix was applied. Updating dependency versions requires Creator approval.
+- The first complete dependency-order build now passes for all seven packages. The AI Smithy mismatch was resolved by aligning `@smithy/types` to `4.16.1`; the Codex compressed fetch body is copied into an `ArrayBuffer` before submission.
+- `undici` was updated from `8.5.0` to `8.10.0`; `npm audit --omit=dev` reports zero vulnerabilities.
+- Coding-agent shrinkwrap generation/check and Agent telemetry documentation generation/drift-check are now active and passing.
+- Package test progress: telemetry passes 15/15; TUI passes; Agent core passes 468 tests plus 2 skipped; AI passes 895 tests with 713 explicitly skipped. Coding-agent now passes 2,051 tests with 35 failures and 52 skips after identity, nested-settings, example, and recursive-TUI fixes.
+- Four inherited coding-agent suites are explicitly excluded in `packages/coding-agent/test/EXCLUDED.md`: one requires the manifest-excluded unsafe Git example, and three require the separately excluded client package. These are package-boundary exclusions, not waived failures in transferred code.
+- Remaining coding-agent failures cover Windows capability assumptions, harness/model-runtime fixture drift, Radius explicit-endpoint behavior, and genuine session/compaction/runtime regressions. Focused classification/repair remains active; full certification has not passed.
+- The plan now has 18 slices. Slice 18 is the GitHub repository/push/tag/release execution slice, including checksummed artifacts and provenance. Every remote mutation still requires explicit approval at execution time; npm publication remains separately disabled.
 - `re.pi` remains provenance/reference history and is not modified by this migration.
 - The intended destination is a public open-source repository for worldwide contributors. Public launch still requires fresh Recode governance, security, conduct, support, CI/fork-safety, licensing, and release decisions; inherited repository policy is not adopted automatically.
 

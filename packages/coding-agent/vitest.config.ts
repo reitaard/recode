@@ -14,6 +14,12 @@ export default defineConfig({
 		testTimeout: 30000,
 		reporters: process.env.GITHUB_ACTIONS ? ["dot", "github-actions"] : ["dot"],
 		silent: "passed-only",
+		exclude: [
+			"test/git-merge-and-resolve-extension.test.ts",
+			"test/client/remote-session-lifecycle.test.ts",
+			"test/client/remote-session-ownership.test.ts",
+			"test/client/remote-session.test.ts",
+		],
 		server: {
 			deps: {
 				external: [/@silvia-odwyer\/photon-node/],

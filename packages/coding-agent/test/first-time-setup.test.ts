@@ -33,8 +33,8 @@ describe("shouldRunFirstTimeSetup", () => {
 		}
 	});
 
-	it("does not show the official Pi first-time setup for the Recode distribution", () => {
-		expect(shouldRunFirstTimeSetup(settingsPath)).toBe(false);
+	it("shows first-time setup for the official Recode distribution", () => {
+		expect(shouldRunFirstTimeSetup(settingsPath)).toBe(true);
 	});
 
 	it("returns false when experimental features are disabled", () => {

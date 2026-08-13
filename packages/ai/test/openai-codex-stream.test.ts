@@ -40,8 +40,8 @@ function decodeCodexRequestBody(body: RequestInit["body"] | undefined): Record<s
 	if (typeof body === "string") {
 		return JSON.parse(body) as Record<string, unknown>;
 	}
-	if (body instanceof Uint8Array) {
-		return JSON.parse(Buffer.from(zstdDecompressSync(body)).toString("utf8")) as Record<string, unknown>;
+	if (body instanceof ArrayBuffer || body instanceof Uint8Array) {
+		return JSON.parse(Buffer.from(zstdDecompressSync(new Uint8Array(body))).toString("utf8")) as Record<string, unknown>;
 	}
 	return null;
 }
@@ -2470,7 +2470,7 @@ describe("openai-codex streaming", () => {
 		const sse = buildSSEPayload({ status: "completed" });
 
 		let capturedEncoding: string | null = null;
-		let capturedBody: Uint8Array | string | undefined;
+		let capturedBody: BodyInit | null | undefined;
 
 		const fetchMock = vi.fn(async (input: string | URL, init?: RequestInit) => {
 			const url = typeof input === "string" ? input : input.toString();
@@ -2479,7 +2479,7 @@ describe("openai-codex streaming", () => {
 			}
 			const headers = init?.headers instanceof Headers ? init.headers : undefined;
 			capturedEncoding = headers?.get("content-encoding") ?? null;
-			capturedBody = init?.body as Uint8Array | string | undefined;
+			capturedBody = init?.body;
 			return new Response(
 				new ReadableStream<Uint8Array>({
 					start(controller) {
@@ -2516,8 +2516,10 @@ describe("openai-codex streaming", () => {
 		).result();
 
 		expect(capturedEncoding).toBe("zstd");
-		expect(capturedBody).toBeInstanceOf(Uint8Array);
-		const decoded = JSON.parse(Buffer.from(zstdDecompressSync(capturedBody as Uint8Array)).toString("utf8")) as {
+		expect(capturedBody).toBeInstanceOf(ArrayBuffer);
+		const decoded = JSON.parse(
+			Buffer.from(zstdDecompressSync(new Uint8Array(capturedBody as ArrayBuffer))).toString("utf8"),
+		) as {
 			input: Array<{ content: Array<{ text: string }> }>;
 		};
 		expect(decoded.input[0].content[0].text).toBe(largeText);
@@ -2534,7 +2536,7 @@ describe("openai-codex streaming", () => {
 		).result();
 
 		expect(capturedEncoding).toBe("zstd");
-		expect(capturedBody).toBeInstanceOf(Uint8Array);
+		expect(capturedBody).toBeInstanceOf(ArrayBuffer);
 	});
 
 	it("uses exponential backoff across repeated SSE retries without retry headers", async () => {

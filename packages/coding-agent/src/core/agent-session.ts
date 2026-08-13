@@ -67,6 +67,7 @@ import { getThemeByName, theme } from "../modes/interactive/theme/theme.ts";
 import { stripFrontmatter } from "../utils/frontmatter.ts";
 import { resolvePath } from "../utils/paths.ts";
 import { sleep } from "../utils/sleep.ts";
+import { normalizeToolResultImages } from "../utils/tool-result-images.ts";
 import { formatNoApiKeyFoundMessage, formatNoModelSelectedMessage } from "./auth-guidance.ts";
 import { type BashResult, executeBashWithOperations } from "./bash-executor.ts";
 import {
@@ -672,6 +673,13 @@ export class AgentSession {
 					}
 				}
 			}
+		}
+
+		if (event.type === "message_end" && event.message.role === "toolResult") {
+			const content = await normalizeToolResultImages(event.message.content, {
+				autoResizeImages: this.settingsManager.getImageAutoResize(),
+			});
+			if (content !== event.message.content) event.message.content = content;
 		}
 
 		// Emit to extensions first

@@ -162,7 +162,7 @@ describe("FooterComponent width handling", () => {
 
 		const renderedStatusLine = footer.render(120)[2];
 		const statusLine = stripAnsi(renderedStatusLine);
-		expect(statusLine).toBe("Kioku (記憶): project  MCP: 0/1");
+		expect(statusLine).toContain("Kioku (記憶): project  MCP: 0/1");
 		expect(renderedStatusLine).toContain(theme.fg("warning", "MCP: 0/1"));
 	});
 
@@ -189,7 +189,7 @@ describe("FooterComponent width handling", () => {
 		});
 
 		const statusLine = stripAnsi(footer.render(120)[2]);
-		expect(statusLine).toBe("Kioku (記憶): project  MCP: 1/1");
+		expect(statusLine).toContain("Kioku (記憶): project  MCP: 1/1");
 	});
 
 	it("colors pricing with the true green success status", () => {

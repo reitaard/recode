@@ -114,12 +114,12 @@ export async function createHarness(options: HarnessOptions = {}): Promise<Harne
 	}
 	const modelsPath = options.modelsJson ? join(tempDir, "models.json") : undefined;
 	if (modelsPath && options.modelsJson) writeFileSync(modelsPath, JSON.stringify(options.modelsJson));
-	const modelRuntime = modelsPath
-		? await ModelRuntime.create({ credentials: authStorage, modelsPath, allowModelNetwork: false })
-		: undefined;
-	const modelRegistry = modelRuntime
-		? ModelRegistry.fromRuntime(modelRuntime, authStorage)
-		: ModelRegistry.inMemory(authStorage);
+	const modelRuntime = await ModelRuntime.create({
+		credentials: authStorage,
+		modelsPath: modelsPath ?? null,
+		allowModelNetwork: false,
+	});
+	const modelRegistry = ModelRegistry.fromRuntime(modelRuntime, authStorage);
 	if (withConfiguredAuth) {
 		modelRegistry.registerProvider(model.provider, {
 			baseUrl: model.baseUrl,

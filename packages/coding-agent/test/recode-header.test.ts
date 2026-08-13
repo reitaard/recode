@@ -23,7 +23,7 @@ describe("RecodeHeader", () => {
 		const lines = createHeader().render(80).map(stripVTControlCharacters);
 
 		expect(lines).toHaveLength(9);
-		expect(lines[0]).toContain("re.pi v0.81.0");
+		expect(lines[0]).toContain("Recode v0.81.0");
 		expect(lines[1]).toContain("Welcome to re™");
 		expect(lines[1]).not.toContain("Welcome to re.pi");
 		expect(lines[1]).toContain("Tips for getting started");

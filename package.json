@@ -15,9 +15,14 @@
 	"scripts": {
 		"clean": "npm run clean --workspaces --if-present",
 		"build": "npm run build -w @reitaard/recode-tui && npm run build -w @reitaard/recode-telemetry && npm run build -w @reitaard/recode-ai && npm run build -w @reitaard/recode-agent-core && npm run build -w @reitaard/recode-storage-sqlite-node && npm run build -w @reitaard/recode-coding-agent && npm run build -w @reitaard/recode-orchestrator",
-		"check": "npm run check:identity && npm run check:migration-safety && npm run check:ts-imports && tsc --noEmit",
+		"check": "npm run check:identity && npm run check:migration-safety && npm run check:shrinkwrap && npm run check:telemetry-docs && npm run check:examples && npm run check:ts-imports && tsc --noEmit",
 		"check:identity": "node scripts/check-standalone-identity.mjs",
+		"check:shrinkwrap": "node scripts/generate-coding-agent-shrinkwrap.mjs --check",
+		"shrinkwrap:coding-agent": "node scripts/generate-coding-agent-shrinkwrap.mjs",
 		"check:migration-safety": "node scripts/check-migration-safety.mjs",
+		"check:telemetry-docs": "tsx packages/agent/scripts/generate-telemetry-docs.ts --check",
+		"generate:telemetry-docs": "tsx packages/agent/scripts/generate-telemetry-docs.ts",
+		"check:examples": "tsc --noEmit -p packages/coding-agent/tsconfig.examples.json",
 		"check:ts-imports": "node scripts/check-ts-relative-imports.mjs",
 		"test": "npm run test --workspaces --if-present",
 		"prepublishOnly": "node -e \"throw new Error('Root publication is disabled')\""

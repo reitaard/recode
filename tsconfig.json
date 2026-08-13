@@ -40,6 +40,8 @@
 		"packages/coding-agent/src/cli/experimental/**",
 		"packages/coding-agent/src/client/**",
 		"packages/coding-agent/src/server/**",
+		"packages/coding-agent/test/client/**",
+		"packages/coding-agent/test/git-merge-and-resolve-extension.test.ts",
 		"**/*.inactive"
 	]
 }

@@ -2470,7 +2470,7 @@ describe("openai-codex streaming", () => {
 		const sse = buildSSEPayload({ status: "completed" });
 
 		let capturedEncoding: string | null = null;
-		let capturedBody: BodyInit | null | undefined;
+		let capturedBody: RequestInit["body"] | null | undefined;
 
 		const fetchMock = vi.fn(async (input: string | URL, init?: RequestInit) => {
 			const url = typeof input === "string" ? input : input.toString();

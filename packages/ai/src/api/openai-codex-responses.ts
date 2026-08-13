@@ -386,7 +386,7 @@ export const stream: StreamFunction<"openai-codex-responses", OpenAICodexRespons
 			if (compressedBody) {
 				sseHeaders.set("content-encoding", "zstd");
 			}
-			const sseBody: BodyInit = compressedBody ? new Uint8Array(compressedBody).buffer : bodyJson;
+			const sseBody: RequestInit["body"] = compressedBody ? new Uint8Array(compressedBody).buffer : bodyJson;
 
 			// Fetch with retry logic for rate limits and transient errors
 			let response: Response | undefined;

@@ -140,13 +140,17 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
    - maintained examples compile through `tsconfig.examples.json`, and the coding-agent production build passes;
    - four inherited coding-agent suites are explicitly outside the standalone test graph: one targets the manifest-excluded unsafe Git example and three target the excluded client package; the boundary and restoration requirements are recorded in `packages/coding-agent/test/EXCLUDED.md`.
 
-14. **Build/test/import certification — active**
+14. **Build/test/import certification — complete**
    - fresh install with no inherited dependencies/output;
    - package builds and deterministic credential-free tests;
    - coding-agent Aizen/legacy/worker/memory/session/gateway/Doctor/update gates;
    - public export/import and retained example compilation;
    - settings/session/RPC/JSON/telemetry drift checks;
-   - no local-model pulls or live provider credentials by default.
+   - no local-model pulls or live provider credentials by default;
+   - root deterministic checks, root TypeScript validation, and all seven dependency-ordered package builds pass;
+   - full workspace tests pass: Agent core 469 active, AI 895 active, coding-agent 2,086 active, telemetry 15 active, plus the complete TUI suite; all failures are zero and documented skips remain explicit;
+   - public package roots and maintained JS subpath exports import successfully without provider credentials;
+   - production audit reports zero vulnerabilities.
 
 ### Phase 6 — package and platform certification (2 slices)
 

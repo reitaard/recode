@@ -42,7 +42,7 @@ The selected direction is seven new `@reitaard/recode-*` identities on one synch
 
 ## 6. Transfer and rewrite in stages
 
-Use the [17-slice staged plan](plans/STAGED-TRANSFER.md). Slices 1–6 are complete: coding-agent was scoped, transferred, identity-neutralized, and statically audited. Slice 7 is next: its telemetry and AI ledgers/dry runs are frozen, while apply approval, copy verification, standalone rewrites, and static audit remain. Then transfer the remaining dependency packages, minimal root infrastructure, and certification/release files. Each copy requires its own scoped ledger, dry run, and Creator approval. Preserve provenance and leave the source repository unchanged.
+Use the [17-slice staged plan](plans/STAGED-TRANSFER.md). Slices 1–7 are complete: coding-agent, telemetry, and AI were scoped, transferred, identity-neutralized, and statically audited. Slice 8 Agent core is next, followed by the remaining dependency packages, minimal root infrastructure, and certification/release files. Each copy requires its own scoped ledger, dry run, and Creator approval. Preserve provenance and leave the source repository unchanged.
 
 Before the first standalone build, synchronize every connected identity/version file listed in the [versioning plan](plans/VERSIONING.md), remove inherited generated/build output, and follow the [from-scratch build procedure](../setup/BUILD.md#first-standalone-build-after-migration). The migration source's current custom version must not become the new release line implicitly.
 

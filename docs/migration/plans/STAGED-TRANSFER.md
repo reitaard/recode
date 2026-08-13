@@ -78,11 +78,13 @@ The four documentation-closure slices and transfer/certification Slices 1–6 ar
 
 ### Phase 3 — transfer dependency packages (4 slices)
 
-7. **Foundation — ledgers frozen; apply approval pending:** transfer and rename telemetry plus AI.
+7. **Foundation — complete:** telemetry plus AI transferred, renamed, and statically audited.
    - telemetry: 12 rows = 10 transfer + 2 rewrite; 41,103 transfer bytes; derived ledger SHA-256 `61e468ee7b7bb05f13d71be8ad6ae14ea72bb7241849bbefbe200c3f48e7013d`;
    - AI: 372 rows = 370 transfer + 2 rewrite; 2,684,905 transfer bytes; derived ledger SHA-256 `72feb8c3cf8e085565722a46e6aa8b3fca437ba750529dd60084d5187b5df19b`;
-   - preserve the rewritten package READMEs/manifests and reviewed telemetry changelog; copy only scoped transfer rows after explicit approval;
-   - checkpoint raw source, rewrite both packages to `@reitaard/recode-*@0.1.0`, keep publication fail-closed, and statically audit before closing Slice 7.
+   - raw checkpoints: telemetry `298c353`, AI `ed15fb0`; identity/static checkpoint: `99857a1`;
+   - both packages use `@reitaard/recode-*@0.1.0`, deterministic local compilation defaults, and private/throwing publication gates;
+   - inherited default `pi.dev` Radius service behavior is disabled; Radius now requires an explicit compatible gateway;
+   - installation, build, tests, and package certification remain blocked until root workspace infrastructure and dependencies are transferred.
 8. **Runtime:** transfer and rename Agent core, preserving V3 versus isolated Session V4 boundaries and regenerating telemetry docs later.
 9. **Interface:** transfer and rename TUI, excluding all four uncertified native prebuilds from active package contents.
 10. **Services/storage:** transfer and rename orchestrator and SQLite; both participate in the initial public `0.1.0` train after certification.
@@ -145,10 +147,10 @@ Remote repository creation, push, npm publication, tags, releases, and dist-tag 
 
 ## Current remaining milestones
 
-From checkpoint `5ae80a8`, Slices 1–6 are complete and Slice 7's scoped ledgers/copier dry runs are frozen. Remaining work:
+From checkpoint `99857a1`, Slices 1–7 are complete. Remaining work:
 
-- explicit apply approval, transfer verification, identity rewrite, and static audit close Slice 7;
-- Slices 8–10 transfer the remaining dependency packages;
+- Slice 8 transfers and renames Agent core while preserving the V3/Session V4 boundary;
+- Slices 9–10 transfer the remaining dependency packages;
 - Slices 11–12 transfer minimal root infrastructure;
 - Slices 13–17 repair, certify, package, and complete public-readiness handoff.
 

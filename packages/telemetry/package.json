@@ -1,0 +1,49 @@
+{
+	"name": "@reitaard/recode-telemetry",
+	"version": "0.1.0",
+	"description": "Vendor-neutral telemetry contracts and typed schema utilities for Recode",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./testing": {
+			"types": "./dist/testing/index.d.ts",
+			"import": "./dist/testing/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md"
+	],
+	"scripts": {
+		"clean": "shx rm -rf dist",
+		"build": "tsc -p tsconfig.build.json",
+		"test": "vitest --run",
+		"prepublishOnly": "node -e \"throw new Error('Publication is disabled until standalone certification completes')\""
+	},
+	"keywords": [
+		"telemetry",
+		"tracing",
+		"observability"
+	],
+	"author": "Recode contributors; derived from work by Mario Zechner",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/reitaard/recode.git",
+		"directory": "packages/telemetry"
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"devDependencies": {
+		"@types/node": "24.12.4",
+		"vitest": "4.1.9",
+		"shx": "0.4.0"
+	},
+	"private": true
+}

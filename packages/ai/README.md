@@ -2,7 +2,7 @@
 
 `@reitaard/recode-ai` is Recode's provider-neutral model, authentication, message, tool, streaming, image, and catalog layer. It separates provider ownership from wire-protocol implementations and keeps the preferred root API side-effect-light.
 
-> **Pre-transfer draft:** this workspace does not yet contain the AI manifest or implementation, so the imports below are not runnable here. They were reconstructed from the audited upstream manifest, barrels, implementation, and focused tests. Treat them as provisional until source transfer, consumer compilation, and package-content certification. No standalone Recode package line is currently claimed as published.
+> **Migration status:** source and manifest are present under the standalone `0.1.0` identity. Installation, build, tests, consumer compilation, package-content certification, and publication remain pending until root workspace infrastructure and dependencies are transferred.
 
 ## Public entry points
 

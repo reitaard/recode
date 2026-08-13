@@ -454,6 +454,7 @@ export class InteractiveMode {
 	private remoteTranscriptRefreshTimer: ReturnType<typeof setTimeout> | undefined;
 	private remoteSessionActive = false;
 	private remoteAttachmentGeneration = 0;
+	private sessionRebindGeneration = 0;
 	private remoteAttachmentPending = false;
 	private loadedResourcesContainer: Container;
 	private mcpStartupStatus: string | undefined;
@@ -2246,11 +2247,15 @@ export class InteractiveMode {
 	}
 
 	private async rebindCurrentSession(options: { renderBeforeBind?: boolean } = {}): Promise<void> {
-		this.runtimeHost.readiness.markPending("integration-ready");
-		this.stopRemoteSessionMonitoring();
+		const generation = (this.sessionRebindGeneration ?? 0) + 1;
+		this.sessionRebindGeneration = generation;
+		const session = this.session;
+		const isCurrent = () => generation === this.sessionRebindGeneration && session === this.session;
+		this.runtimeHost?.readiness.markPending("integration-ready");
+		this.stopRemoteSessionMonitoring?.();
 		this.unsubscribe?.();
 		this.unsubscribe = undefined;
-		this.aizenRuntime = this.options.aizenRuntime
+		this.aizenRuntime = this.options?.aizenRuntime
 			? createAizenRuntime({ agentSession: this.session, cwd: this.sessionManager.getCwd() })
 			: undefined;
 		this.applyRuntimeSettings();
@@ -2258,14 +2263,17 @@ export class InteractiveMode {
 			this.renderCurrentSessionState();
 			this.subscribeToAgent();
 			await this.bindCurrentSessionExtensions();
+			if (!isCurrent()) return;
 		} else {
 			await this.bindCurrentSessionExtensions();
+			if (!isCurrent()) return;
 			this.subscribeToAgent();
 		}
 		await this.updateAvailableProviderCount();
+		if (!isCurrent()) return;
 		this.updateEditorBorderColor();
 		this.updateTerminalTitle();
-		await this.startRemoteSessionMonitoring();
+		await this.startRemoteSessionMonitoring?.();
 	}
 
 	private async startRemoteSessionMonitoring(): Promise<void> {
@@ -4809,13 +4817,19 @@ export class InteractiveMode {
 	 * Shows a selector component in place of the editor.
 	 * @param create Factory that receives a `done` callback and returns the component and focus target
 	 */
-	private showSelector(create: (done: () => void) => { component: Component; focus: Component }): void {
+	private showSelector(
+		create: (done: () => void) => { component: Component; focus: Component; dispose?: () => void },
+	): void {
+		let dispose: (() => void) | undefined;
 		const done = () => {
+			dispose?.();
 			this.editorContainer.clear();
 			this.editorContainer.addChild(this.editor);
 			this.ui.setFocus(this.editor);
 		};
-		const { component, focus } = create(done);
+		const created = create(done);
+		const { component, focus } = created;
+		dispose = created.dispose;
 		this.editorContainer.clear();
 		this.editorContainer.addChild(component);
 		this.ui.setFocus(focus);
@@ -5243,9 +5257,11 @@ export class InteractiveMode {
 	}
 
 	private async showModelsSelector(): Promise<void> {
-		// Get all available models
-		this.session.modelRegistry.refresh();
-		const allModels = this.session.modelRegistry.getAvailable();
+		// Render the cached snapshot immediately while catalogs refresh in the background.
+		const modelRuntime = this.session.modelRuntime;
+		let allModels = [
+			...(modelRuntime?.getAvailableSnapshot() ?? this.session.modelRegistry.getAvailable()),
+		];
 
 		// Check if the session has scoped models (from previous session-only changes or CLI --models).
 		const sessionScopedModels = this.session.scopedModels;
@@ -5298,10 +5314,12 @@ export class InteractiveMode {
 		};
 
 		this.showSelector((done) => {
+			const refreshController = new AbortController();
 			const selector = new ScopedModelsSelectorComponent(
 				{
 					allModels,
 					enabledModelIds: currentEnabledIds,
+					refreshStatus: "Refreshing model catalogs…",
 				},
 				{
 					onChange: async (enabledIds) => {
@@ -5322,7 +5340,23 @@ export class InteractiveMode {
 					},
 				},
 			);
-			return { component: selector, focus: selector };
+			if (modelRuntime) void modelRuntime.refresh({ signal: refreshController.signal }).then((result) => {
+				if (result.aborted) return;
+				allModels = [...modelRuntime.getAvailableSnapshot()];
+				selector.updateModels(allModels, currentEnabledIds);
+				if (result.errors.size > 0) {
+					const providers = [...result.errors.keys()];
+					selector.setRefreshStatus(
+						`Could not refresh ${providers.length} model catalog${providers.length === 1 ? "" : "s"} (${providers.join(", ")}); showing cached models.`,
+						"warning",
+					);
+				} else {
+					selector.setRefreshStatus("Model catalogs refreshed.", "success");
+				}
+				this.ui.requestRender();
+			});
+			else selector.setRefreshStatus("Model catalogs refreshed.", "success");
+			return { component: selector, focus: selector, dispose: () => refreshController.abort() };
 		});
 	}
 
@@ -5841,7 +5875,17 @@ export class InteractiveMode {
 		authType: "oauth" | "api_key",
 		previousModel: Model<any> | undefined,
 	): Promise<void> {
-		this.session.modelRegistry.refresh();
+		const refreshController = new AbortController();
+		const refreshPromise = this.session.modelRuntime.refresh({ providers: [providerId], signal: refreshController.signal });
+		const refreshTimer = setTimeout(() => refreshController.abort(), 15_000);
+		void refreshPromise.then((result) => {
+			clearTimeout(refreshTimer);
+			if (result.aborted) {
+				this.showWarning(
+					`${authType === "oauth" ? `Logged in to ${providerName}` : `Saved API key for ${providerName}`}, but its model catalog refresh timed out; using cached models.`,
+				);
+			}
+		});
 
 		const actionLabel = authType === "oauth" ? `Logged in to ${providerName}` : `Saved API key for ${providerName}`;
 

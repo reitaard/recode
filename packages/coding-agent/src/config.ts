@@ -346,17 +346,19 @@ function isSelfUpdatePathWritable(): boolean {
 	try {
 		accessSync(packageDir, constants.W_OK);
 		accessSync(dirname(packageDir), constants.W_OK);
-		if (process.platform === "win32") {
-			for (const directory of [packageDir, dirname(packageDir)]) {
-				probes.push(mkdtempSync(join(directory, ".recode-write-test-")));
-			}
+		for (const directory of [packageDir, dirname(packageDir)]) {
+			probes.push(mkdtempSync(join(directory, ".recode-write-test-")));
 		}
 		return true;
 	} catch {
 		return false;
 	} finally {
 		for (const probe of probes) {
-			rmSync(probe, { recursive: true, force: true });
+			try {
+				rmSync(probe, { recursive: true, force: true });
+			} catch {
+				// A failed cleanup still means the path is unsuitable for self-update.
+			}
 		}
 	}
 }

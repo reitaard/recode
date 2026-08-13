@@ -127,7 +127,7 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
 
 ### Phase 5 — repair and deterministic certification (2 slices)
 
-13. **Known-defect repair — active; first-build blockers repaired**
+13. **Known-defect repair — complete**
    - keep the excluded `AgentHarness.create` adapter out unless deliberately repaired/adopted;
    - repair AI nullable-array generated-validator compatibility;
    - first-build repairs complete: direct Smithy types aligned to `4.16.1`, Codex compressed bodies normalized to `ArrayBuffer`, and `undici` updated from `8.5.0` to `8.10.0`;
@@ -135,10 +135,12 @@ Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the 
    - repair or explicitly limit orchestrator completion restart recovery;
    - Agent telemetry schema was regenerated and its drift check is active/passing;
    - AI test repairs complete: nullable plain-JSON multi-type schemas compile safely and Codex body tests match the intentional `ArrayBuffer` boundary; all 895 active AI tests pass (713 explicitly skipped);
-   - telemetry, TUI, Agent core, and AI active suites pass; coding-agent is at 2,051 passing, 35 failing, and 52 skipped after focused identity/settings/examples/TUI repairs;
+   - telemetry, TUI, Agent core, and AI active suites pass;
+   - coding-agent defect repair is complete: 2,086 active tests pass, zero fail, and 52 are explicitly skipped across 775 suites;
+   - maintained examples compile through `tsconfig.examples.json`, and the coding-agent production build passes;
    - four inherited coding-agent suites are explicitly outside the standalone test graph: one targets the manifest-excluded unsafe Git example and three target the excluded client package; the boundary and restoration requirements are recorded in `packages/coding-agent/test/EXCLUDED.md`.
 
-14. **Build/test/import certification**
+14. **Build/test/import certification — active**
    - fresh install with no inherited dependencies/output;
    - package builds and deterministic credential-free tests;
    - coding-agent Aizen/legacy/worker/memory/session/gateway/Doctor/update gates;

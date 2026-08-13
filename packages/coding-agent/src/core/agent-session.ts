@@ -500,8 +500,7 @@ export class AgentSession {
 			return this._getRequiredRequestAuth(model);
 		}
 
-		const result = await this._modelRegistry.getApiKeyAndHeaders(model);
-		return result.ok ? { apiKey: result.apiKey, headers: result.headers, env: result.env } : {};
+		return {};
 	}
 
 	/**
@@ -1266,6 +1265,10 @@ export class AgentSession {
 	 * @throws Error if no model selected or no API key available (when not streaming)
 	 */
 	async prompt(text: string, options?: PromptOptions): Promise<void> {
+		if (this._compactionAbortController || this._autoCompactionAbortController) {
+			options?.preflightResult?.(false);
+			throw new Error("A compaction is in progress; wait for it to finish before sending another prompt.");
+		}
 		const expandPromptTemplates = options?.expandPromptTemplates ?? true;
 		const preflightResult = options?.preflightResult;
 		let messages: AgentMessage[] | undefined;
@@ -1963,9 +1966,10 @@ export class AgentSession {
 	 * @param customInstructions Optional instructions for the compaction summary
 	 */
 	async compact(customInstructions?: string): Promise<CompactionResult> {
+		if (this._compactionAbortController) throw new Error("Compaction is already in progress.");
+		this._compactionAbortController = new AbortController();
 		this._disconnectFromAgent();
 		await this.abort();
-		this._compactionAbortController = new AbortController();
 		this._emit({ type: "compaction_start", reason: "manual" });
 
 		try {
@@ -2131,6 +2135,7 @@ export class AgentSession {
 	 * @param skipAbortedCheck If false, include aborted messages (for pre-prompt check). Default: true
 	 */
 	private async _checkCompaction(assistantMessage: AssistantMessage, skipAbortedCheck = true): Promise<boolean> {
+		if (this._compactionAbortController) return false;
 		const settings = this.settingsManager.getCompactionSettings();
 		if (!settings.enabled) return false;
 
@@ -2813,8 +2818,12 @@ export class AgentSession {
 	}
 
 	async reload(options?: { beforeSessionStart?: () => void | Promise<void> }): Promise<void> {
-		const previousFlagValues = this._extensionRunner.getFlagValues();
-		await emitSessionShutdownEvent(this._extensionRunner, { type: "session_shutdown", reason: "reload" });
+		const previousRunner = this._extensionRunner;
+		const previousFlagValues = previousRunner.getFlagValues();
+		await emitSessionShutdownEvent(previousRunner, { type: "session_shutdown", reason: "reload" });
+		previousRunner.invalidate(
+			"This extension ctx is stale after session replacement or reload. Do not use a captured API after reload.",
+		);
 		await this.settingsManager.reload();
 		this.syncQueueModesFromSettings();
 		resetApiProviders();
@@ -3093,6 +3102,9 @@ export class AgentSession {
 		targetId: string,
 		options: { summarize?: boolean; customInstructions?: string; replaceInstructions?: boolean; label?: string } = {},
 	): Promise<{ editorText?: string; cancelled: boolean; aborted?: boolean; summaryEntry?: BranchSummaryEntry }> {
+		if (this.isStreaming) {
+			throw new Error("Wait for the current response to finish before navigating the session tree.");
+		}
 		const oldLeafId = this.sessionManager.getLeafId();
 
 		// No-op if already at target

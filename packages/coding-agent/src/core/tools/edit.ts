@@ -329,7 +329,13 @@ export function createEditToolDefinition(
 				throwIfAborted();
 
 				// Read the file.
-				const buffer = await ops.readFile(absolutePath);
+				let buffer: Buffer;
+				try {
+					buffer = await ops.readFile(absolutePath);
+				} catch (error: unknown) {
+					const errorMessage = error instanceof Error && "code" in error ? `Error code: ${error.code}` : String(error);
+					throw new Error(`Could not edit file: ${path}. ${errorMessage}.`);
+				}
 				const rawContent = buffer.toString("utf-8");
 				throwIfAborted();
 
@@ -341,7 +347,12 @@ export function createEditToolDefinition(
 				throwIfAborted();
 
 				const finalContent = bom + restoreLineEndings(newContent, originalEnding);
-				await ops.writeFile(absolutePath, finalContent);
+				try {
+					await ops.writeFile(absolutePath, finalContent);
+				} catch (error: unknown) {
+					const errorMessage = error instanceof Error && "code" in error ? `Error code: ${error.code}` : String(error);
+					throw new Error(`Could not edit file: ${path}. ${errorMessage}.`);
+				}
 				throwIfAborted();
 				const diagnostics = await runLspWritethroughAfterMutation(
 					lspWritethrough,

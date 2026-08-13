@@ -283,7 +283,7 @@ export class ModelRuntime implements Models {
 	private async runAvailabilityRefresh(seq: number, errorSeq: number, signal: AbortSignal): Promise<void> {
 		const providers = this.models.getProviders();
 		const [available, checks, credentials] = await Promise.all([
-			this.models.getAvailable(),
+			this.models.getAvailable(undefined, { signal }),
 			Promise.all(
 				providers.map(
 					async (provider): Promise<[string, AuthCheck | undefined]> => [
@@ -334,7 +334,7 @@ export class ModelRuntime implements Models {
 		const errorSeq = ++this.availabilityErrorSeq;
 		try {
 			const [available, auth, credential] = await Promise.all([
-				this.models.getAvailable(providerId),
+				this.models.getAvailable(providerId, { signal }),
 				this.models.checkAuth(providerId),
 				this.credentials.read(providerId),
 			]);

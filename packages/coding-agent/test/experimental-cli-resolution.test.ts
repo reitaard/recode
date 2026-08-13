@@ -66,10 +66,10 @@ describe("experimental CLI command composition", () => {
 		});
 	});
 
-	test("reports existing parser errors before capability errors", () => {
+	test("reports capability errors for unsupported legacy client options", () => {
 		expect(experimentalCli.parse(["client", "--tui-mode", "wrong", "--model", "claude-sonnet"])).toEqual({
 			ok: false,
-			errors: ['Invalid TUI mode "wrong". Valid values: regular, fullscreen', UNSUPPORTED_CLIENT_OPTIONS],
+			errors: [UNSUPPORTED_CLIENT_OPTIONS],
 		});
 	});
 

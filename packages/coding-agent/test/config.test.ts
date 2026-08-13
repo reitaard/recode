@@ -458,6 +458,13 @@ describe("detectInstallMethod", () => {
 		const { packageDir } = createNpmPrefixInstall();
 		if (process.platform === "win32") {
 			denyWindowsWriteAccess(packageDir);
+			try {
+				writeFileSync(join(packageDir, ".acl-probe"), "test");
+				rmSync(join(packageDir, ".acl-probe"));
+				// Elevated Windows processes can bypass a deny ACE, so this environment cannot
+				// provide meaningful writability evidence for the integration assertion.
+				return;
+			} catch {}
 		} else {
 			chmodSync(packageDir, 0o500);
 		}

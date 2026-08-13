@@ -54,15 +54,24 @@ afterEach(() => {
 	resetOAuthProviders();
 });
 
+function createRegistry(providers: Record<string, unknown>, authStorage: AuthStorage): ModelRegistry {
+	const modelsJsonPath = join(tempDir, "models.json");
+	writeFileSync(modelsJsonPath, JSON.stringify({ providers }));
+	return ModelRegistry.create(authStorage, modelsJsonPath);
+}
+
+const radiusProvider = { radius: { name: "Radius", baseUrl: "https://radius.example.com", oauth: "radius" } };
+
 describe("radius oauth provider", () => {
-	it("is registered as a built-in OAuth provider", () => {
-		expect(getOAuthProvider(RADIUS_PROVIDER_ID)?.name).toBe("Radius");
+	it("requires an explicit gateway", () => {
+		expect(getOAuthProvider(RADIUS_PROVIDER_ID)).toBeUndefined();
 	});
 });
 
 describe("radius models via ModelRegistry", () => {
-	it("injects catalog models from the stored credential", () => {
-		const registry = ModelRegistry.inMemory(
+	it("injects catalog models from an explicitly configured gateway", () => {
+		const registry = createRegistry(
+			radiusProvider,
 			AuthStorage.inMemory({ radius: radiusOAuthCredential("https://radius.example.com/v1") }),
 		);
 
@@ -85,11 +94,12 @@ describe("radius models via ModelRegistry", () => {
 		const registry = ModelRegistry.inMemory(AuthStorage.inMemory());
 
 		expect(registry.getAll().filter((model) => model.provider === RADIUS_PROVIDER_ID)).toHaveLength(0);
-		expect(getOAuthProvider(RADIUS_PROVIDER_ID)).toBeDefined();
+		expect(getOAuthProvider(RADIUS_PROVIDER_ID)).toBeUndefined();
 	});
 
 	it("keeps radius models across registry refresh", () => {
-		const registry = ModelRegistry.inMemory(
+		const registry = createRegistry(
+			radiusProvider,
 			AuthStorage.inMemory({ radius: radiusOAuthCredential("https://radius.example.com/v1") }),
 		);
 
@@ -100,12 +110,6 @@ describe("radius models via ModelRegistry", () => {
 });
 
 describe("custom radius gateways via models.json", () => {
-	function createRegistry(providers: Record<string, unknown>, authStorage: AuthStorage): ModelRegistry {
-		const modelsJsonPath = join(tempDir, "models.json");
-		writeFileSync(modelsJsonPath, JSON.stringify({ providers }));
-		return ModelRegistry.create(authStorage, modelsJsonPath);
-	}
-
 	it("registers an independent radius-style provider", () => {
 		const registry = createRegistry(
 			{ "radius-dev": { name: "Radius (dev)", baseUrl: "http://localhost:8788", oauth: "radius" } },
@@ -114,7 +118,7 @@ describe("custom radius gateways via models.json", () => {
 
 		expect(registry.getError()).toBeUndefined();
 		expect(getOAuthProvider("radius-dev")?.name).toBe("Radius (dev)");
-		expect(getOAuthProvider(RADIUS_PROVIDER_ID)?.name).toBe("Radius");
+		expect(getOAuthProvider(RADIUS_PROVIDER_ID)).toBeUndefined();
 
 		// Dev gateway models are injected under the custom provider id only.
 		const devAuto = registry.find("radius-dev", "auto");

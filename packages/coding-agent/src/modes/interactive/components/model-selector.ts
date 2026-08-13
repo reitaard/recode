@@ -143,20 +143,26 @@ export class ModelSelectorComponent extends Container implements Focusable {
 	private async loadModels(): Promise<void> {
 		let models: ModelItem[];
 
-		// Refresh to pick up any changes to models.json
-		await this.modelRegistry.refresh();
+		// Refresh to pick up any changes to models.json and remote catalogs.
+		const refreshResult = await this.modelRegistry.refresh();
 
-		// Check for models.json errors
+		// Check for models.json errors separately from catalog refresh errors.
 		const loadError = this.modelRegistry.getError();
 		if (loadError) {
 			this.errorMessage = loadError;
+		} else if (refreshResult && refreshResult.errors.size > 0) {
+			const providers = [...refreshResult.errors.keys()];
+			this.refreshStatusMessage = `Could not refresh ${providers.length} model catalog${providers.length === 1 ? "" : "s"} (${providers.join(", ")}); showing cached models.`;
 		} else if (!("find" in this.modelRegistry)) {
 			this.refreshStatusMessage = "Model catalogs refreshed.";
 		}
 
-		// Load available models (built-in models still work even if models.json failed)
+		// Load the refreshed snapshot when available; avoid triggering a second refresh.
 		try {
-			const availableModels = await this.modelRegistry.getAvailable();
+			const availableModels =
+				"getAvailableSnapshot" in this.modelRegistry
+					? this.modelRegistry.getAvailableSnapshot()
+					: await this.modelRegistry.getAvailable();
 			models = availableModels.map((model: Model<any>) => ({
 				provider: model.provider,
 				id: model.id,

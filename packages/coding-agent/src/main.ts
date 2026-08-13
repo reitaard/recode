@@ -9,6 +9,14 @@ import { createInterface } from "node:readline";
 import { type ImageContent, modelsAreEqual } from "@reitaard/recode-ai";
 import chalk from "chalk";
 import { type Args, type Mode, parseArgs, printHelp } from "./cli/args.ts";
+import {
+	AuthCommandError,
+	getAuthCommandUsage,
+	isAuthCommandHelp,
+	parseAuthCommand,
+	printAuthCommandHelp,
+	validateAuthCommandArgs,
+} from "./cli/auth-command.ts";
 import { processFileArguments } from "./cli/file-processor.ts";
 import { buildInitialMessage } from "./cli/initial-message.ts";
 import { listModels } from "./cli/list-models.ts";
@@ -529,6 +537,28 @@ export async function main(args: string[], options?: MainOptions) {
 
 	if (await handleConfigCommand(args, { extensionFactories: options?.extensionFactories })) {
 		return;
+	}
+
+	if (isAuthCommandHelp(args)) {
+		printAuthCommandHelp();
+		return;
+	}
+	if (args[0] === "auth") {
+		try {
+			const command = parseAuthCommand(args);
+			if (!command) throw new AuthCommandError("Unable to parse auth command");
+			validateAuthCommandArgs(parseArgs(command.args), command.kind);
+		} catch (error) {
+			if (!(error instanceof AuthCommandError)) throw error;
+			let usage = "";
+			try {
+				const command = parseAuthCommand(args.slice(0, 2));
+				if (command) usage = ` Use \"pi --help\" or \"${getAuthCommandUsage(command.kind)}\".`;
+			} catch {}
+			console.error(`Error: ${error.message}.${usage || ' Use "pi auth --help".'}`);
+			process.exitCode = 1;
+			return;
+		}
 	}
 
 	const parsed = parseArgs(args);

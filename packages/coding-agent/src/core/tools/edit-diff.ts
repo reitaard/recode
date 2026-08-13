@@ -531,8 +531,14 @@ export async function computeEditsDiff(
 			return { error: `Could not edit file: ${path}. ${errorMessage}.` };
 		}
 
-		// Read the file
-		const rawContent = await readFile(absolutePath, "utf-8");
+		// Read the file; access checks alone are not reliable on every platform.
+		let rawContent: string;
+		try {
+			rawContent = await readFile(absolutePath, "utf-8");
+		} catch (error: unknown) {
+			const errorMessage = error instanceof Error && "code" in error ? `Error code: ${error.code}` : String(error);
+			return { error: `Could not edit file: ${path}. ${errorMessage}.` };
+		}
 
 		// Strip BOM before matching (LLM won't include invisible BOM in oldText)
 		const { text: content } = stripBom(rawContent);

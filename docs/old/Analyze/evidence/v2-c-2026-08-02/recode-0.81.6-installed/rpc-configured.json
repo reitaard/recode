@@ -1,0 +1,185 @@
+{
+  "mode": "rpc",
+  "configuration": "configured",
+  "cacheState": "uncontrolled",
+  "medianMs": 3889.8354000000036,
+  "minMs": 3849.371500000001,
+  "maxMs": 4196.381099999999,
+  "runs": [
+    {
+      "elapsedMs": 3889.8354000000036,
+      "processElapsedMs": 3924.2829000000056,
+      "milestones": [
+        {
+          "schemaVersion": 1,
+          "name": "session-selected",
+          "elapsedMs": 467.041,
+          "details": {
+            "restored": false
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "session-ready",
+          "elapsedMs": 3835.597,
+          "details": {
+            "restored": false,
+            "sourceOnlyPackages": 0,
+            "verifiedPackages": 3,
+            "rejectedPackages": 0,
+            "readyPackages": 3,
+            "pendingPackages": 0
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "model-ready",
+          "elapsedMs": 3835.664,
+          "details": {
+            "modelSelected": true
+          }
+        }
+      ]
+    },
+    {
+      "elapsedMs": 3869.9613000000027,
+      "processElapsedMs": 3903.079300000005,
+      "milestones": [
+        {
+          "schemaVersion": 1,
+          "name": "session-selected",
+          "elapsedMs": 453.939,
+          "details": {
+            "restored": false
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "session-ready",
+          "elapsedMs": 3819.15,
+          "details": {
+            "restored": false,
+            "sourceOnlyPackages": 0,
+            "verifiedPackages": 3,
+            "rejectedPackages": 0,
+            "readyPackages": 3,
+            "pendingPackages": 0
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "model-ready",
+          "elapsedMs": 3819.222,
+          "details": {
+            "modelSelected": true
+          }
+        }
+      ]
+    },
+    {
+      "elapsedMs": 3849.371500000001,
+      "processElapsedMs": 3880.542800000003,
+      "milestones": [
+        {
+          "schemaVersion": 1,
+          "name": "session-selected",
+          "elapsedMs": 455.649,
+          "details": {
+            "restored": false
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "session-ready",
+          "elapsedMs": 3795.223,
+          "details": {
+            "restored": false,
+            "sourceOnlyPackages": 0,
+            "verifiedPackages": 3,
+            "rejectedPackages": 0,
+            "readyPackages": 3,
+            "pendingPackages": 0
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "model-ready",
+          "elapsedMs": 3795.286,
+          "details": {
+            "modelSelected": true
+          }
+        }
+      ]
+    },
+    {
+      "elapsedMs": 4162.881899999993,
+      "processElapsedMs": 4197.573499999999,
+      "milestones": [
+        {
+          "schemaVersion": 1,
+          "name": "session-selected",
+          "elapsedMs": 449.316,
+          "details": {
+            "restored": false
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "session-ready",
+          "elapsedMs": 4111.727,
+          "details": {
+            "restored": false,
+            "sourceOnlyPackages": 0,
+            "verifiedPackages": 3,
+            "rejectedPackages": 0,
+            "readyPackages": 3,
+            "pendingPackages": 0
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "model-ready",
+          "elapsedMs": 4111.787,
+          "details": {
+            "modelSelected": true
+          }
+        }
+      ]
+    },
+    {
+      "elapsedMs": 4196.381099999999,
+      "processElapsedMs": 4232.058900000004,
+      "milestones": [
+        {
+          "schemaVersion": 1,
+          "name": "session-selected",
+          "elapsedMs": 446.495,
+          "details": {
+            "restored": false
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "session-ready",
+          "elapsedMs": 4145.105,
+          "details": {
+            "restored": false,
+            "sourceOnlyPackages": 0,
+            "verifiedPackages": 3,
+            "rejectedPackages": 0,
+            "readyPackages": 3,
+            "pendingPackages": 0
+          }
+        },
+        {
+          "schemaVersion": 1,
+          "name": "model-ready",
+          "elapsedMs": 4145.163,
+          "details": {
+            "modelSelected": true
+          }
+        }
+      ]
+    }
+  ]
+}

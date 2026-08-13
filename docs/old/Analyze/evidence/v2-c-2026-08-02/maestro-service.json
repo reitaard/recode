@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "commit": "b6050d6652c417ca1a829c273537f9e30a18db0b",
+    "workingTree": "clean"
+  },
+  "runtime": {
+    "node": "26.5.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "release": "10.0.26200"
+  },
+  "endpoint": {
+    "serviceColdStartMs": 1802.3138,
+    "warmControlMedianMs": 1.187599999999975,
+    "warmControlP90Ms": 1.5031000000001313,
+    "oneSessionSpawnMs": 3845.6265,
+    "warmAttachMs": 1.6975000000002183
+  },
+  "resources": {
+    "oneSession": {
+      "processes": 3,
+      "rssBytes": 539320320
+    },
+    "maximumAdmitted": {
+      "processes": 10,
+      "rssBytes": 3546009600
+    }
+  },
+  "capacity": {
+    "requestedSessions": 10,
+    "admittedSessions": 8,
+    "failure": {
+      "requested": 9,
+      "error": "Maestro live instance limit reached"
+    }
+  },
+  "health": {
+    "state": "ready",
+    "supervisionMode": "manual"
+  },
+  "notes": [
+    "No provider/model request was made.",
+    "This is an uncontrolled-cache run, not a destructive cold-cache measurement."
+  ]
+}

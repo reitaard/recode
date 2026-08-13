@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "5bf0880c509dca4db934a73873a521d465b828e8",
+  "cacheState": "uncontrolled",
+  "notes": [
+    "No provider/model request was made."
+  ],
+  "configured": [
+    {
+      "index": 1,
+      "readyMs": 3815.3446999999996,
+      "rssBytes": 552636416,
+      "privateWorkingSetBytes": 501788672,
+      "privateCommitBytes": 947150848
+    },
+    {
+      "index": 2,
+      "readyMs": 5204.854500000001,
+      "rssBytes": 489750528,
+      "privateWorkingSetBytes": 438898688,
+      "privateCommitBytes": 944893952
+    },
+    {
+      "index": 3,
+      "readyMs": 3796.7595,
+      "rssBytes": 567308288,
+      "privateWorkingSetBytes": 516460544,
+      "privateCommitBytes": 1004105728
+    }
+  ],
+  "isolated": [
+    {
+      "index": 1,
+      "readyMs": 725.6306000000004,
+      "rssBytes": 178221056,
+      "privateWorkingSetBytes": 128614400,
+      "privateCommitBytes": 460476416
+    },
+    {
+      "index": 2,
+      "readyMs": 715.3191000000006,
+      "rssBytes": 179322880,
+      "privateWorkingSetBytes": 129712128,
+      "privateCommitBytes": 460517376
+    },
+    {
+      "index": 3,
+      "readyMs": 736.497800000001,
+      "rssBytes": 178728960,
+      "privateWorkingSetBytes": 129118208,
+      "privateCommitBytes": 460505088
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "capturedAt": "2026-08-02",
+  "source": {
+    "recodeCommit": "57a5fadd32896a23c44c7141a837a4888a35c200",
+    "recodeWorkingTree": "dirty-attribution-instrumentation",
+    "browserBaseCommit": "6105993645f3578bf989393704bcc97c0e06e156",
+    "browserCandidateCommit": "c000d5d4016b9589759e2e0f630cfb6e0f6845b0",
+    "browserCandidateRemoteBranch": "origin/v2-d-lazy-blocker",
+    "browserCandidateEntrySha256": "22601954ded3c3b1259058d0a9869367b9a7e25c5043943d09a1835b366e3714",
+    "browserCandidateSourceSha256": "6a0b5fdc1c30544ca5d77fa39be014dab1ef13c51625ca4f0570c07971f7a4bb"
+  },
+  "environment": {
+    "platform": "Windows x64",
+    "node": "26.5.0",
+    "cacheState": "warm-uncontrolled-os-cache",
+    "offlineStartup": true,
+    "providerGenerationRequests": 0,
+    "destructiveCacheOperations": 0
+  },
+  "attribution": {
+    "configuredMinusIsolatedAtSettingsReady": {
+      "rssBytes": 2185899,
+      "heapUsedBytes": -1835453
+    },
+    "configuredMinusIsolatedAtPackageRuntimeReady": {
+      "rssBytes": 4291242,
+      "heapUsedBytes": -970709
+    },
+    "configuredMinusIsolatedAtExtensionsReady": {
+      "rssBytes": 142442496,
+      "heapUsedBytes": 85537413,
+      "externalBytes": 17677387,
+      "arrayBuffersBytes": 9792873
+    },
+    "conclusion": "Package metadata resolution is negligible relative to extension module activation. Extension activation is the first justified optimization boundary; sharing mutable extension runtimes remains rejected."
+  },
+  "lazyBlockerCandidate": {
+    "change": "Create Ghostery's prebuilt blocker only when blocking is enabled for a browser page instead of during extension module import.",
+    "configuredRpcElapsedMs": {
+      "beforeAverage": 3328,
+      "afterAverage": 3460,
+      "delta": 132,
+      "deltaPercent": 4.0
+    },
+    "extensionsReadyMemory": {
+      "beforeRssBytes": 304444757,
+      "afterRssBytes": 281408853,
+      "deltaRssBytes": -23035904,
+      "beforeHeapUsedBytes": 135499304,
+      "afterHeapUsedBytes": 130083541,
+      "deltaHeapUsedBytes": -5415763,
+      "beforeExternalBytes": 24455780,
+      "afterExternalBytes": 13680692,
+      "deltaExternalBytes": -10775088
+    },
+    "privateWorkingSetBytes": {
+      "eagerSamples": [256126976, 407465984, 260120576],
+      "lazySamples": [228315136, 229179392, 238854144],
+      "eagerAverage": 307904512,
+      "lazyAverage": 232116224,
+      "averageDelta": -75788288,
+      "eagerMedian": 260120576,
+      "lazyMedian": 229179392,
+      "medianDelta": -30941184
+    },
+    "interpretation": "The eager asynchronous blocker fetch produced high variance. Lazy initialization removed startup network/filter allocation while preserving blocker creation on the first block-enabled page. Startup remained within the 10% guard."
+  }
+}

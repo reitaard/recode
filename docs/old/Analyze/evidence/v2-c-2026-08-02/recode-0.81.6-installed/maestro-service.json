@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "commit": "c86c809a19fb94c1cb23da403d51b4eed8cfd27a",
+    "workingTree": "installed-artifact"
+  },
+  "runtime": {
+    "node": "26.5.0",
+    "platform": "win32",
+    "architecture": "x64",
+    "release": "10.0.26200"
+  },
+  "endpoint": {
+    "serviceColdStartMs": 930.8175,
+    "warmControlMedianMs": 1.0424000000000433,
+    "warmControlP90Ms": 1.7744000000000142,
+    "warmCliControlMedianMs": 536.9464,
+    "warmCliControlP90Ms": 559.8977999999998,
+    "oneSessionSpawnMs": 4335.6276,
+    "warmAttachMs": 2.4494999999997162
+  },
+  "resources": {
+    "oneSession": {
+      "processes": 3,
+      "rssBytes": 555147264,
+      "breakdown": [
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 397025280
+        },
+        {
+          "name": "recode-maestro.exe",
+          "depth": 0,
+          "rssBytes": 150077440
+        },
+        {
+          "name": "conhost.exe",
+          "depth": 1,
+          "rssBytes": 8044544
+        }
+      ]
+    },
+    "maximumAdmitted": {
+      "processes": 13,
+      "rssBytes": 5075718144,
+      "breakdown": [
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 506519552
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 498122752
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 496226304
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 494141440
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 492048384
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 490868736
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 490770432
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 490688512
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 490295296
+        },
+        {
+          "name": "recode.exe",
+          "depth": 1,
+          "rssBytes": 404512768
+        },
+        {
+          "name": "recode-maestro.exe",
+          "depth": 0,
+          "rssBytes": 150401024
+        },
+        {
+          "name": "urban-vpn-app.exe",
+          "depth": 2,
+          "rssBytes": 63074304
+        },
+        {
+          "name": "conhost.exe",
+          "depth": 1,
+          "rssBytes": 8048640
+        }
+      ]
+    }
+  },
+  "capacity": {
+    "requestedSessions": 10,
+    "admittedSessions": 10
+  },
+  "health": {
+    "state": "ready",
+    "supervisionMode": "manual"
+  },
+  "notes": [
+    "No provider/model request was made.",
+    "This is an uncontrolled-cache run, not a destructive cold-cache measurement.",
+    "Service and session children use the installed compiled Recode 0.81.6 artifacts."
+  ]
+}

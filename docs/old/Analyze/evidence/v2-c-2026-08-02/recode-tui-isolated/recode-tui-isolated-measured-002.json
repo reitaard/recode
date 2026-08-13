@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "commit": "79b9855c6e9f6203af512c0d41c554b0f28d61d7",
+    "workingTree": "clean",
+    "packageName": "@reitaard/repi-coding-agent",
+    "packageVersion": "0.81.5"
+  },
+  "runtime": {
+    "name": "node",
+    "version": "26.5.0"
+  },
+  "platform": {
+    "name": "win32",
+    "architecture": "x64",
+    "release": "10.0.26200"
+  },
+  "benchmark": {
+    "label": "recode-tui-isolated",
+    "mode": "tui",
+    "lifecycleEndpoint": "tui-input-echo",
+    "agentState": "isolated",
+    "cacheState": "uncontrolled",
+    "offline": true,
+    "cpuProfile": false
+  },
+  "run": {
+    "kind": "measured",
+    "index": 2,
+    "sequence": 3,
+    "startedAt": "2026-08-02T06:26:02.534Z",
+    "elapsedMs": 1509.398,
+    "processElapsedMs": 1844.6486,
+    "profileFile": null
+  },
+  "milestones": [
+    {
+      "schemaVersion": 1,
+      "name": "session-selected",
+      "elapsedMs": 1292.523,
+      "details": {
+        "restored": false
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "name": "session-ready",
+      "elapsedMs": 1439.342,
+      "details": {
+        "restored": false,
+        "sourceOnlyPackages": 0,
+        "verifiedPackages": 0,
+        "rejectedPackages": 0,
+        "readyPackages": 0,
+        "pendingPackages": 0
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "name": "model-ready",
+      "elapsedMs": 1439.417,
+      "details": {
+        "modelSelected": true
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "name": "interactive-mode-created",
+      "elapsedMs": 1443.491
+    },
+    {
+      "schemaVersion": 1,
+      "name": "tui-frame-ready",
+      "elapsedMs": 1480.399
+    },
+    {
+      "schemaVersion": 1,
+      "name": "tui-input-ready",
+      "elapsedMs": 1480.44
+    },
+    {
+      "schemaVersion": 1,
+      "name": "tui-input-echo",
+      "elapsedMs": 1509.398
+    },
+    {
+      "schemaVersion": 1,
+      "name": "integration-ready",
+      "elapsedMs": 1648.733,
+      "details": {
+        "readyPackages": 0,
+        "rejectedPackages": 0,
+        "pendingPackages": 0
+      }
+    }
+  ],
+  "loadedPackages": [],
+  "packageRuntime": {
+    "sourceOnlyPackages": 0,
+    "verifiedPackages": 0,
+    "rejectedPackages": 0,
+    "readyPackages": 0,
+    "pendingPackages": 0
+  },
+  "timingGroups": [
+    {
+      "namespace": "main",
+      "timings": [
+        {
+          "label": "parseArgs",
+          "ms": 2
+        },
+        {
+          "label": "runMigrations",
+          "ms": 2
+        },
+        {
+          "label": "createSessionManager",
+          "ms": 1
+        },
+        {
+          "label": "createRuntime",
+          "ms": 4
+        },
+        {
+          "label": "createAgentSessionRuntime",
+          "ms": 143
+        },
+        {
+          "label": "readPipedStdin",
+          "ms": 0
+        },
+        {
+          "label": "prepareInitialMessage",
+          "ms": 1
+        },
+        {
+          "label": "initTheme",
+          "ms": 1
+        },
+        {
+          "label": "resolveModelScope",
+          "ms": 0
+        },
+        {
+          "label": "createAgentSession",
+          "ms": 0
+        },
+        {
+          "label": "interactiveMode.init",
+          "ms": 209
+        },
+        {
+          "label": "TOTAL",
+          "ms": 363
+        }
+      ]
+    },
+    {
+      "namespace": "extensions",
+      "timings": [
+        {
+          "label": "<inline:recode-open-provider> factory",
+          "ms": 3
+        },
+        {
+          "label": "<inline:recode-openai-oauth> factory",
+          "ms": 16
+        },
+        {
+          "label": "<inline:recode-memory> factory",
+          "ms": 2
+        },
+        {
+          "label": "<inline:recode-workers> factory",
+          "ms": 0
+        },
+        {
+          "label": "TOTAL",
+          "ms": 21
+        }
+      ]
+    }
+  ]
+}

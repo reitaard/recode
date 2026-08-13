@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-07-29T19:47:56.714Z",
+  "environment": {
+    "platform": "win32",
+    "release": "10.0.26200",
+    "arch": "x64",
+    "cpu": "AMD Ryzen 7 6800HS with Radeon Graphics",
+    "node": "v26.5.0",
+    "totalMemoryBytes": 16354050048
+  },
+  "sources": {
+    "recodeBaseCommit": "98bcccfe6477af8795ece5835dba75fbebcc7f50",
+    "recodeArtifactSha256": "0abaed2ae364753e091a832cf981668fb6cd9fc67b37893784374bc151ddcee0",
+    "jcodeTag": "v0.54.4",
+    "jcodeCommit": "fb7a5ea501e56084fa665b91b52ece9ab7761c3c",
+    "jcodeWindowsX64Sha256": "2572765b72f776ef4bfdd41efc055e0078910d60aae600aa35c6b1fcb5f54523",
+    "upstreamPiCommit": "c820aa26fe0907e053e881a957722693fc094c9c",
+    "hermesProvenanceCommit": "5b22bd955682a8fc7b07769784c5129e23f53eaf"
+  },
+  "observations": {
+    "jcodeWarmDebugListMs": [95.0, 39.3, 38.7],
+    "jcodeColdServerStart": {
+      "valid": false,
+      "deadlineMs": 120000,
+      "reason": "the invoking command held through the deadline; later daemon controls worked, so this is not a valid ready-state latency"
+    },
+    "recodeColdReadOnlySpawn": {
+      "valid": false,
+      "clientDeadlineMs": 5000,
+      "childReachedOnline": true,
+      "observedRecordElapsedMs": 21523,
+      "reason": "the client timed out while the server continued and created an online child"
+    }
+  },
+  "limitations": [
+    "No ratio is valid across daemon-control, first-frame and session-ready endpoints.",
+    "jcode native Rust tests were not run because no Rust toolchain is installed.",
+    "The ten-session Recode probe was stopped after the first spawn exposed the deadline defect.",
+    "The official jcode README performance tables identify development build be386f2 rather than release v0.54.4."
+  ]
+}

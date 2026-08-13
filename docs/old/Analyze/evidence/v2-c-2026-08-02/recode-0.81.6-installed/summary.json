@@ -1,0 +1,1053 @@
+{
+  "schemaVersion": 1,
+  "product": "Recode",
+  "version": "0.81.6",
+  "sourceCommit": "6ef78822166cd15c3400bff30cb96c469ce663d3",
+  "executable": "C:\\Users\\re_Lax\\AppData\\Local\\Recode\\0.81.6\\recode.exe",
+  "notes": [
+    "No provider/model request was made.",
+    "Cache state was uncontrolled; these are not destructive cold-cache claims."
+  ],
+  "cases": [
+    {
+      "mode": "tui",
+      "configuration": "configured",
+      "cacheState": "uncontrolled",
+      "medianMs": 4035.774,
+      "minMs": 3897.544,
+      "maxMs": 4263.99,
+      "runs": [
+        {
+          "elapsedMs": 3972.007,
+          "processElapsedMs": 5947.707699999999,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 455.404,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 3827.742,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 3827.835,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 3837.779
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 3863.008
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 3863.042
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 3972.007
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 4111.012,
+              "details": {
+                "readyPackages": 3,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 4223.444,
+          "processElapsedMs": 5753.610699999997,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 467.025,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 4096.556,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 4096.613,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 4102.84
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 4125.714
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 4125.743
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 4223.444
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 4358.099,
+              "details": {
+                "readyPackages": 3,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 4035.774,
+          "processElapsedMs": 5662.993600000002,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 461.093,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 3909.625,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 3909.687,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 3916.133
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 3940.476
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 3940.507
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 4035.774
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 4174.169,
+              "details": {
+                "readyPackages": 3,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 3897.544,
+          "processElapsedMs": 5934.303200000002,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 459.787,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 3775.026,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 3775.134,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 3781.745
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 3804.227
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 3804.262
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 3897.544
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 4033.414,
+              "details": {
+                "readyPackages": 3,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 4263.99,
+          "processElapsedMs": 6169.7847,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 451.974,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 4123.283,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 4123.351,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 4129.848
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 4156.592
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 4156.62
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 4263.99
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 4410.627,
+              "details": {
+                "readyPackages": 3,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "tui",
+      "configuration": "isolated",
+      "cacheState": "uncontrolled",
+      "medianMs": 778.33,
+      "minMs": 753.646,
+      "maxMs": 1031.976,
+      "runs": [
+        {
+          "elapsedMs": 1031.976,
+          "processElapsedMs": 1568.5260000000053,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 684.382,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 965.35,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 965.434,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 972.513
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 1014.799
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 1014.83
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 1031.976
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 1294.206,
+              "details": {
+                "readyPackages": 0,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 778.33,
+          "processElapsedMs": 1291.591499999995,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 476.225,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 720.771,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 720.829,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 726.861
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 765.163
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 765.186
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 778.33
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 1035.412,
+              "details": {
+                "readyPackages": 0,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 753.646,
+          "processElapsedMs": 1275.9990999999936,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 451.101,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 694.33,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 694.393,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 700.635
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 737.318
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 737.35
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 753.646
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 999.278,
+              "details": {
+                "readyPackages": 0,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 768.103,
+          "processElapsedMs": 1278.135500000004,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 451.647,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 707.564,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 707.632,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 714.279
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 754.919
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 754.945
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 768.103
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 1006.889,
+              "details": {
+                "readyPackages": 0,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 799.293,
+          "processElapsedMs": 1313.5328999999983,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 487.391,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 742.687,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 742.76,
+              "details": {
+                "modelSelected": true
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "interactive-mode-created",
+              "elapsedMs": 749.27
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-frame-ready",
+              "elapsedMs": 786.823
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-ready",
+              "elapsedMs": 786.851
+            },
+            {
+              "schemaVersion": 1,
+              "name": "tui-input-echo",
+              "elapsedMs": 799.293
+            },
+            {
+              "schemaVersion": 1,
+              "name": "integration-ready",
+              "elapsedMs": 1042.061,
+              "details": {
+                "readyPackages": 0,
+                "rejectedPackages": 0,
+                "pendingPackages": 0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "rpc",
+      "configuration": "configured",
+      "cacheState": "uncontrolled",
+      "medianMs": 3889.8354000000036,
+      "minMs": 3849.371500000001,
+      "maxMs": 4196.381099999999,
+      "runs": [
+        {
+          "elapsedMs": 3889.8354000000036,
+          "processElapsedMs": 3924.2829000000056,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 467.041,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 3835.597,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 3835.664,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 3869.9613000000027,
+          "processElapsedMs": 3903.079300000005,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 453.939,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 3819.15,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 3819.222,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 3849.371500000001,
+          "processElapsedMs": 3880.542800000003,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 455.649,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 3795.223,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 3795.286,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 4162.881899999993,
+          "processElapsedMs": 4197.573499999999,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 449.316,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 4111.727,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 4111.787,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 4196.381099999999,
+          "processElapsedMs": 4232.058900000004,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 446.495,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 4145.105,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 3,
+                "rejectedPackages": 0,
+                "readyPackages": 3,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 4145.163,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "mode": "rpc",
+      "configuration": "isolated",
+      "cacheState": "uncontrolled",
+      "medianMs": 890.9511000000057,
+      "minMs": 761.9965999999986,
+      "maxMs": 1099.4032000000007,
+      "runs": [
+        {
+          "elapsedMs": 890.9511000000057,
+          "processElapsedMs": 939.502999999997,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 516.721,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 819.203,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 819.27,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 1099.4032000000007,
+          "processElapsedMs": 1144.8671000000031,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 740.279,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 1029.15,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 1029.218,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 1074.0569000000105,
+          "processElapsedMs": 1128.7223999999987,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 571.225,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 988.328,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 988.413,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 814.2160999999905,
+          "processElapsedMs": 853.4455999999918,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 505.684,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 749.183,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 749.25,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        },
+        {
+          "elapsedMs": 761.9965999999986,
+          "processElapsedMs": 820.216499999995,
+          "milestones": [
+            {
+              "schemaVersion": 1,
+              "name": "session-selected",
+              "elapsedMs": 461.228,
+              "details": {
+                "restored": false
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "session-ready",
+              "elapsedMs": 699.197,
+              "details": {
+                "restored": false,
+                "sourceOnlyPackages": 0,
+                "verifiedPackages": 0,
+                "rejectedPackages": 0,
+                "readyPackages": 0,
+                "pendingPackages": 0
+              }
+            },
+            {
+              "schemaVersion": 1,
+              "name": "model-ready",
+              "elapsedMs": 699.261,
+              "details": {
+                "modelSelected": true
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

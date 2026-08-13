@@ -1,0 +1,212 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "commit": "79b9855c6e9f6203af512c0d41c554b0f28d61d7",
+    "workingTree": "clean",
+    "packageName": "@reitaard/repi-coding-agent",
+    "packageVersion": "0.81.5"
+  },
+  "runtime": {
+    "name": "node",
+    "version": "26.5.0"
+  },
+  "platform": {
+    "name": "win32",
+    "architecture": "x64",
+    "release": "10.0.26200"
+  },
+  "benchmark": {
+    "label": "recode-tui-configured",
+    "mode": "tui",
+    "lifecycleEndpoint": "tui-input-echo",
+    "agentState": "configured-default",
+    "cacheState": "uncontrolled",
+    "offline": true,
+    "cpuProfile": false
+  },
+  "run": {
+    "kind": "measured",
+    "index": 1,
+    "sequence": 2,
+    "startedAt": "2026-08-02T06:25:25.043Z",
+    "elapsedMs": 3339.715,
+    "processElapsedMs": 4888.9607,
+    "profileFile": null
+  },
+  "milestones": [
+    {
+      "schemaVersion": 1,
+      "name": "session-selected",
+      "elapsedMs": 1283.891,
+      "details": {
+        "restored": false
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "name": "session-ready",
+      "elapsedMs": 3242.381,
+      "details": {
+        "restored": false,
+        "sourceOnlyPackages": 0,
+        "verifiedPackages": 3,
+        "rejectedPackages": 0,
+        "readyPackages": 3,
+        "pendingPackages": 0
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "name": "model-ready",
+      "elapsedMs": 3242.474,
+      "details": {
+        "modelSelected": true
+      }
+    },
+    {
+      "schemaVersion": 1,
+      "name": "interactive-mode-created",
+      "elapsedMs": 3247.123
+    },
+    {
+      "schemaVersion": 1,
+      "name": "tui-frame-ready",
+      "elapsedMs": 3269.599
+    },
+    {
+      "schemaVersion": 1,
+      "name": "tui-input-ready",
+      "elapsedMs": 3269.653
+    },
+    {
+      "schemaVersion": 1,
+      "name": "tui-input-echo",
+      "elapsedMs": 3339.715
+    },
+    {
+      "schemaVersion": 1,
+      "name": "integration-ready",
+      "elapsedMs": 3389.993,
+      "details": {
+        "readyPackages": 3,
+        "rejectedPackages": 0,
+        "pendingPackages": 0
+      }
+    }
+  ],
+  "loadedPackages": [
+    "pi-mcp-adapter",
+    "pi-web-access"
+  ],
+  "packageRuntime": {
+    "sourceOnlyPackages": 0,
+    "verifiedPackages": 3,
+    "rejectedPackages": 0,
+    "readyPackages": 3,
+    "pendingPackages": 0
+  },
+  "timingGroups": [
+    {
+      "namespace": "main",
+      "timings": [
+        {
+          "label": "parseArgs",
+          "ms": 4
+        },
+        {
+          "label": "runMigrations",
+          "ms": 1
+        },
+        {
+          "label": "createSessionManager",
+          "ms": 2
+        },
+        {
+          "label": "createRuntime",
+          "ms": 3
+        },
+        {
+          "label": "createAgentSessionRuntime",
+          "ms": 1955
+        },
+        {
+          "label": "readPipedStdin",
+          "ms": 1
+        },
+        {
+          "label": "prepareInitialMessage",
+          "ms": 0
+        },
+        {
+          "label": "initTheme",
+          "ms": 1
+        },
+        {
+          "label": "resolveModelScope",
+          "ms": 0
+        },
+        {
+          "label": "createAgentSession",
+          "ms": 0
+        },
+        {
+          "label": "interactiveMode.init",
+          "ms": 148
+        },
+        {
+          "label": "TOTAL",
+          "ms": 2115
+        }
+      ]
+    },
+    {
+      "namespace": "extensions",
+      "timings": [
+        {
+          "label": "<package:pi-web-access>/dist/recode-extension.js module import",
+          "ms": 425
+        },
+        {
+          "label": "<package:pi-web-access>/dist/recode-extension.js factory",
+          "ms": 2
+        },
+        {
+          "label": "<package:pi-mcp-adapter>/dist/recode-extension.js module import",
+          "ms": 207
+        },
+        {
+          "label": "<package:pi-mcp-adapter>/dist/recode-extension.js factory",
+          "ms": 2
+        },
+        {
+          "label": "<external>/openclaw-entry.js module import",
+          "ms": 681
+        },
+        {
+          "label": "<external>/openclaw-entry.js factory",
+          "ms": 2
+        },
+        {
+          "label": "<inline:recode-open-provider> factory",
+          "ms": 504
+        },
+        {
+          "label": "<inline:recode-openai-oauth> factory",
+          "ms": 5
+        },
+        {
+          "label": "<inline:recode-memory> factory",
+          "ms": 2
+        },
+        {
+          "label": "<inline:recode-workers> factory",
+          "ms": 1
+        },
+        {
+          "label": "TOTAL",
+          "ms": 1831
+        }
+      ]
+    }
+  ]
+}

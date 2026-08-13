@@ -110,24 +110,28 @@ Each slice uses its own prefix ledger/dry run, preserves staged owner documentat
 
 ### Phase 4 — minimal repository bootstrap (2 slices)
 
-11. **Root workspace/build identity**
-   - transfer only required root manifests/configuration and deterministic build/check helpers;
-   - rewrite root name, workspace graph, TypeScript aliases, Node floor, package names, custom bootstrap version, and internal ranges together;
-   - exclude inherited root prose and governance files already replaced here;
-   - regenerate the lockfile and coding-agent shrinkwrap only through approved deterministic commands, never by copying dependency/build directories.
+11. **Root workspace/build identity — complete; shrinkwrap pending successful build**
+   - established `recode-workspace@0.1.0` with exactly seven workspaces and deterministic dependency-order build orchestration;
+   - added standalone TypeScript aliases, Node `>=22.19.0`, formatting policy, npm safety defaults, license, and repository exclusions;
+   - added a read-only identity check enforcing seven `@reitaard/recode-*` packages at `0.1.0`, internal `^0.1.0` ranges, and private/throwing publication gates;
+   - excluded inherited root prose and governance files already replaced here;
+   - approved `npm install --ignore-scripts` generated the standalone lockfile; coding-agent shrinkwrap regeneration remains pending a successful package build and must be generated rather than copied.
 
-12. **Safe local automation**
-   - transfer deterministic test/build scripts in disabled/read-only form;
-   - keep CI, release, publish, update, binary, announcements, tags, pushes, and remote mutations inactive;
-   - define one canonical workspace/build graph and a separate approved publication graph.
+12. **Safe local automation — complete**
+   - retained only deterministic build/test/check entry points and the reviewed TypeScript-relative-import checker;
+   - added a migration-safety check that fails if mutation-oriented install/release/publish/binary scripts appear or inherited active repository/Radius endpoints return;
+   - CI, release, publish, update, binary, announcements, tags, pushes, install helpers, and remote mutations remain absent/inactive;
+   - canonical workspace graph is exactly the seven-package fixed train; publication remains disabled in every package.
 
-At the end of Phase 4, the repository should be structurally capable of a first dependency install/build, subject to explicit approval for installation.
+Phase 4 is complete. The first lifecycle-script-disabled install succeeded; the first build now provides Phase 5 defect evidence rather than a structural bootstrap blocker.
 
 ### Phase 5 — repair and deterministic certification (2 slices)
 
-13. **Known-defect repair**
+13. **Known-defect repair — active**
    - keep the excluded `AgentHarness.create` adapter out unless deliberately repaired/adopted;
    - repair AI nullable-array generated-validator compatibility;
+   - align the direct Smithy type dependency with the AWS client's resolved type family and repair the Codex fetch-body typing mismatch found by the first build;
+   - approve and apply an `undici` security update from `8.5.0` before certification; the production audit currently reports one high-severity direct finding;
    - repair or explicitly limit orchestrator completion restart recovery;
    - regenerate Agent telemetry schema and add drift checks.
 
@@ -164,10 +168,12 @@ Remote repository creation, push, npm publication, tags, releases, and dist-tag 
 
 ## Current remaining milestones
 
-From checkpoint `6aa52a3`, Slices 1–10 are complete. Remaining work:
+From checkpoint `cb56e41`, package transfer and root bootstrap are complete through Slice 12. The approved first install added 306 packages with lifecycle scripts disabled and generated the standalone lockfile. Initial build evidence:
 
-- Slices 11–12 establish minimal root infrastructure and safe local automation;
-- Slices 13–17 repair, certify, package, and complete public-readiness handoff;
+- TUI and telemetry compile after aligning the workspace target/import-rewrite configuration with current source syntax;
+- AI compilation is blocked by an AWS/Smithy direct type-version mismatch and a fetch-body typing mismatch;
+- production audit reports one high-severity direct `undici@8.5.0` finding; no automated fix or version change was applied;
+- later package builds, shrinkwrap generation, tests, and Slices 13–17 remain pending.
 - Slices 11–12 transfer minimal root infrastructure;
 - Slices 13–17 repair, certify, package, and complete public-readiness handoff.
 

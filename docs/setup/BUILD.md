@@ -2,13 +2,24 @@
 
 Requires Node `>=22.19.0`.
 
-> **Pre-transfer status:** this repository does not yet contain the root workspace or these scripts. The commands below describe the audited target procedure and must not run here until approved source transfer, identity rewrite, and command verification are complete.
+> **Bootstrap status:** the seven-package root workspace and lockfile are present. `npm install --ignore-scripts` completed with lifecycle scripts disabled. Identity, migration-safety, and relative-import checks pass; TUI and telemetry compile. The build currently stops in AI on an AWS/Smithy type-version mismatch and a fetch-body typing mismatch. Later packages and tests have not run.
 
-## Provisional dependencies and validation
+## Installed dependencies and validation
+
+The first install used:
 
 ```text
 npm install --ignore-scripts
-npm run check
+```
+
+It added 306 packages and generated `package-lock.json`. Production audit currently reports one high-severity direct finding in `undici@8.5.0`; no automated audit fix or dependency-version change has been applied.
+
+Current local checks:
+
+```text
+npm run check:identity
+npm run check:migration-safety
+npm run check:ts-imports
 ```
 
 Full build, only when needed or requested:
@@ -17,13 +28,13 @@ Full build, only when needed or requested:
 npm run build
 ```
 
-The root build may refresh generated model data; inspect diffs.
+The root build uses reviewed checked-in model data and does not refresh provider catalogs. Catalog regeneration is a separate maintenance command and must be reviewed explicitly.
 
 ## First standalone build after migration
 
 The first build in the standalone repository is a **from-scratch bootstrap**, not an incremental continuation of an inherited RePi build or release.
 
-Before that build:
+The first standalone build was attempted at checkpoint `64f02ac`; it is not yet complete. The bootstrap requirements remain:
 
 1. transfer only approved source inputs;
 2. remove or refuse inherited `dist/`, binaries, package tarballs, caches, generated declarations/maps, temporary release directories, and copied package output;
@@ -34,7 +45,15 @@ Before that build:
 
 The first standalone build must not inherit the migration source's `0.83.x`/`0.84.x` values. Use only the approved standalone bootstrap version `0.1.0` recorded through the [versioning and package-lineage plan](../migration/plans/VERSIONING.md), after availability is verified before publication. All seven workspace and intended public packages in the initial fixed train must agree on that value, including SQLite.
 
-After compilation, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
+After compilation succeeds, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
+
+Current repair order:
+
+1. approve and align the direct Smithy dependency with the AWS client's resolved type family;
+2. repair the Codex fetch-body typing without weakening runtime validation;
+3. approve an `undici` security update and regenerate the lockfile;
+4. resume the dependency-order build from AI through orchestrator;
+5. regenerate the coding-agent shrinkwrap only after the package graph builds.
 
 ## Local binary install
 

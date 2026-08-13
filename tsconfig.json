@@ -1,0 +1,45 @@
+{
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"paths": {
+			"@reitaard/recode-ai": ["./packages/ai/src/index.ts"],
+			"@reitaard/recode-ai/*": ["./packages/ai/src/*.ts", "./packages/ai/src/providers/*.ts", "./packages/ai/src/api/*.ts"],
+			"@reitaard/recode-agent-core": ["./packages/agent/src/index.ts"],
+			"@reitaard/recode-agent-core/node": ["./packages/agent/src/node.ts"],
+			"@reitaard/recode-agent-core/*": ["./packages/agent/src/*"],
+			"@reitaard/recode-telemetry": ["./packages/telemetry/src/index.ts"],
+			"@reitaard/recode-telemetry/*": ["./packages/telemetry/src/*.ts", "./packages/telemetry/src/testing/*.ts"],
+			"@reitaard/recode-storage-sqlite-node": ["./packages/storage/sqlite-node/src/index.ts"],
+			"@reitaard/recode-coding-agent": ["./packages/coding-agent/src/index.ts"],
+			"@reitaard/recode-coding-agent/*": ["./packages/coding-agent/src/*"],
+			"@reitaard/recode-orchestrator": ["./packages/orchestrator/src/index.ts"],
+			"@reitaard/recode-orchestrator/*": ["./packages/orchestrator/src/*"],
+			"@reitaard/recode-tui": ["./packages/tui/src/index.ts"],
+			"@reitaard/recode-tui/*": ["./packages/tui/src/*"],
+			"typebox": ["./node_modules/typebox"]
+		}
+	},
+	"include": [
+		"packages/agent/src/**/*",
+		"packages/agent/test/**/*",
+		"packages/ai/src/**/*",
+		"packages/ai/test/**/*",
+		"packages/coding-agent/src/**/*",
+		"packages/coding-agent/test/**/*",
+		"packages/orchestrator/src/**/*",
+		"packages/orchestrator/test/**/*",
+		"packages/telemetry/src/**/*",
+		"packages/telemetry/test/**/*",
+		"packages/tui/src/**/*",
+		"packages/tui/test/**/*",
+		"packages/storage/sqlite-node/src/**/*"
+	],
+	"exclude": [
+		"**/dist/**",
+		"packages/coding-agent/src/cli/experimental/**",
+		"packages/coding-agent/src/client/**",
+		"packages/coding-agent/src/server/**",
+		"**/*.inactive"
+	]
+}

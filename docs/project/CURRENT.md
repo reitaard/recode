@@ -18,7 +18,9 @@ Checked: 2026-08-13 against old source commit `fbd6b5b3a494d6c50bc5415eb3be2e436
 - All seven package sources were copied from the audited checkpoint, rewritten to standalone `@reitaard/recode-*` `0.1.0` identities, and statically audited. They are not yet installed, built, tested, packed, or certified because root infrastructure is absent.
 - TUI's four uncertified native prebuilds remain quarantined and absent; JavaScript fallback is the current package boundary.
 - Orchestrator completion restart recovery remains a visible known defect; SQLite remains optional and non-default.
-- Slice 11 root workspace/build identity is next.
+- The seven-package root workspace, TypeScript identity, deterministic build order, and pre-install safety checks are present. `npm install --ignore-scripts` completed and generated the first standalone lockfile (306 packages added; lifecycle scripts disabled).
+- The first build reaches AI after TUI and telemetry compile successfully. AI currently fails on a direct `@smithy/types`/AWS middleware type-version mismatch and a fetch-body typing mismatch; later packages and tests have not run.
+- Production audit reports one high-severity direct dependency finding in `undici@8.5.0`; no audit fix was applied. Updating dependency versions requires Creator approval.
 - `re.pi` remains provenance/reference history and is not modified by this migration.
 - The intended destination is a public open-source repository for worldwide contributors. Public launch still requires fresh Recode governance, security, conduct, support, CI/fork-safety, licensing, and release decisions; inherited repository policy is not adopted automatically.
 

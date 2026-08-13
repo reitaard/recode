@@ -3,18 +3,22 @@
 		"target": "ES2024",
 		"module": "NodeNext",
 		"moduleResolution": "NodeNext",
+		"lib": ["ES2024"],
 		"strict": true,
+		"erasableSyntaxOnly": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
 		"declaration": true,
 		"declarationMap": true,
 		"sourceMap": true,
-		"skipLibCheck": true,
-		"esModuleInterop": true,
+		"inlineSources": true,
 		"resolveJsonModule": true,
 		"allowImportingTsExtensions": true,
 		"rewriteRelativeImportExtensions": true,
-		"outDir": "./dist",
-		"rootDir": "./src"
-	},
-	"include": ["src/**/*.ts"],
-	"exclude": ["node_modules", "dist", "**/*.d.ts", "src/**/*.d.ts"]
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"useDefineForClassFields": false,
+		"types": ["node"]
+	}
 }

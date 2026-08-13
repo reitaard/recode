@@ -1,0 +1,44 @@
+{
+	"name": "recode-workspace",
+	"version": "0.1.0",
+	"private": true,
+	"type": "module",
+	"workspaces": [
+		"packages/agent",
+		"packages/ai",
+		"packages/coding-agent",
+		"packages/orchestrator",
+		"packages/storage/sqlite-node",
+		"packages/telemetry",
+		"packages/tui"
+	],
+	"scripts": {
+		"clean": "npm run clean --workspaces --if-present",
+		"build": "npm run build -w @reitaard/recode-tui && npm run build -w @reitaard/recode-telemetry && npm run build -w @reitaard/recode-ai && npm run build -w @reitaard/recode-agent-core && npm run build -w @reitaard/recode-storage-sqlite-node && npm run build -w @reitaard/recode-coding-agent && npm run build -w @reitaard/recode-orchestrator",
+		"check": "npm run check:identity && npm run check:migration-safety && npm run check:ts-imports && tsc --noEmit",
+		"check:identity": "node scripts/check-standalone-identity.mjs",
+		"check:migration-safety": "node scripts/check-migration-safety.mjs",
+		"check:ts-imports": "node scripts/check-ts-relative-imports.mjs",
+		"test": "npm run test --workspaces --if-present",
+		"prepublishOnly": "node -e \"throw new Error('Root publication is disabled')\""
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.3.5",
+		"@types/node": "24.12.4",
+		"esbuild": "0.28.1",
+		"jiti": "2.7.0",
+		"shx": "0.4.0",
+		"tsx": "4.22.1",
+		"typescript": "5.9.3",
+		"vitest": "4.1.9"
+	},
+	"overrides": {
+		"rimraf": "6.1.2",
+		"gaxios": {
+			"rimraf": "6.1.2"
+		}
+	}
+}

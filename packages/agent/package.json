@@ -1,0 +1,72 @@
+{
+	"name": "@reitaard/recode-agent-core",
+	"version": "0.1.0",
+	"description": "Composable agent execution, durable AgentHarness sessions, and isolated Session V4 primitives for Recode",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./node": {
+			"types": "./dist/node.d.ts",
+			"import": "./dist/node.js"
+		},
+		"./session-v4": {
+			"types": "./dist/harness/session-v4/index.d.ts",
+			"import": "./dist/harness/session-v4/index.js"
+		},
+		"./session-v4/testing": {
+			"types": "./dist/harness/session-v4/testing/index.d.ts",
+			"import": "./dist/harness/session-v4/testing/index.js"
+		},
+		"./package.json": "./package.json"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"docs"
+	],
+	"scripts": {
+		"clean": "shx rm -rf dist",
+		"build": "tsc -p tsconfig.build.json",
+		"test": "vitest --run",
+		"test:harness": "vitest --run --config vitest.harness.config.ts",
+		"coverage:harness": "vitest --run --config vitest.harness.config.ts --coverage",
+		"prepublishOnly": "node -e \"throw new Error('Publication is disabled until standalone certification completes')\""
+	},
+	"dependencies": {
+		"ignore": "7.0.5",
+		"typebox": "1.1.38",
+		"yaml": "2.9.0",
+		"@reitaard/recode-ai": "^0.1.0",
+		"@reitaard/recode-telemetry": "^0.1.0"
+	},
+	"keywords": [
+		"ai",
+		"agent",
+		"llm",
+		"transport",
+		"state-management"
+	],
+	"author": "Recode contributors; derived from work by Mario Zechner",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/reitaard/recode.git",
+		"directory": "packages/agent"
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"devDependencies": {
+		"@types/node": "24.12.4",
+		"@vitest/coverage-v8": "4.1.9",
+		"typescript": "5.9.3",
+		"vitest": "4.1.9",
+		"shx": "0.4.0"
+	},
+	"private": true
+}

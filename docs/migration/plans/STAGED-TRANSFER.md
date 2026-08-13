@@ -85,7 +85,13 @@ The four documentation-closure slices and transfer/certification Slices 1–6 ar
    - both packages use `@reitaard/recode-*@0.1.0`, deterministic local compilation defaults, and private/throwing publication gates;
    - inherited default `pi.dev` Radius service behavior is disabled; Radius now requires an explicit compatible gateway;
    - installation, build, tests, and package certification remain blocked until root workspace infrastructure and dependencies are transferred.
-8. **Runtime:** transfer and rename Agent core, preserving V3 versus isolated Session V4 boundaries and regenerating telemetry docs later.
+8. **Runtime — complete:** Agent core transferred, renamed, and statically audited while preserving V3 versus isolated Session V4 boundaries.
+   - Agent core: 107 rows = 97 transfer + 4 rewrite + 6 exclude; 883,436 transfer bytes; derived ledger SHA-256 `3d41f041b25bd522954b4264c476f308459679bdab2b558bbc75733dd0692b50`;
+   - raw checkpoint `4d0e2a8`; standalone identity/static checkpoint `2993ce2`;
+   - package/import identity is `@reitaard/recode-agent-core@0.1.0`; publication remains private and throwing;
+   - active V3 AgentHarness and isolated Session V4 exports remain separate; inactive V4 application-lifecycle tests were not activated;
+   - six superseded design documents remain excluded;
+   - telemetry Markdown regeneration remains deferred until the root TypeScript runner exists, as required by the telemetry-schema plan.
 9. **Interface:** transfer and rename TUI, excluding all four uncertified native prebuilds from active package contents.
 10. **Services/storage:** transfer and rename orchestrator and SQLite; both participate in the initial public `0.1.0` train after certification.
 
@@ -147,10 +153,10 @@ Remote repository creation, push, npm publication, tags, releases, and dist-tag 
 
 ## Current remaining milestones
 
-From checkpoint `99857a1`, Slices 1–7 are complete. Remaining work:
+From checkpoint `2993ce2`, Slices 1–8 are complete. Remaining work:
 
-- Slice 8 transfers and renames Agent core while preserving the V3/Session V4 boundary;
-- Slices 9–10 transfer the remaining dependency packages;
+- Slice 9 transfers and renames TUI while excluding uncertified native prebuilds;
+- Slice 10 transfers the remaining service/storage packages;
 - Slices 11–12 transfer minimal root infrastructure;
 - Slices 13–17 repair, certify, package, and complete public-readiness handoff.
 

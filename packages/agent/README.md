@@ -6,7 +6,7 @@ Composable agent execution and session primitives used by Recode. The package co
 - `AgentHarness` — active durable runtime used by coding-agent, Aizen, workers, and Shiori;
 - Session V4 — separately exported storage/reducer library that is **not** the active coding-agent harness runtime.
 
-Node `>=22.19.0` is required. This documentation is staged before source transfer and publication certification.
+Node `>=22.19.0` is required. Source and manifest are present under the standalone `0.1.0` identity; installation, build, tests, telemetry-document regeneration, packing, and publication remain uncertified until root infrastructure is transferred.
 
 ## Export map
 

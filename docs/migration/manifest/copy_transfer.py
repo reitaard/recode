@@ -21,6 +21,7 @@ APPROVED_PHASES = {
     "coding-agent": ("packages/coding-agent/", 615),
     "telemetry": ("packages/telemetry/", 10),
     "ai": ("packages/ai/", 370),
+    "agent": ("packages/agent/", 97),
 }
 
 

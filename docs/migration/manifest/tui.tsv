@@ -1,0 +1,97 @@
+# source	../re.pi@fbd6b5b3a494d6c50bc5415eb3be2e4366470056
+# generated-by	docs/migration/manifest/build.py
+# phase-prefix	packages/tui/
+path	disposition	reason
+packages/tui/CHANGELOG.md	transfer	approved package source/test/build input
+packages/tui/README.md	rewrite	package documentation rewrite
+packages/tui/native/darwin/README.md	rewrite	package documentation rewrite
+packages/tui/native/darwin/build.sh	transfer	approved package source/test/build input
+packages/tui/native/darwin/prebuilds/darwin-arm64/darwin-modifiers.node	quarantine	native binary pending provenance/rebuild certification
+packages/tui/native/darwin/prebuilds/darwin-x64/darwin-modifiers.node	quarantine	native binary pending provenance/rebuild certification
+packages/tui/native/darwin/src/darwin-modifiers.c	transfer	approved package source/test/build input
+packages/tui/native/win32/README.md	rewrite	package documentation rewrite
+packages/tui/native/win32/build.mjs	transfer	approved package source/test/build input
+packages/tui/native/win32/prebuilds/win32-arm64/win32-console-mode.node	quarantine	native binary pending provenance/rebuild certification
+packages/tui/native/win32/prebuilds/win32-x64/win32-console-mode.node	quarantine	native binary pending provenance/rebuild certification
+packages/tui/native/win32/src/win32-console-mode.c	transfer	approved package source/test/build input
+packages/tui/package.json	rewrite	package identity/build/publication review
+packages/tui/src/autocomplete.ts	transfer	approved package source/test/build input
+packages/tui/src/components/alt-screen-flash.ts	transfer	approved package source/test/build input
+packages/tui/src/components/box.ts	transfer	approved package source/test/build input
+packages/tui/src/components/cancellable-loader.ts	transfer	approved package source/test/build input
+packages/tui/src/components/editor.ts	transfer	approved package source/test/build input
+packages/tui/src/components/h-stack.ts	transfer	approved package source/test/build input
+packages/tui/src/components/image.ts	transfer	approved package source/test/build input
+packages/tui/src/components/input.ts	transfer	approved package source/test/build input
+packages/tui/src/components/loader.ts	transfer	approved package source/test/build input
+packages/tui/src/components/markdown.ts	transfer	approved package source/test/build input
+packages/tui/src/components/scroll-view.ts	transfer	approved package source/test/build input
+packages/tui/src/components/select-list.ts	transfer	approved package source/test/build input
+packages/tui/src/components/settings-list.ts	transfer	approved package source/test/build input
+packages/tui/src/components/spacer.ts	transfer	approved package source/test/build input
+packages/tui/src/components/stack.ts	transfer	approved package source/test/build input
+packages/tui/src/components/text.ts	transfer	approved package source/test/build input
+packages/tui/src/components/truncated-text.ts	transfer	approved package source/test/build input
+packages/tui/src/components/v-stack.ts	transfer	approved package source/test/build input
+packages/tui/src/diagnostics.ts	transfer	approved package source/test/build input
+packages/tui/src/editor-component.ts	transfer	approved package source/test/build input
+packages/tui/src/fuzzy.ts	transfer	approved package source/test/build input
+packages/tui/src/index.ts	transfer	approved package source/test/build input
+packages/tui/src/keybindings.ts	transfer	approved package source/test/build input
+packages/tui/src/keys.ts	transfer	approved package source/test/build input
+packages/tui/src/kill-ring.ts	transfer	approved package source/test/build input
+packages/tui/src/latex.ts	transfer	approved package source/test/build input
+packages/tui/src/layout-node.ts	transfer	approved package source/test/build input
+packages/tui/src/layout.ts	transfer	approved package source/test/build input
+packages/tui/src/native-modifiers.ts	transfer	approved package source/test/build input
+packages/tui/src/stdin-buffer.ts	transfer	approved package source/test/build input
+packages/tui/src/terminal-colors.ts	transfer	approved package source/test/build input
+packages/tui/src/terminal-image.ts	transfer	approved package source/test/build input
+packages/tui/src/terminal.ts	transfer	approved package source/test/build input
+packages/tui/src/tui-alt-screen.ts	transfer	approved package source/test/build input
+packages/tui/src/tui-main-screen.ts	transfer	approved package source/test/build input
+packages/tui/src/tui.ts	transfer	approved package source/test/build input
+packages/tui/src/undo-stack.ts	transfer	approved package source/test/build input
+packages/tui/src/utils.ts	transfer	approved package source/test/build input
+packages/tui/src/word-navigation.ts	transfer	approved package source/test/build input
+packages/tui/test/autocomplete.test.ts	transfer	approved package source/test/build input
+packages/tui/test/bug-regression-isimageline-startswith-bug.test.ts	transfer	approved package source/test/build input
+packages/tui/test/chat-simple.ts	transfer	approved package source/test/build input
+packages/tui/test/editor-history-keybindings.test.ts	transfer	approved package source/test/build input
+packages/tui/test/editor.test.ts	transfer	approved package source/test/build input
+packages/tui/test/fuzzy.test.ts	transfer	approved package source/test/build input
+packages/tui/test/image-test.ts	transfer	approved package source/test/build input
+packages/tui/test/input.test.ts	transfer	approved package source/test/build input
+packages/tui/test/key-tester.ts	transfer	approved package source/test/build input
+packages/tui/test/keybindings.test.ts	transfer	approved package source/test/build input
+packages/tui/test/keys.test.ts	transfer	approved package source/test/build input
+packages/tui/test/latex.test.ts	transfer	approved package source/test/build input
+packages/tui/test/layout.test.ts	transfer	approved package source/test/build input
+packages/tui/test/markdown.test.ts	transfer	approved package source/test/build input
+packages/tui/test/overlay-non-capturing.test.ts	transfer	approved package source/test/build input
+packages/tui/test/overlay-options.test.ts	transfer	approved package source/test/build input
+packages/tui/test/overlay-short-content.test.ts	transfer	approved package source/test/build input
+packages/tui/test/regression-overlay-cjk-boundary.test.ts	transfer	approved package source/test/build input
+packages/tui/test/regression-regional-indicator-width.test.ts	transfer	approved package source/test/build input
+packages/tui/test/select-list.test.ts	transfer	approved package source/test/build input
+packages/tui/test/settings-list.test.ts	transfer	approved package source/test/build input
+packages/tui/test/stdin-buffer.test.ts	transfer	approved package source/test/build input
+packages/tui/test/tab-width.test.ts	transfer	approved package source/test/build input
+packages/tui/test/terminal-colors.test.ts	transfer	approved package source/test/build input
+packages/tui/test/terminal-image.test.ts	transfer	approved package source/test/build input
+packages/tui/test/terminal.test.ts	transfer	approved package source/test/build input
+packages/tui/test/test-themes.ts	transfer	approved package source/test/build input
+packages/tui/test/truncate-to-width.test.ts	transfer	approved package source/test/build input
+packages/tui/test/truncated-text.test.ts	transfer	approved package source/test/build input
+packages/tui/test/tui-alt-screen.test.ts	transfer	approved package source/test/build input
+packages/tui/test/tui-cell-size-input.test.ts	transfer	approved package source/test/build input
+packages/tui/test/tui-diagnostics.test.ts	transfer	approved package source/test/build input
+packages/tui/test/tui-overlay-style-leak.test.ts	transfer	approved package source/test/build input
+packages/tui/test/tui-render.test.ts	transfer	approved package source/test/build input
+packages/tui/test/tui-shrink.test.ts	transfer	approved package source/test/build input
+packages/tui/test/viewport-overwrite-repro.ts	transfer	approved package source/test/build input
+packages/tui/test/virtual-terminal.ts	transfer	approved package source/test/build input
+packages/tui/test/word-navigation.test.ts	transfer	approved package source/test/build input
+packages/tui/test/wrap-ansi.test.ts	transfer	approved package source/test/build input
+packages/tui/tsconfig.build.json	transfer	approved package source/test/build input
+packages/tui/vitest.config.ts	transfer	approved package source/test/build input

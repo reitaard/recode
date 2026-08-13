@@ -2,7 +2,7 @@
 
 Terminal UI primitives and differential renderers used by Recode. Node `>=22.19.0` is required.
 
-> This documentation is staged before source transfer. Checked-in native addons are not approved publication artifacts until provenance or reproducible rebuild and target smoke tests are complete.
+> Source and manifest are present under the standalone `0.1.0` identity. Installation, build, tests, native certification, packing, and publication remain uncertified. Quarantined native addons were not transferred.
 
 ## Choose a renderer
 
@@ -86,14 +86,14 @@ The source contains optional helpers for:
 - Windows virtual-terminal input and modifier state;
 - Darwin modifier state through CoreGraphics.
 
-The package manifest currently includes prebuild paths for Windows x64/arm64 and Darwin x64/arm64. Their presence does not prove origin, reproducibility, ABI compatibility, or target execution. See the platform guides:
+The current package manifest deliberately excludes native prebuilds. JavaScript fallback is therefore the only certifiable package behavior until reviewed source is reproducibly rebuilt and smoke-tested on Windows x64/arm64 and Darwin x64/arm64. See the platform guides:
 
 - [`native/win32/README.md`](native/win32/README.md)
 - [`native/darwin/README.md`](native/darwin/README.md)
 
 ## Build and test
 
-After source transfer:
+After root workspace infrastructure and dependencies are transferred:
 
 ```sh
 npm run build -w @reitaard/recode-tui

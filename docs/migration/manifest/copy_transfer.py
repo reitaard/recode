@@ -22,6 +22,7 @@ APPROVED_PHASES = {
     "telemetry": ("packages/telemetry/", 10),
     "ai": ("packages/ai/", 370),
     "agent": ("packages/agent/", 97),
+    "tui": ("packages/tui/", 85),
 }
 
 

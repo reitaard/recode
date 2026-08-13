@@ -12,6 +12,7 @@ PHASES = {
     "telemetry.tsv": ("packages/telemetry/", 12),
     "ai.tsv": ("packages/ai/", 372),
     "agent.tsv": ("packages/agent/", 107),
+    "tui.tsv": ("packages/tui/", 93),
 }
 
 

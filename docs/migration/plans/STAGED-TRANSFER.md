@@ -92,7 +92,12 @@ The four documentation-closure slices and transfer/certification Slices 1–6 ar
    - active V3 AgentHarness and isolated Session V4 exports remain separate; inactive V4 application-lifecycle tests were not activated;
    - six superseded design documents remain excluded;
    - telemetry Markdown regeneration remains deferred until the root TypeScript runner exists, as required by the telemetry-schema plan.
-9. **Interface:** transfer and rename TUI, excluding all four uncertified native prebuilds from active package contents.
+9. **Interface — complete:** TUI transferred and renamed, with all four uncertified native prebuilds excluded from active package contents.
+   - TUI: 93 rows = 85 transfer + 4 rewrite + 4 quarantine; 1,136,872 transfer bytes; derived ledger SHA-256 `76c2f9e9ebe8701f57482a9edb6332f79e65bab6e4fb8bd5ed502919873d8884`;
+   - raw checkpoint `c7cc3e0`; standalone identity/static checkpoint `bfb3b3f`;
+   - package identity is `@reitaard/recode-tui@0.1.0`; publication remains private and throwing;
+   - package contents exclude all `.node` files and native source/build directories; JavaScript fallback is the only currently certifiable behavior;
+   - retained `REPI_TERMINAL_*`, `RepiTerminal*`, and `PI_*` names are documented compatibility contracts rather than product identity.
 10. **Services/storage:** transfer and rename orchestrator and SQLite; both participate in the initial public `0.1.0` train after certification.
 
 Each slice uses its own prefix ledger/dry run, preserves staged owner documentation, rewrites manifests/internal imports, and creates a local checkpoint. Known defects remain visible rather than silently removed.
@@ -153,10 +158,10 @@ Remote repository creation, push, npm publication, tags, releases, and dist-tag 
 
 ## Current remaining milestones
 
-From checkpoint `2993ce2`, Slices 1–8 are complete. Remaining work:
+From checkpoint `bfb3b3f`, Slices 1–9 are complete. Remaining work:
 
-- Slice 9 transfers and renames TUI while excluding uncertified native prebuilds;
-- Slice 10 transfers the remaining service/storage packages;
+- Slice 10 transfers and renames orchestrator and SQLite;
+- Slices 11–12 establish minimal root infrastructure and safe local automation;
 - Slices 11–12 transfer minimal root infrastructure;
 - Slices 13–17 repair, certify, package, and complete public-readiness handoff.
 

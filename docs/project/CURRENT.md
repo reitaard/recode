@@ -15,8 +15,9 @@ Checked: 2026-08-13 against old source commit `fbd6b5b3a494d6c50bc5415eb3be2e436
 
 - The repository is on branch `main` with configured remote `https://github.com/reitaard/recode.git`; nothing in this status page claims commits were pushed.
 - Pre-transfer documentation closure and transfer Slices 1–7 are complete.
-- Coding-agent, telemetry, AI, and Agent core source were copied from the audited checkpoint, rewritten to standalone `0.1.0` identities, and statically audited. They are not yet installed, built, tested, packed, or certified because remaining dependency packages and root infrastructure are absent.
-- Slice 9 TUI is the next transfer boundary; uncertified native prebuilds must remain excluded.
+- Coding-agent, telemetry, AI, Agent core, and TUI source were copied from the audited checkpoint, rewritten to standalone `0.1.0` identities, and statically audited. They are not yet installed, built, tested, packed, or certified because remaining dependency packages and root infrastructure are absent.
+- TUI's four uncertified native prebuilds remain quarantined and absent; JavaScript fallback is the current package boundary.
+- Slice 10 orchestrator and SQLite is next.
 - `re.pi` remains provenance/reference history and is not modified by this migration.
 - The intended destination is a public open-source repository for worldwide contributors. Public launch still requires fresh Recode governance, security, conduct, support, CI/fork-safety, licensing, and release decisions; inherited repository policy is not adopted automatically.
 

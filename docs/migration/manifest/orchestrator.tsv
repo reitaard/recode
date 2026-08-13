@@ -1,0 +1,52 @@
+# source	../re.pi@fbd6b5b3a494d6c50bc5415eb3be2e4366470056
+# generated-by	docs/migration/manifest/build.py
+# phase-prefix	packages/orchestrator/
+path	disposition	reason
+packages/orchestrator/CHANGELOG.md	transfer	approved package source/test/build input
+packages/orchestrator/README.md	rewrite	package documentation rewrite
+packages/orchestrator/package.json	rewrite	package identity/build/publication review
+packages/orchestrator/src/child-environment.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/cli.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/completion-queue.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/config.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/dashboard-client.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/dashboard.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/diagnostics.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/handler.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/index.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/ipc-auth.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/ipc/client.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/ipc/protocol.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/ipc/server.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/lifecycle-adapters.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/lifecycle-contract.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/lifecycle-service.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/native-service.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/process-identity.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/radius.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/rpc-process.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/serve.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/service-ownership.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/service-runtime.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/state-projection.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/storage.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/supervisor.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/turn-lease.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/types.ts	transfer	approved package source/test/build input
+packages/orchestrator/src/workspace-safety.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/attach-detach-reconnect.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/child-environment.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/completion-queue.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/dashboard.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/diagnostics.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/ipc-auth.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/lifecycle-service.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/orchestrator-characterization.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/rpc-deadline-shutdown.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/service-supervision.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/state-projection.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/storage-lifecycle.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/supervisor-turn-lease.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/turn-lease.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/test/workspace-safety.test.ts	transfer	approved package source/test/build input
+packages/orchestrator/tsconfig.build.json	transfer	approved package source/test/build input

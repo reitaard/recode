@@ -23,6 +23,8 @@ APPROVED_PHASES = {
     "ai": ("packages/ai/", 370),
     "agent": ("packages/agent/", 97),
     "tui": ("packages/tui/", 85),
+    "orchestrator": ("packages/orchestrator/", 46),
+    "sqlite-node": ("packages/storage/sqlite-node/", 16),
 }
 
 

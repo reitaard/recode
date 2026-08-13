@@ -13,6 +13,8 @@ PHASES = {
     "ai.tsv": ("packages/ai/", 372),
     "agent.tsv": ("packages/agent/", 107),
     "tui.tsv": ("packages/tui/", 93),
+    "orchestrator.tsv": ("packages/orchestrator/", 48),
+    "sqlite-node.tsv": ("packages/storage/sqlite-node/", 18),
 }
 
 

@@ -1,0 +1,26 @@
+{
+	"compilerOptions": {
+		"target": "ES2023",
+		"module": "NodeNext",
+		"moduleResolution": "NodeNext",
+		"strict": true,
+		"declarationMap": true,
+		"sourceMap": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"resolveJsonModule": true,
+		"rewriteRelativeImportExtensions": true,
+		"paths": {
+			"@reitaard/recode-agent-core": ["../../agent/dist/index.d.ts"],
+			"@reitaard/recode-agent-core/*": ["../../agent/dist/*.d.ts"],
+			"@reitaard/recode-ai": ["../../ai/dist/index.d.ts"],
+			"@reitaard/recode-ai/*": ["../../ai/dist/*.d.ts"]
+		},
+		"rootDir": "src",
+		"outDir": "dist",
+		"declaration": true,
+		"emitDeclarationOnly": false,
+		"noEmit": false
+	},
+	"include": ["src/**/*.ts"]
+}

@@ -1,0 +1,56 @@
+{
+	"name": "@reitaard/recode-orchestrator",
+	"version": "0.1.0",
+	"description": "Recode Maestro service supervision and live-session TUI",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"bin": {
+		"recode-maestro": "dist/cli.js"
+	},
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		},
+		"./cli": "./dist/cli.js"
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"CHANGELOG.md"
+	],
+	"scripts": {
+		"clean": "shx rm -rf dist",
+		"dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+		"build": "tsc -p tsconfig.build.json && shx chmod +x dist/cli.js",
+		"prepublishOnly": "node -e \"throw new Error('Publication is disabled until standalone certification completes')\""
+	},
+	"keywords": [
+		"pi",
+		"orchestrator"
+	],
+	"author": "Recode contributors",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/reitaard/recode.git",
+		"directory": "packages/orchestrator"
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"dependencies": {
+		"chalk": "5.6.2",
+		"@reitaard/recode-tui": "^0.1.0"
+	},
+	"peerDependencies": {
+		"@reitaard/recode-coding-agent": "^0.1.0"
+	},
+	"devDependencies": {
+		"shx": "0.4.0",
+		"typescript": "5.9.3",
+		"@types/node": "24.12.4"
+	},
+	"private": true
+}

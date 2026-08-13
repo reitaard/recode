@@ -1,0 +1,43 @@
+{
+	"name": "@reitaard/recode-storage-sqlite-node",
+	"version": "0.1.0",
+	"description": "Optional Node SQLite storage backend for Recode AgentHarness sessions",
+	"type": "module",
+	"main": "./dist/index.js",
+	"types": "./dist/index.d.ts",
+	"exports": {
+		".": {
+			"types": "./dist/index.d.ts",
+			"import": "./dist/index.js"
+		}
+	},
+	"files": [
+		"dist",
+		"README.md",
+		"CHANGELOG.md"
+	],
+	"scripts": {
+		"clean": "node -e \"import('node:fs/promises').then(fs=>fs.rm('dist',{recursive:true,force:true}))\"",
+		"build": "tsc -p tsconfig.build.json && node ./scripts/prepare-dist.mjs copy-sqlite-migrations",
+		"prepublishOnly": "node -e \"throw new Error('Publication is disabled until standalone certification completes')\""
+	},
+	"author": "Recode contributors",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/reitaard/recode.git",
+		"directory": "packages/storage/sqlite-node"
+	},
+	"engines": {
+		"node": ">=22.19.0"
+	},
+	"dependencies": {
+		"@reitaard/recode-ai": "^0.1.0",
+		"@reitaard/recode-agent-core": "^0.1.0"
+	},
+	"private": true,
+	"devDependencies": {
+		"typescript": "5.9.3",
+		"@types/node": "24.12.4"
+	}
+}

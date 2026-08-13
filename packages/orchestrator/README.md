@@ -2,7 +2,7 @@
 
 Recode Maestro service supervision and live-session TUI. Maestro owns durable **full Aizen session processes**; it is separate from the lightweight named-worker tools that run bounded tasks inside an Aizen session.
 
-Node `>=22.19.0` is required. This documentation is staged before source transfer and does not certify publication or native service installation from this repository.
+Node `>=22.19.0` is required. Source and manifest are present under the standalone `0.1.0` identity; installation, build, tests, native service installation, packing, and publication remain uncertified.
 
 ## Entry points
 
@@ -102,7 +102,7 @@ Maestro does not provide:
 
 ## Build and test
 
-After source transfer:
+After root workspace infrastructure and dependencies are transferred:
 
 ```sh
 npm run build -w @reitaard/recode-orchestrator

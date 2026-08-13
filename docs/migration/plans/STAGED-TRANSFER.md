@@ -98,7 +98,13 @@ The four documentation-closure slices and transfer/certification Slices 1–6 ar
    - package identity is `@reitaard/recode-tui@0.1.0`; publication remains private and throwing;
    - package contents exclude all `.node` files and native source/build directories; JavaScript fallback is the only currently certifiable behavior;
    - retained `REPI_TERMINAL_*`, `RepiTerminal*`, and `PI_*` names are documented compatibility contracts rather than product identity.
-10. **Services/storage:** transfer and rename orchestrator and SQLite; both participate in the initial public `0.1.0` train after certification.
+10. **Services/storage — complete:** orchestrator and SQLite transferred, renamed, and statically audited; both remain in the initial `0.1.0` train subject to certification.
+   - orchestrator: 48 rows = 46 transfer + 2 rewrite; 362,241 transfer bytes; ledger SHA-256 `ec7c94f2817bcc4ffedf9709e793dec918d491f076e8d571bc63f19e7e66cb2a`;
+   - SQLite: 18 rows = 16 transfer + 2 rewrite; 57,180 transfer bytes; ledger SHA-256 `e40918527960fafc2bec1383084a40939ee109333e3f5ce011f91f4a1d665c3a`;
+   - raw checkpoints: orchestrator `217314a`, SQLite `3f95a08`; identity/static checkpoint `6aa52a3`;
+   - package identities are `@reitaard/recode-orchestrator@0.1.0` and `@reitaard/recode-storage-sqlite-node@0.1.0`; publication remains private and throwing;
+   - Radius has no inherited default endpoint and activates only with explicit compatible endpoint plus credentials;
+   - orchestrator completion restart recovery remains visibly uncertified for Phase 5 repair; SQLite migration copying now clears stale migration output.
 
 Each slice uses its own prefix ledger/dry run, preserves staged owner documentation, rewrites manifests/internal imports, and creates a local checkpoint. Known defects remain visible rather than silently removed.
 
@@ -158,10 +164,10 @@ Remote repository creation, push, npm publication, tags, releases, and dist-tag 
 
 ## Current remaining milestones
 
-From checkpoint `bfb3b3f`, Slices 1–9 are complete. Remaining work:
+From checkpoint `6aa52a3`, Slices 1–10 are complete. Remaining work:
 
-- Slice 10 transfers and renames orchestrator and SQLite;
 - Slices 11–12 establish minimal root infrastructure and safe local automation;
+- Slices 13–17 repair, certify, package, and complete public-readiness handoff;
 - Slices 11–12 transfer minimal root infrastructure;
 - Slices 13–17 repair, certify, package, and complete public-readiness handoff.
 

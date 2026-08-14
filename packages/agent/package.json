@@ -1,6 +1,6 @@
 {
 	"name": "@reitaard/recode-agent-core",
-	"version": "0.1.3",
+	"version": "0.1.4",
 	"description": "Composable agent execution, durable AgentHarness sessions, and isolated Session V4 primitives for Recode",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -42,8 +42,8 @@
 		"ignore": "7.0.5",
 		"typebox": "1.1.38",
 		"yaml": "2.9.0",
-		"@reitaard/recode-ai": "^0.1.3",
-		"@reitaard/recode-telemetry": "^0.1.3"
+		"@reitaard/recode-ai": "^0.1.4",
+		"@reitaard/recode-telemetry": "^0.1.4"
 	},
 	"keywords": [
 		"ai",

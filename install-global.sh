@@ -24,7 +24,8 @@ remove_stale_legacy_shims() {
 			[[ -n "$shim_win" ]] || continue
 			shim="$(cygpath -u "$shim_win")"
 			[[ -f "$shim" ]] || continue
-			if grep -Fq '@reitaard\repi-coding-agent\dist\' "$shim"; then
+			if grep -Fq '@reitaard\repi-coding-agent\dist\' "$shim" ||
+				grep -Fq '@reitaard/repi-coding-agent/dist/' "$shim"; then
 				log "Removing stale $command shim at $shim_win"
 				rm -f "$shim"
 				legacy_package="$(dirname "$shim")/node_modules/@reitaard/repi-coding-agent"
@@ -78,21 +79,22 @@ else
 	log "No existing agent directory found at $AGENT_DIR_WIN"
 fi
 
-if [[ -d "$GLOBAL_ROOT/@reitaard/repi-coding-agent" ]]; then
-	log "Removing the previous global coding-agent package after the data backup"
-	npm uninstall --global --ignore-scripts @reitaard/repi-coding-agent
-fi
-remove_stale_legacy_shims
-
-log "Certifying source commit $COMMIT"
-npm ci --ignore-scripts
-npm run check
-npm run build
-
 OUT_ROOT="${TEMP:-${TMPDIR:-/tmp}}/recode-global-$VERSION-$(git rev-parse --short HEAD)"
 OUT_ROOT="$(cygpath -u "$OUT_ROOT" 2>/dev/null || printf '%s' "$OUT_ROOT")"
+CERT_ROOT="$OUT_ROOT/source"
 rm -rf "$OUT_ROOT"
 mkdir -p "$OUT_ROOT/packages" "$OUT_ROOT/smoke"
+
+cleanup_certification_checkout() {
+	rm -rf "$CERT_ROOT"
+}
+trap cleanup_certification_checkout EXIT
+
+# Clear registrations left by older installer attempts; the current flow uses a clone instead.
+git -C "$ROOT" worktree prune
+rm -rf "$CERT_ROOT"
+git clone --quiet --no-checkout "$ROOT" "$CERT_ROOT"
+git -C "$CERT_ROOT" checkout --quiet --detach "$COMMIT"
 
 PACKAGE_DIRS=(
 	packages/telemetry
@@ -103,9 +105,18 @@ PACKAGE_DIRS=(
 	packages/coding-agent
 	packages/orchestrator
 )
-for package_dir in "${PACKAGE_DIRS[@]}"; do
-	(cd "$package_dir" && npm pack --ignore-scripts --pack-destination "$OUT_ROOT/packages" >/dev/null)
-done
+log "Certifying source commit $COMMIT in an isolated worktree"
+(
+	cd "$CERT_ROOT"
+	npm ci --ignore-scripts
+	npm run build
+	npm run check
+	for package_dir in "${PACKAGE_DIRS[@]}"; do
+		(cd "$package_dir" && npm pack --ignore-scripts --pack-destination "$OUT_ROOT/packages" >/dev/null)
+	done
+)
+cleanup_certification_checkout
+trap - EXIT
 
 mapfile -t TARBALLS < <(find "$OUT_ROOT/packages" -maxdepth 1 -type f -name '*.tgz' -print | sort)
 [[ "${#TARBALLS[@]}" == "7" ]] || fail "Expected seven package tarballs; found ${#TARBALLS[@]}"
@@ -125,6 +136,12 @@ SMOKE_PI="$OUT_ROOT/smoke/pi.cmd"
 "$SMOKE_RECODE" --help >/dev/null
 "$SMOKE_RECODE" --offline --list-models >/dev/null
 "$SMOKE_PI" --help >/dev/null
+
+if [[ -d "$GLOBAL_ROOT/@reitaard/repi-coding-agent" ]]; then
+	log "Removing the previous global coding-agent package after certification and smoke installation"
+	npm uninstall --global --ignore-scripts @reitaard/repi-coding-agent
+fi
+remove_stale_legacy_shims
 
 log "Installing the verified package set into $GLOBAL_PREFIX_WIN"
 npm install --global --ignore-scripts "${TARBALLS[@]}"

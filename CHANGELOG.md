@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.4
+
+- Moved the status-area spacer above active indicators, keeping the editor aligned without a trailing gap.
+- Preserved safe ANSI colors from direct Bash output while continuing to discard unsafe terminal controls.
+- Hardened the Windows global installer’s Git Bash path handling and stale-shim cleanup.
+
 ## 0.1.3
 
 - Improved extension loading, terminal-safe ANSI rendering, and source-extension diagnostics.

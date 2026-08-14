@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.4]
+
+- Aligned Maestro with the `0.1.4` Recode maintenance release.
+
 ## [0.1.3]
 
 - Released Recode Maestro service supervision, IPC, attachment, and durable-session integration.

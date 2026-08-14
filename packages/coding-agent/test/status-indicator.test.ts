@@ -16,11 +16,10 @@ describe("status indicators", () => {
 		vi.useRealTimers();
 	});
 
-	it("keeps idle status at the same height as status indicators", () => {
+	it("reserves two idle rows to match the leading gap and active status row", () => {
 		const idleStatus = new IdleStatus();
 
 		const lines = idleStatus.render(20);
-		expect(lines).toHaveLength(2);
 		expect(lines).toEqual([" ".repeat(20), " ".repeat(20)]);
 	});
 

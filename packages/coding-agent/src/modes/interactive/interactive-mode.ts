@@ -1128,7 +1128,6 @@ export class InteractiveMode {
 		});
 		const dock = new TuiLayouts.VStack([
 			{ component: this.pendingMessagesContainer, shrink: 1, minSize: 0 },
-			{ component: this.statusContainer, shrink: 1, minSize: 0 },
 			{
 				component: new Spacer(1),
 				shrink: 1,
@@ -1136,6 +1135,7 @@ export class InteractiveMode {
 				visible: () =>
 					this.statusContainer.children[0] !== undefined && this.statusContainer.children[0] !== this.idleStatus,
 			},
+			{ component: this.statusContainer, shrink: 1, minSize: 0 },
 			{ component: this.widgetContainerAbove, shrink: 1, minSize: 0 },
 			{ component: this.editorContainer, shrink: 1, minSize: 3 },
 			{ component: this.widgetContainerBelow, shrink: 1, minSize: 0 },

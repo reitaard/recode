@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.4]
+
+- Aligned telemetry with the `0.1.4` Recode maintenance release.
+
 ## [0.1.3]
 
 - Released Recode telemetry context, schema, in-memory adapter, and conformance APIs.

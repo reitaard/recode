@@ -766,7 +766,7 @@ describe("Coding Agent Tools", () => {
 			expect(Buffer.concat(chunks).toString("utf-8").trim()).toBe("from-local-ops");
 		});
 
-		it("should preserve executeBash sanitization when using local bash operations", async () => {
+		it("should preserve safe ANSI styling when using local bash operations", async () => {
 			const result = await executeBashWithOperations(
 				"printf '\\033[31mred\\033[0m\\r\\n'",
 				process.cwd(),
@@ -774,7 +774,7 @@ describe("Coding Agent Tools", () => {
 			);
 
 			expect(result.exitCode).toBe(0);
-			expect(result.output).toBe("red\n");
+			expect(result.output).toBe("\x1b[31mred\x1b[0m\n");
 		});
 
 		it("should persist full output when truncation happens by line count only", async () => {

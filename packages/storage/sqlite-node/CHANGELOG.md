@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.4]
+
+- Aligned SQLite storage with the `0.1.4` Recode maintenance release.
+
 ## [0.1.3]
 
 - Released the optional Recode Node SQLite session and storage backend.

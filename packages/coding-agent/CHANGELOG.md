@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.1.4]
+
+- Moved the status-area spacer above active indicators, keeping the editor aligned without a trailing gap.
+- Preserved safe ANSI colors from direct Bash output while continuing to discard unsafe terminal controls.
+
 ## [0.1.3]
 
 - Improved extension loading, terminal-safe ANSI rendering, and source-extension diagnostics.

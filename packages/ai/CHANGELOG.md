@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.4]
+
+- Aligned the AI package with the `0.1.4` Recode maintenance release.
+
 ## [0.1.3]
 
 - Released Recode provider, model, authentication, streaming, and compatibility APIs.

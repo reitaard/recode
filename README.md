@@ -2,7 +2,7 @@
 
 A coding harness built around Aizen, reusable agent runtimes, workers, durable memory, code intelligence, and Maestro.
 
-The `recode` command runs Aizen, Maestro, and Recode-specific features. Recode `0.1.3` also provides a `pi` compatibility command so existing Pi ecosystem installation instructions work unchanged:
+The `recode` command runs Aizen, Maestro, and Recode-specific features. Recode `0.1.4` also provides a `pi` compatibility command so existing Pi ecosystem installation instructions work unchanged:
 
 ```powershell
 pi install npm:pi-better-harness

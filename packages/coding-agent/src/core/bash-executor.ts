@@ -10,7 +10,7 @@ import { randomBytes } from "node:crypto";
 import { createWriteStream, type WriteStream } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { stripAnsi } from "../utils/ansi.ts";
+import { SgrStreamSanitizer } from "../utils/ansi.ts";
 import { sanitizeBinaryOutput } from "../utils/shell.ts";
 import type { BashOperations } from "./tools/bash.ts";
 import { DEFAULT_MAX_BYTES, truncateTail } from "./tools/truncate.ts";
@@ -43,6 +43,19 @@ export interface BashResult {
 // Implementation
 // ============================================================================
 
+/** Preserve safe SGR styling while applying the binary sanitizer to all other text. */
+function sanitizeOutputPreservingSgr(value: string): string {
+	const sgr = /(?:\u001b\[|\u009b)[\d;:]*m/g;
+	let output = "";
+	let cursor = 0;
+	for (const match of value.matchAll(sgr)) {
+		output += sanitizeBinaryOutput(value.slice(cursor, match.index)).replace(/\r/g, "");
+		output += match[0];
+		cursor = (match.index ?? 0) + match[0].length;
+	}
+	return output + sanitizeBinaryOutput(value.slice(cursor)).replace(/\r/g, "");
+}
+
 /**
  * Execute a bash command using custom BashOperations.
  * Used for remote execution (SSH, containers, etc.).
@@ -74,12 +87,13 @@ export async function executeBashWithOperations(
 	};
 
 	const decoder = new TextDecoder();
+	const outputSanitizer = new SgrStreamSanitizer();
 
 	const onData = (data: Buffer) => {
 		totalBytes += data.length;
 
-		// Sanitize: strip ANSI, replace binary garbage, normalize newlines
-		const text = sanitizeBinaryOutput(stripAnsi(decoder.decode(data, { stream: true }))).replace(/\r/g, "");
+		// Retain only safe SGR styling; strip unsafe controls and binary garbage.
+		const text = sanitizeOutputPreservingSgr(outputSanitizer.push(decoder.decode(data, { stream: true })));
 
 		// Start writing to temp file if exceeds threshold
 		if (totalBytes > DEFAULT_MAX_BYTES) {

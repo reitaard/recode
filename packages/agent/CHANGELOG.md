@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.4]
+
+- Aligned the agent runtime with the `0.1.4` Recode maintenance release.
+
 ## [0.1.3]
 
 - Released the Recode agent runtime with session, tool-loop, compaction, telemetry, and execution-environment support.

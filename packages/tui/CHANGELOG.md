@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.4]
+
+- Aligned the terminal UI with the `0.1.4` Recode maintenance release.
+
 ## [0.1.3]
 
 - Released the Recode terminal renderer, components, input handling, layout, diagnostics, and JavaScript fallback.

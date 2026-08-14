@@ -2,7 +2,7 @@
 
 Requires Node `>=22.19.0`.
 
-> The seven-package workspace uses the synchronized `0.1.3` candidate train. Release certification requires checks, builds, deterministic tests, inspected tarballs, and an isolated lifecycle-disabled installation.
+> The seven-package workspace uses the synchronized `0.1.4` candidate train. Release certification requires checks, builds, deterministic tests, inspected tarballs, and an isolated lifecycle-disabled installation.
 
 ## Installed dependencies and validation
 
@@ -43,13 +43,13 @@ The completed standalone bootstrap followed these requirements:
 5. use the deterministic build path that consumes reviewed checked-in catalogs without a network refresh;
 6. build in a clean environment and inspect all generated diffs before running tests.
 
-The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All seven workspace packages use the synchronized `0.1.3` train, including SQLite.
+The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All seven workspace packages use the synchronized `0.1.4` train, including SQLite.
 
 After compilation, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
 
 ## Global migration on Windows
 
-The repository provides `install-global.sh` for a deliberate migration. The script requires Git Bash, a clean `main` checkout, and Node `>=22.19.0`. It backs up `~/.pi/agent`, removes only verified stale global harness shims and packages, certifies and packs all seven packages, smoke-installs the exact artifacts, installs them into the active npm prefix, and verifies the `recode` and `pi` shims.
+The repository provides `install-global.sh` for a deliberate migration. The script requires Git Bash, a clean `main` checkout, and Node `>=22.19.0`. It backs up `~/.pi/agent`, removes only verified stale global harness shims and packages, certifies and packs all seven packages in an isolated temporary Git clone, smoke-installs the exact artifacts, installs them into the active npm prefix, and verifies the `recode` and `pi` shims.
 
 Close every running harness window. Do not delete `~/.pi/agent`; it contains sessions, settings, credentials, memory, and extensions. From Git Bash in the released Recode checkout, run:
 

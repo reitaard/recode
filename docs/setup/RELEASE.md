@@ -1,6 +1,6 @@
 # Release
 
-Recode uses the synchronized private `@reitaard/recode-*` `0.1.2` package train. npm publication and dist-tag mutation are disabled.
+Recode uses the synchronized private `@reitaard/recode-*` `0.1.3` package train. npm publication and dist-tag mutation are disabled.
 
 ## GitHub release boundary
 
@@ -19,7 +19,7 @@ Before creating a tag or release:
 
 ## Platform statement
 
-The `0.1.2` candidate must be certified on Windows x64 with Node `26.5.0` before release. TUI native addons and platform binaries are omitted. Other operating systems, architectures, native addons, Termux, containers, and external services require separate evidence.
+The `0.1.3` candidate must be certified on Windows x64 with Node `26.5.0` before release. TUI native addons and platform binaries are omitted. Other operating systems, architectures, native addons, Termux, containers, and external services require separate evidence.
 
 ## Command ownership
 

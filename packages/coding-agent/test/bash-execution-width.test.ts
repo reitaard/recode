@@ -6,6 +6,7 @@ import { visibleWidth } from "@reitaard/recode-tui";
 import { beforeAll, describe, expect, it } from "vitest";
 import { BashExecutionComponent } from "../src/modes/interactive/components/bash-execution.ts";
 import { initTheme } from "../src/modes/interactive/theme/theme.ts";
+import { SgrStreamSanitizer, stripAnsi } from "../src/utils/ansi.ts";
 
 /** Minimal TUI stub that only exposes terminal.columns */
 function createTuiStub(columns: number): { columns: number; stub: any } {
@@ -76,6 +77,26 @@ describe("BashExecutionComponent width handling (#2569)", () => {
 			const w = visibleWidth(lines60[i]);
 			expect(w, `Line ${i} visibleWidth=${w} > 60`).toBeLessThanOrEqual(60);
 		}
+	});
+
+	it("preserves streamed SGR colors while stripping unsafe terminal controls", () => {
+		const { stub } = createTuiStub(120);
+		const component = new BashExecutionComponent("color output", stub);
+		component.appendOutput("\u001b[3");
+		component.appendOutput("1mred\u001b[0m \u001b[2");
+		component.appendOutput("Jclear\n");
+		component.setComplete(0, false);
+
+		const rendered = component.render(120).join("\n");
+		expect(rendered).toContain("\u001b[31mred\u001b[0m");
+		expect(rendered).not.toContain("\u001b[2J");
+		expect(stripAnsi(rendered)).toContain("red clear");
+	});
+
+	it("does not leak an incomplete streamed escape sequence", () => {
+		const sanitizer = new SgrStreamSanitizer();
+		expect(sanitizer.push("safe\u001b[")).toBe("safe");
+		expect(sanitizer.finish()).toBe("");
 	});
 
 	it("reveals collapsed direct-shell output when tool expansion is enabled", () => {

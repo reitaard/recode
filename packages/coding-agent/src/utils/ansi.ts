@@ -43,6 +43,74 @@ function ansiRegex({ onlyFirst = false }: { onlyFirst?: boolean } = {}): RegExp 
 
 const regex = ansiRegex();
 
+const SGR_SEQUENCE = /^(?:\u001B\[|\u009B)[0-9;:]*m$/;
+
+/**
+ * Retain only SGR styling from streamed terminal output. Incomplete control
+ * sequences are buffered across chunks so unsafe controls cannot leak when a
+ * process splits an escape sequence between writes.
+ */
+export class SgrStreamSanitizer {
+	private pending = "";
+
+	push(chunk: string): string {
+		const value = this.pending + chunk;
+		this.pending = "";
+		let output = "";
+		let cursor = 0;
+
+		while (cursor < value.length) {
+			const escapeIndex = value.slice(cursor).search(/[\u001B\u009B]/);
+			if (escapeIndex < 0) return output + value.slice(cursor);
+			const start = cursor + escapeIndex;
+			output += value.slice(cursor, start);
+			const introducer = value[start];
+
+			if (introducer === "\u001B" && start + 1 >= value.length) {
+				this.pending = value.slice(start);
+				return output;
+			}
+
+			if (introducer === "\u001B" && value[start + 1] === "]") {
+				const tail = value.slice(start + 2);
+				const terminator = tail.search(/\u0007|\u009C|\u001B\\/);
+				if (terminator < 0) {
+					this.pending = value.slice(start);
+					return output;
+				}
+				const terminatorLength = tail.startsWith("\u001B\\", terminator) ? 2 : 1;
+				cursor = start + 2 + terminator + terminatorLength;
+				continue;
+			}
+
+			const isCsi = introducer === "\u009B" || value[start + 1] === "[";
+			if (isCsi) {
+				const bodyStart = start + (introducer === "\u009B" ? 1 : 2);
+				let end = bodyStart;
+				while (end < value.length && !(value.charCodeAt(end) >= 0x40 && value.charCodeAt(end) <= 0x7e)) end++;
+				if (end >= value.length) {
+					this.pending = value.slice(start);
+					return output;
+				}
+				const sequence = value.slice(start, end + 1);
+				if (SGR_SEQUENCE.test(sequence)) output += sequence;
+				cursor = end + 1;
+				continue;
+			}
+
+			// Discard a non-CSI two-byte escape sequence.
+			cursor = Math.min(value.length, start + 2);
+		}
+
+		return output;
+	}
+
+	finish(): string {
+		this.pending = "";
+		return "";
+	}
+}
+
 export function stripAnsi(value: string): string {
 	if (typeof value !== "string") {
 		throw new TypeError(`Expected a \`string\`, got \`${typeof value}\``);

@@ -56,7 +56,7 @@ migration-evidence/
   reports/
 ```
 
-Do not commit private session transcripts or machine-local memory by default. The committed `docs/old/` directory is for selected repository documentation and non-sensitive evidence only.
+Do not commit private session transcripts or machine-local memory by default. Use Git history and release provenance for non-sensitive historical evidence.
 
 ## Reconciliation result
 

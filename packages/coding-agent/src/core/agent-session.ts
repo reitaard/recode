@@ -221,7 +221,7 @@ export interface AgentSessionConfig {
 	customTools?: ToolDefinition[];
 	/** Model registry for API key resolution and model discovery */
 	modelRegistry: ModelRegistry;
-	/** Root model and credential runtime when this session uses the 0.82 provider architecture. */
+	/** Root model and credential runtime when this session uses the current provider architecture. */
 	modelRuntime?: ModelRuntime;
 	/** Initial active built-in tool names. Default: [read, bash, edit, write] */
 	initialActiveToolNames?: string[];

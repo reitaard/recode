@@ -12,7 +12,7 @@ This file governs Recode documentation updates.
 | Core lifecycle and implementation contracts | focused docs beside the owning package |
 | CLI behavior and customization | `packages/coding-agent/docs/` |
 | Approved unfinished work | owning topic's `TODO.md` |
-| Archived evidence | `docs/old/` |
+| Historical evidence | Git history and release provenance |
 
 One fact has one canonical explanation. Other files link to it and add only local context.
 
@@ -29,7 +29,7 @@ Canonical documentation may contain a claim only after the reviewer:
 
 Creator-approved policy defines product intent. Verified current source, public exports, and reproducible tests outrank prose. Maintainer/reviewer authority follows repository governance.
 
-Claims that are superseded, rejected, inherited, contradictory, or unverified do not enter canonical docs. Git history and `docs/old/` preserve historical evidence.
+Claims that are superseded, rejected, inherited, contradictory, or unverified do not enter canonical docs. Git history and release provenance preserve historical evidence.
 
 ## Public contributor standard
 

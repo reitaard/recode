@@ -111,7 +111,7 @@ describe("Maestro inherited RPC behavior", () => {
 			{ command: "node", args: ["rpc-entry.js"] },
 		);
 		assert.deepEqual(args, ["rpc-entry.js", "--no-tools"]);
-		assert.equal(spawnOptions?.env?.REPI_WORKSPACE_ACCESS, "read-only");
+		assert.equal(spawnOptions?.env?.RECODE_WORKSPACE_ACCESS, "read-only");
 		await rpc.dispose();
 	});
 });

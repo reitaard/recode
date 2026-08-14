@@ -6,7 +6,7 @@ Recode is a coding harness. Aizen is its main agent; Pi is an integration source
 
 1. Open [docs/INDEX.md](docs/INDEX.md).
 2. Read only the relevant linked file.
-3. Use `docs/old/` only for targeted historical evidence.
+3. Do not use the ignored local `docs/old/` archive as task context; verify history through Git when needed.
 
 ## Rules
 

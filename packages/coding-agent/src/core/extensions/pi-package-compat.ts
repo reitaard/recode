@@ -1,4 +1,4 @@
-const PI_PACKAGE_PREFIXES = ["@earendil-works", "@mariozechner"] as const;
+export const PI_PACKAGE_SCOPES = ["@earendil-works", "@mariozechner"] as const;
 
 const PACKAGE_ALIASES = new Map<string, string>([
 	// The pi-ai root intentionally uses the compat entrypoint because third-party
@@ -10,7 +10,6 @@ const PACKAGE_ALIASES = new Map<string, string>([
 	["pi-agent-core/node", "@reitaard/recode-agent-core/node"],
 	["pi-coding-agent", "@reitaard/recode-coding-agent"],
 	["pi-coding-agent/workers", "@reitaard/recode-coding-agent/workers"],
-	["pi-coding-agent/rpc-entry", "@reitaard/recode-coding-agent/rpc-entry"],
 	["pi-tui", "@reitaard/recode-tui"],
 ]);
 
@@ -20,14 +19,48 @@ type CompatibilityGlobal = typeof globalThis & {
 	[INSTALL_MARKER]?: boolean;
 };
 
+export interface PiPackageSpecifierMapping {
+	source: string;
+	target: string;
+}
+
+const LEGACY_REPI_ALIASES = new Map<string, string>([
+	["@reitaard/repi-ai", "@reitaard/recode-ai/compat"],
+	["@reitaard/repi-ai/compat", "@reitaard/recode-ai/compat"],
+	["@reitaard/repi-ai/oauth", "@reitaard/recode-ai/oauth"],
+	["@reitaard/repi-agent-core", "@reitaard/recode-agent-core"],
+	["@reitaard/repi-agent-core/node", "@reitaard/recode-agent-core/node"],
+	["@reitaard/repi-coding-agent", "@reitaard/recode-coding-agent"],
+	["@reitaard/repi-coding-agent/workers", "@reitaard/recode-coding-agent/workers"],
+	["@reitaard/repi-tui", "@reitaard/recode-tui"],
+]);
+
+const SPECIFIER_MAPPINGS: readonly PiPackageSpecifierMapping[] = [
+	...PI_PACKAGE_SCOPES.flatMap((scope) =>
+		Array.from(PACKAGE_ALIASES, ([packagePath, target]) => ({ source: `${scope}/${packagePath}`, target })),
+	),
+	...Array.from(LEGACY_REPI_ALIASES, ([source, target]) => ({ source, target })),
+];
+const SPECIFIER_TARGETS = new Map(SPECIFIER_MAPPINGS.map(({ source, target }) => [source, target]));
+
+/** List the supported upstream package identities and their canonical Recode targets. */
+export function getPiPackageSpecifierMappings(): readonly PiPackageSpecifierMapping[] {
+	return SPECIFIER_MAPPINGS;
+}
+
 /** Map supported upstream Pi package specifiers onto Recode's public runtime. */
 export function mapPiPackageSpecifier(specifier: string): string {
-	for (const scope of PI_PACKAGE_PREFIXES) {
-		const prefix = `${scope}/`;
-		if (!specifier.startsWith(prefix)) continue;
-		return PACKAGE_ALIASES.get(specifier.slice(prefix.length)) ?? specifier;
+	return SPECIFIER_TARGETS.get(specifier) ?? specifier;
+}
+
+/** Bind aliases for canonical targets supplied by a loader. */
+export function bindPiPackageCompatibilityAliases<T>(targets: Readonly<Record<string, T>>): Record<string, T> {
+	const aliases: Record<string, T> = {};
+	for (const { source, target } of SPECIFIER_MAPPINGS) {
+		const value = targets[target];
+		if (value !== undefined) aliases[source] = value;
 	}
-	return specifier;
+	return aliases;
 }
 
 /**
@@ -51,7 +84,7 @@ export async function installPiPackageCompatibilityHooks(): Promise<void> {
 
 	try {
 		const resolvedTargets = new Map<string, string>();
-		for (const target of new Set(PACKAGE_ALIASES.values())) {
+		for (const target of new Set(SPECIFIER_MAPPINGS.map(({ target }) => target))) {
 			resolvedTargets.set(target, import.meta.resolve(target));
 		}
 

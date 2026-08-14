@@ -16,6 +16,4 @@ Choose one task area. Read [About](project/ABOUT.md) only for product identity, 
 | Build, install, release, update | [Setup](setup/INDEX.md) |
 | Reconcile history or memory | [Evidence](project/EVIDENCE.md) |
 
-[Old documents](old/README.md) are evidence only. Read a specific old file only when a current guide requires it.
-
 Do not preload identity, status, or archive documents for unrelated work.

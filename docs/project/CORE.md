@@ -14,7 +14,7 @@ Read this map before changing architecture or package documentation. Verify exac
 | `packages/coding-agent` | Recode CLI, modes, tools, resources, extensions, Aizen, workers, and memory | package docs, public exports, CLI registration, focused tests |
 | `packages/orchestrator` | Maestro service, IPC, durable sessions, and dashboard | package README, CLI/source, Node tests |
 
-At the audited migration-source checkpoint, these packages are root npm workspaces/build participants, while the inherited publisher includes telemetry, AI, agent core, TUI, orchestrator, and coding-agent but omits SQLite. The standalone target replaces that inherited wiring with the approved seven-package `@reitaard/recode-*` `0.1.0` publication train, including SQLite, after certification.
+All seven packages are root npm workspaces and build participants on the synchronized private `@reitaard/recode-*` `0.1.3` train, including SQLite. Historical wiring is retained only in Git history and is not part of the active package graph.
 
 `packages/evals` is repository test infrastructure, not a runtime package. `packages/protocol`, `packages/client`, `packages/server`, and `packages/session-backends/sqlite-node` are outside the verified root workspace, build, and publication paths.
 

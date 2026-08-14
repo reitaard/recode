@@ -28,7 +28,12 @@ import { createPackageManageToolDefinition } from "./tools/package-manage.ts";
 import { createToolDefinitionFromAgentTool, wrapToolDefinition } from "./tools/tool-definition-wrapper.ts";
 import { RECODE_NAMED_WORKERS } from "./workers/registry.ts";
 
-const DELEGATION_ENV = "REPI_DELEGATION";
+const RECODE_DELEGATION_ENV = "RECODE_DELEGATION";
+const LEGACY_DELEGATION_ENV = "REPI_DELEGATION";
+
+function getDelegationEnvironmentValue(): string | undefined {
+	return process.env[RECODE_DELEGATION_ENV] ?? process.env[LEGACY_DELEGATION_ENV];
+}
 const SHARED_WORKER_TOOL_NAMES = ["kioku_search"] as const;
 const MAYURI_WEB_TOOL_NAMES = ["web_search", "fetch_content", "get_search_content"] as const;
 
@@ -156,7 +161,7 @@ function resolveCustomTools(options: CreateAgentSessionFromServicesOptions): Too
 			settingsManager: options.services.settingsManager,
 		}),
 	);
-	if (!isDelegationEnabled(process.env[DELEGATION_ENV])) return customTools.length > 0 ? customTools : undefined;
+	if (!isDelegationEnabled(getDelegationEnvironmentValue())) return customTools.length > 0 ? customTools : undefined;
 
 	const directory = getOrCreateWorkerDirectory(options);
 	const workerTools = [createDelegateTool({ directory }), ...createWorkerControlTools(directory)];
@@ -221,7 +226,7 @@ export async function createAgentSessionServices(
 		options.modelRegistry?.getModelRuntime() ??
 		(await ModelRuntime.create({ credentials: authStorage, modelsPath: join(agentDir, "models.json") }));
 	const modelRegistry = options.modelRegistry ?? ModelRegistry.fromRuntime(modelRuntime, authStorage);
-	const workerDirectory = isDelegationEnabled(process.env[DELEGATION_ENV])
+	const workerDirectory = isDelegationEnabled(getDelegationEnvironmentValue())
 		? new WorkerDirectory({
 				cwd,
 				workers: RECODE_NAMED_WORKERS,

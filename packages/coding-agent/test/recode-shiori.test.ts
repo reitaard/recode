@@ -37,7 +37,7 @@ describe("Shiori (栞) memory review", () => {
 		expect(payload.response_format).toMatchObject({
 			type: "json_schema",
 			json_schema: {
-				name: "repi_shiori_memories",
+				name: "recode_shiori_memories",
 				strict: true,
 				schema: {
 					type: "object",

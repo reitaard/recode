@@ -9,7 +9,7 @@ import {
 	type TruncationResult,
 	truncateTail,
 } from "../../../core/tools/truncate.ts";
-import { stripAnsi } from "../../../utils/ansi.ts";
+import { SgrStreamSanitizer } from "../../../utils/ansi.ts";
 import { theme } from "../theme/theme.ts";
 import { DynamicBorder } from "./dynamic-border.ts";
 import { keyHint, keyText } from "./keybinding-hints.ts";
@@ -22,6 +22,7 @@ const PREVIEW_LINES = 20;
 export class BashExecutionComponent extends Container {
 	private command: string;
 	private outputLines: string[] = [];
+	private readonly outputSanitizer = new SgrStreamSanitizer();
 	private status: "running" | "complete" | "cancelled" | "error" = "running";
 	private exitCode: number | undefined = undefined;
 	private loader: Loader;
@@ -79,9 +80,10 @@ export class BashExecutionComponent extends Container {
 	}
 
 	appendOutput(chunk: string): void {
-		// Strip ANSI codes and normalize line endings
-		// Note: binary data is already sanitized in tui-renderer.ts executeBashCommand
-		const clean = stripAnsi(chunk).replace(/\r\n/g, "\n").replace(/\r/g, "\n");
+		// Preserve only SGR styling. Other controls are stripped, including when
+		// an escape sequence is split across streamed chunks. Binary data is
+		// already sanitized in tui-renderer.ts executeBashCommand.
+		const clean = this.outputSanitizer.push(chunk).replace(/\r\n/g, "\n").replace(/\r/g, "\n");
 
 		// Append to output lines
 		const newLines = clean.split("\n");
@@ -110,6 +112,7 @@ export class BashExecutionComponent extends Container {
 				: "complete";
 		this.truncationResult = truncationResult;
 		this.fullOutputPath = fullOutputPath;
+		this.outputSanitizer.finish();
 
 		// Stop loader
 		this.loader.stop();

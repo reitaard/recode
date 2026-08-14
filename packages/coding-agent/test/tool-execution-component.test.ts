@@ -558,6 +558,31 @@ describe("ToolExecutionComponent parity", () => {
 		expect(rendered).toContain("done");
 	});
 
+	test("preserves safe SGR colors in fallback custom-tool cards", () => {
+		const component = new ToolExecutionComponent(
+			"functions.bash",
+			"tool-custom-ansi",
+			{ command: "rg --color=always name package.json" },
+			{},
+			createBaseToolDefinition("functions.bash"),
+			createFakeTui(),
+			process.cwd(),
+		);
+		component.updateResult(
+			{
+				content: [{ type: "text", text: "\u001b[31mred\u001b[0m \u001b[2Jclear" }],
+				details: {},
+				isError: false,
+			},
+			false,
+		);
+
+		const rendered = component.render(120).join("\n");
+		expect(rendered).toContain("\u001b[31mred\u001b[0m");
+		expect(rendered).not.toContain("\u001b[2J");
+		expect(stripAnsi(rendered)).toContain("red clear");
+	});
+
 	test("keeps write diagnostics on the violet surface after success", () => {
 		const component = new ToolExecutionComponent(
 			"write",

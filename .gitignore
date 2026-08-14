@@ -24,6 +24,7 @@ out.jsonl
 out.html
 *.html
 packages/coding-agent/binaries/
+/docs/old/
 .pi/hf-sessions/
 .pi/hf-sessions-backup/
 .pi/memory/

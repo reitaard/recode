@@ -1,7 +1,7 @@
 import type { Component } from "@reitaard/recode-tui";
 import { theme } from "../theme/theme.ts";
 
-/** Adds a re.pi accent rail to visible model reasoning. */
+/** Adds a Recode accent rail to visible model reasoning. */
 export class RecodeThinkingBlock implements Component {
 	private readonly content: Component;
 

@@ -68,24 +68,43 @@ export function getTextOutput(
  * Other terminal control sequences remain stripped so captured commands cannot
  * move the cursor, clear the screen, or otherwise alter the Recode TUI.
  */
-export function getTextDisplayOutput(result: { content: Array<{ type: string; text?: string }> } | undefined): string {
+export function getTextDisplayOutput(
+	result: { content: Array<{ type: string; text?: string; data?: string; mimeType?: string }> } | undefined,
+	showImages = true,
+): string {
 	if (!result) return "";
 
-	return result.content
+	let output = result.content
 		.filter((content) => content.type === "text")
 		.map((content) => {
 			const text = content.text || "";
-			const sgr = /\x1b\[[\d;]*m/g;
-			let output = "";
+			const sgr = /\x1b\[[\d;:]*m/g;
+			let rendered = "";
 			let cursor = 0;
 			for (const match of text.matchAll(sgr)) {
-				output += sanitizeBinaryOutput(stripAnsi(text.slice(cursor, match.index))).replace(/\r/g, "");
-				output += match[0];
+				rendered += sanitizeBinaryOutput(stripAnsi(text.slice(cursor, match.index))).replace(/\r/g, "");
+				rendered += match[0];
 				cursor = (match.index ?? 0) + match[0].length;
 			}
-			return output + sanitizeBinaryOutput(stripAnsi(text.slice(cursor))).replace(/\r/g, "");
+			return rendered + sanitizeBinaryOutput(stripAnsi(text.slice(cursor))).replace(/\r/g, "");
 		})
 		.join("\n");
+
+	const caps = getCapabilities();
+	const imageBlocks = result.content.filter((content) => content.type === "image");
+	if (imageBlocks.length > 0 && (!caps.images || !showImages)) {
+		const imageIndicators = imageBlocks
+			.map((image) => {
+				const mimeType = image.mimeType ?? "image/unknown";
+				const dimensions =
+					image.data && image.mimeType ? (getImageDimensions(image.data, image.mimeType) ?? undefined) : undefined;
+				return imageFallback(mimeType, dimensions);
+			})
+			.join("\n");
+		output = output ? `${output}\n${imageIndicators}` : imageIndicators;
+	}
+
+	return output;
 }
 
 export type ToolRenderResultLike<TDetails> = {

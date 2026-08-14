@@ -134,7 +134,13 @@ import {
 	shutdownLspClientsForCwd,
 	subscribeLspLifecycle,
 } from "../../lsp/index.ts";
-import { getChangelogPath, getNewEntries, normalizeChangelogLinks, parseChangelog } from "../../utils/changelog.ts";
+import {
+	getChangelogPath,
+	getNewEntries,
+	getStandaloneChangelogBaseline,
+	normalizeChangelogLinks,
+	parseChangelog,
+} from "../../utils/changelog.ts";
 import { copyToClipboard, readClipboardText, readClipboardTextWithStatus } from "../../utils/clipboard.ts";
 import {
 	ClipboardImageDecodeError,
@@ -1449,7 +1455,8 @@ export class InteractiveMode {
 			return undefined;
 		}
 
-		const newEntries = getNewEntries(entries, lastVersion);
+		const baseline = getStandaloneChangelogBaseline(lastVersion, VERSION);
+		const newEntries = getNewEntries(entries, baseline);
 		if (newEntries.length > 0) {
 			this.settingsManager.setLastChangelogVersion(VERSION);
 			this.reportInstallTelemetry(VERSION);
@@ -2074,13 +2081,14 @@ export class InteractiveMode {
 				this.loadedResourcesContainer.addChild(new Spacer(1));
 			}
 
+			const extensionNotices: ResourceDiagnostic[] = [];
 			const extensionDiagnostics: ResourceDiagnostic[] = [];
 			const extensionsResult = this.session.resourceLoader.getExtensions();
 			for (const runtimeDiagnostic of extensionsResult.packageRuntimeDiagnostics ?? []) {
 				if (runtimeDiagnostic.status === "source-only") {
-					extensionDiagnostics.push({
+					extensionNotices.push({
 						type: "warning",
-						message: `Package ${runtimeDiagnostic.source} uses source-only extension loading; release startup includes runtime transpilation`,
+						message: `Package ${runtimeDiagnostic.source} is loaded from source using Recode's runtime transpiler`,
 						path: runtimeDiagnostic.packagePath,
 					});
 				} else if (runtimeDiagnostic.readinessState === "pending") {
@@ -2090,6 +2098,13 @@ export class InteractiveMode {
 						path: runtimeDiagnostic.packagePath,
 					});
 				}
+			}
+			if (extensionNotices.length > 0) {
+				const noticeLines = this.formatDiagnostics(extensionNotices, sourceInfos);
+				this.loadedResourcesContainer.addChild(
+					new Text(`${theme.fg("muted", "[Extension notices]")}\n${noticeLines}`, 0, 0),
+				);
+				this.loadedResourcesContainer.addChild(new Spacer(1));
 			}
 			const extensionErrors = extensionsResult.errors;
 			if (extensionErrors.length > 0) {

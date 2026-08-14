@@ -8,6 +8,7 @@ import { createRequire } from "node:module";
 import * as path from "node:path";
 import { fileURLToPath } from "node:url";
 import * as _bundledPiAgentCore from "@reitaard/recode-agent-core";
+import * as _bundledPiAgentCoreNode from "@reitaard/recode-agent-core/node";
 import type { Provider } from "@reitaard/recode-ai";
 import * as _bundledPiAiCompat from "@reitaard/recode-ai/compat";
 import * as _bundledPiAiOauth from "@reitaard/recode-ai/oauth";
@@ -25,6 +26,7 @@ import { CONFIG_DIR_NAME, getAgentDir, isBunBinary, VERSION } from "../../config
 // avoiding a circular dependency. Extensions can import from @reitaard/recode-coding-agent.
 import * as _bundledPiCodingAgent from "../../index.ts";
 import { resolvePath } from "../../utils/paths.ts";
+import * as _bundledPiCodingAgentWorkers from "../delegation/index.ts";
 import { createEventBus, type EventBus } from "../event-bus.ts";
 import type { ExecOptions } from "../exec.ts";
 import { execCommand } from "../exec.ts";
@@ -32,6 +34,7 @@ import { readPiManifest } from "../pi-manifest.ts";
 import { createSyntheticSourceInfo } from "../source-info.ts";
 import { time } from "../timings.ts";
 import { inspectExtensionPackageRuntime } from "./package-runtime-contract.ts";
+import { bindPiPackageCompatibilityAliases } from "./pi-package-compat.ts";
 import type {
 	EntryRenderer,
 	Extension,
@@ -46,7 +49,21 @@ import type {
 	ToolDefinition,
 } from "./types.ts";
 
-/** Modules available to extensions via virtualModules (for compiled Bun binary) */
+/** Canonical Recode modules statically included in compiled binaries. */
+const BUNDLED_RECODE_MODULES: Record<string, unknown> = {
+	"@reitaard/recode-agent-core": _bundledPiAgentCore,
+	"@reitaard/recode-agent-core/node": _bundledPiAgentCoreNode,
+	"@reitaard/recode-tui": _bundledPiTui,
+	// Extensions resolve the AI root to the compat entrypoint (a strict
+	// superset of the core entrypoint) until that compatibility API is removed.
+	"@reitaard/recode-ai": _bundledPiAiCompat,
+	"@reitaard/recode-ai/compat": _bundledPiAiCompat,
+	"@reitaard/recode-ai/oauth": _bundledPiAiOauth,
+	"@reitaard/recode-coding-agent": _bundledPiCodingAgent,
+	"@reitaard/recode-coding-agent/workers": _bundledPiCodingAgentWorkers,
+};
+
+/** Modules available to extensions via virtualModules (for source and Bun runtimes). */
 const VIRTUAL_MODULES: Record<string, unknown> = {
 	typebox: _bundledTypebox,
 	"typebox/compile": _bundledTypeboxCompile,
@@ -54,21 +71,8 @@ const VIRTUAL_MODULES: Record<string, unknown> = {
 	"@sinclair/typebox": _bundledTypebox,
 	"@sinclair/typebox/compile": _bundledTypeboxCompile,
 	"@sinclair/typebox/value": _bundledTypeboxValue,
-	"@reitaard/recode-agent-core": _bundledPiAgentCore,
-	"@reitaard/recode-tui": _bundledPiTui,
-	// Extensions resolve the pi-ai root to the compat entrypoint (a strict
-	// superset of the core entrypoint): existing extensions using the old
-	// global API keep working at runtime until compat is removed.
-	"@reitaard/recode-ai": _bundledPiAiCompat,
-	"@reitaard/recode-ai/compat": _bundledPiAiCompat,
-	"@reitaard/recode-ai/oauth": _bundledPiAiOauth,
-	"@reitaard/recode-coding-agent": _bundledPiCodingAgent,
-	"@mariozechner/pi-agent-core": _bundledPiAgentCore,
-	"@mariozechner/pi-tui": _bundledPiTui,
-	"@mariozechner/pi-ai": _bundledPiAiCompat,
-	"@mariozechner/pi-ai/compat": _bundledPiAiCompat,
-	"@mariozechner/pi-ai/oauth": _bundledPiAiOauth,
-	"@mariozechner/pi-coding-agent": _bundledPiCodingAgent,
+	...BUNDLED_RECODE_MODULES,
+	...bindPiPackageCompatibilityAliases(BUNDLED_RECODE_MODULES),
 };
 
 const require = createRequire(import.meta.url);
@@ -101,7 +105,9 @@ function getAliases(): Record<string, string> {
 	};
 
 	const piCodingAgentEntry = packageIndex;
+	const piCodingAgentWorkersEntry = path.resolve(__dirname, "../delegation/index.js");
 	const piAgentCoreEntry = resolveWorkspaceOrImport("agent/dist/index.js", "@reitaard/recode-agent-core");
+	const piAgentCoreNodeEntry = resolveWorkspaceOrImport("agent/dist/node.js", "@reitaard/recode-agent-core/node");
 	const piTuiEntry = resolveWorkspaceOrImport("tui/dist/index.js", "@reitaard/recode-tui");
 	// Extensions resolve the pi-ai root to the compat entrypoint (a strict
 	// superset of the core entrypoint): existing extensions using the old
@@ -109,19 +115,20 @@ function getAliases(): Record<string, string> {
 	const piAiCompatEntry = resolveWorkspaceOrImport("ai/dist/compat.js", "@reitaard/recode-ai/compat");
 	const piAiOauthEntry = resolveWorkspaceOrImport("ai/dist/oauth.js", "@reitaard/recode-ai/oauth");
 
-	_aliases = {
+	const recodeAliases = {
 		"@reitaard/recode-coding-agent": piCodingAgentEntry,
+		"@reitaard/recode-coding-agent/workers": piCodingAgentWorkersEntry,
 		"@reitaard/recode-agent-core": piAgentCoreEntry,
+		"@reitaard/recode-agent-core/node": piAgentCoreNodeEntry,
 		"@reitaard/recode-tui": piTuiEntry,
 		"@reitaard/recode-ai": piAiCompatEntry,
 		"@reitaard/recode-ai/compat": piAiCompatEntry,
 		"@reitaard/recode-ai/oauth": piAiOauthEntry,
-		"@mariozechner/pi-coding-agent": piCodingAgentEntry,
-		"@mariozechner/pi-agent-core": piAgentCoreEntry,
-		"@mariozechner/pi-tui": piTuiEntry,
-		"@mariozechner/pi-ai": piAiCompatEntry,
-		"@mariozechner/pi-ai/compat": piAiCompatEntry,
-		"@mariozechner/pi-ai/oauth": piAiOauthEntry,
+	};
+
+	_aliases = {
+		...recodeAliases,
+		...bindPiPackageCompatibilityAliases(recodeAliases),
 		typebox: typeboxEntry,
 		"typebox/compile": typeboxCompileEntry,
 		"typebox/value": typeboxValueEntry,

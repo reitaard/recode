@@ -1,11 +1,13 @@
 # Changelog
 
-> **Lineage notice:** numbered entries below preserve inherited integration history; they are not published `@reitaard/recode-*` versions and do not select the custom standalone bootstrap version.
+## [0.1.3]
 
-## [0.84.1] - 2026-08-07
+- Released Recode telemetry context, schema, in-memory adapter, and conformance APIs.
 
-## [0.84.0] - 2026-08-06
+## [0.1.2]
 
-### Added
+- Aligned telemetry with the synchronized Recode package train.
 
-- Added the callback-based telemetry context contract, shared no-op context, deterministic in-memory reference adapter, reusable adapter conformance suite, typed serializable schema utilities, and multi-schema typed span starters with explicit child propagation.
+## [0.1.0]
+
+- Established standalone telemetry support for the Recode harness.

@@ -137,7 +137,7 @@ function calculateLayout(width: number): RecodeHeaderLayout {
 	}
 }
 
-/** Responsive re.pi welcome surface, ported from Claurst's layout rules. */
+/** Responsive Recode welcome surface, ported from Claurst's layout rules. */
 export class RecodeHeader implements Component {
 	private readonly version: string;
 	private readonly getMode: () => RecodeHeaderMode;

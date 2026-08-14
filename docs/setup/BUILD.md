@@ -2,7 +2,7 @@
 
 Requires Node `>=22.19.0`.
 
-> The seven-package workspace uses the synchronized `0.1.2` candidate train. Release certification requires checks, builds, deterministic tests, inspected tarballs, and an isolated lifecycle-disabled installation.
+> The seven-package workspace uses the synchronized `0.1.3` candidate train. Release certification requires checks, builds, deterministic tests, inspected tarballs, and an isolated lifecycle-disabled installation.
 
 ## Installed dependencies and validation
 
@@ -32,7 +32,7 @@ The root build uses reviewed checked-in model data and does not refresh provider
 
 ## First standalone build after migration
 
-The first build in the standalone repository is a **from-scratch bootstrap**, not an incremental continuation of an inherited RePi build or release.
+The first build in the standalone repository is a **from-scratch bootstrap**, not an incremental continuation of an inherited build or release.
 
 The completed standalone bootstrap followed these requirements:
 
@@ -43,31 +43,29 @@ The completed standalone bootstrap followed these requirements:
 5. use the deterministic build path that consumes reviewed checked-in catalogs without a network refresh;
 6. build in a clean environment and inspect all generated diffs before running tests.
 
-The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All seven workspace packages use the synchronized `0.1.2` train, including SQLite.
+The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All seven workspace packages use the synchronized `0.1.3` train, including SQLite.
 
 After compilation, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
 
-## Local binary install
+## Global migration on Windows
+
+The repository provides `install-global.sh` for a deliberate migration. The script requires Git Bash, a clean `main` checkout, and Node `>=22.19.0`. It backs up `~/.pi/agent`, removes only verified stale global harness shims and packages, certifies and packs all seven packages, smoke-installs the exact artifacts, installs them into the active npm prefix, and verifies the `recode` and `pi` shims.
+
+Close every running harness window. Do not delete `~/.pi/agent`; it contains sessions, settings, credentials, memory, and extensions. From Git Bash in the released Recode checkout, run:
 
 ```text
-npm run recode:install-local
+bash ./install-global.sh
 ```
 
-This requires a clean source checkout passing release identity. It builds the current platform and installs under the user-local Recode directory. It does not publish, tag, or access a release service.
-
-Options:
+Open another new terminal and update extension packages:
 
 ```text
---skip-install   skip npm install
---keep-build     retain temporary build output
+pi update
+recode
 ```
 
-Stop running Recode processes before replacing binaries, especially on Windows where native files may be locked.
+The global coding-agent installation exposes both `recode` and `pi`, so it may replace an existing upstream `pi` command in the same npm prefix. The script does not publish, tag, or mutate a remote repository.
 
-## Isolated package candidate
+## Portable candidate
 
-```text
-npm run release:local -- --out <absolute-disposable-directory> --force
-```
-
-This is costly and destructive only to the chosen output directory. It creates isolated artifacts; it is not publication approval or a complete multi-platform release.
+The portable archive installs the same seven-package set under its own `runtime` directory and starts through `recode.cmd` or `pi.cmd`. It is suitable for validation without replacing the global runtime. Release artifacts remain GitHub-only; npm publication is disabled.

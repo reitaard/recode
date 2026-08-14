@@ -72,7 +72,7 @@ const RECODE_ENVIRONMENT = new Set([
 	"PI_STARTUP_BENCHMARK_INPUT",
 	"PI_STARTUP_PROBE",
 	"PI_TELEMETRY",
-	"REPI_DELEGATION",
+	"RECODE_DELEGATION",
 ]);
 
 const PROVIDER_CREDENTIAL_ENVIRONMENT = new Set([
@@ -122,7 +122,7 @@ function parseAdditionalNames(value: string | undefined): Set<string> {
 		.map((name) => name.trim())
 		.filter(Boolean);
 	if (names.length > 64 || names.some((name) => !/^[A-Za-z_][A-Za-z0-9_]{0,127}$/.test(name))) {
-		throw new Error("REPI_MAESTRO_CHILD_ENV_ALLOW must contain at most 64 comma-separated environment names");
+		throw new Error("RECODE_MAESTRO_CHILD_ENV_ALLOW must contain at most 64 comma-separated environment names");
 	}
 	return new Set(names);
 }
@@ -131,7 +131,9 @@ export function createMaestroChildEnvironment(
 	source: NodeJS.ProcessEnv,
 	workspaceAccess: WorkspaceAccessMode,
 ): NodeJS.ProcessEnv {
-	const additional = parseAdditionalNames(source.REPI_MAESTRO_CHILD_ENV_ALLOW);
+	const additional = parseAdditionalNames(
+		source.RECODE_MAESTRO_CHILD_ENV_ALLOW ?? source.REPI_MAESTRO_CHILD_ENV_ALLOW,
+	);
 	const allowed = new Set([
 		...SYSTEM_ENVIRONMENT,
 		...NETWORK_ENVIRONMENT,
@@ -148,6 +150,9 @@ export function createMaestroChildEnvironment(
 		const normalized = process.platform === "win32" ? name.toLowerCase() : name;
 		if (normalizedAllowed.has(normalized) || name.startsWith("LC_")) result[name] = value;
 	}
-	result.REPI_WORKSPACE_ACCESS = workspaceAccess;
+	if (result.RECODE_DELEGATION === undefined && source.REPI_DELEGATION !== undefined) {
+		result.RECODE_DELEGATION = source.REPI_DELEGATION;
+	}
+	result.RECODE_WORKSPACE_ACCESS = workspaceAccess;
 	return result;
 }

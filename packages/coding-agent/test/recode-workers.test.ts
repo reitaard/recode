@@ -644,8 +644,8 @@ describe("recode worker TUI", () => {
 		mkdirSync(cwd, { recursive: true });
 		mkdirSync(agentDir, { recursive: true });
 		roots.push(root);
-		const previous = process.env.REPI_DELEGATION;
-		process.env.REPI_DELEGATION = "1";
+		const previous = process.env.RECODE_DELEGATION;
+		process.env.RECODE_DELEGATION = "1";
 
 		try {
 			const services = await createAgentSessionServices({
@@ -665,8 +665,8 @@ describe("recode worker TUI", () => {
 			expect(services.workerDirectory?.resolveWorker("監査").displayName).toBe("Levi");
 			expect(workerExtension?.commands.has("worker")).toBe(true);
 		} finally {
-			if (previous === undefined) delete process.env.REPI_DELEGATION;
-			else process.env.REPI_DELEGATION = previous;
+			if (previous === undefined) delete process.env.RECODE_DELEGATION;
+			else process.env.RECODE_DELEGATION = previous;
 		}
 	});
 });

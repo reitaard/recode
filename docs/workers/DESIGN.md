@@ -33,4 +33,4 @@ A worker may use the active workspace or another worktree sharing the same Git c
 
 ## Activation
 
-Delegation is enabled by default. `REPI_DELEGATION=0`, `false`, `no`, or `off` disables worker tools.
+Delegation is enabled by default. `RECODE_DELEGATION=0`, `false`, `no`, or `off` disables worker tools. The inherited `REPI_DELEGATION` name remains a read-only fallback for existing launch configurations; newly created child environments emit only `RECODE_DELEGATION`.

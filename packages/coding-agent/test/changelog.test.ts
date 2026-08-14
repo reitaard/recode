@@ -1,5 +1,9 @@
 import { describe, expect, test } from "vitest";
-import { type ChangelogEntry, normalizeChangelogLinks } from "../src/utils/changelog.ts";
+import {
+	type ChangelogEntry,
+	getStandaloneChangelogBaseline,
+	normalizeChangelogLinks,
+} from "../src/utils/changelog.ts";
 
 const entry: ChangelogEntry = {
 	major: 0,
@@ -7,6 +11,17 @@ const entry: ChangelogEntry = {
 	patch: 0,
 	content: "",
 };
+
+describe("getStandaloneChangelogBaseline", () => {
+	test("resets inherited RePi version state for the standalone Recode train", () => {
+		expect(getStandaloneChangelogBaseline("0.83.0", "0.1.3")).toBe("0.0.0");
+		expect(getStandaloneChangelogBaseline("0.74.2", "0.1.3")).toBe("0.0.0");
+	});
+
+	test("preserves standalone Recode version state", () => {
+		expect(getStandaloneChangelogBaseline("0.1.2", "0.1.3")).toBe("0.1.2");
+	});
+});
 
 describe("normalizeChangelogLinks", () => {
 	test("rewrites package-relative changelog links to tag-pinned GitHub source links", () => {

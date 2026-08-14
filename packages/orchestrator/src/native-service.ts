@@ -64,7 +64,7 @@ Restart=on-failure
 RestartSec=3
 TimeoutStopSec=12
 KillMode=control-group
-Environment=REPI_MAESTRO_SUPERVISION=systemd
+Environment=RECODE_MAESTRO_SUPERVISION=systemd
 
 [Install]
 WantedBy=default.target

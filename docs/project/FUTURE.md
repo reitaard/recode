@@ -6,7 +6,7 @@ This file preserves useful product ideas without representing them as current fu
 
 Everything here is **unapproved** unless it is moved into an owning `TODO.md` by an explicit Creator decision. Names, package boundaries, implementation order, and milestones are intentionally unfrozen.
 
-Current behavior belongs in package and feature documentation. Approved work belongs in focused TODOs. Historical plans remain evidence only in `docs/old/` until migration cleanup.
+Current behavior belongs in package and feature documentation. Approved work belongs in focused TODOs. Historical plans remain available only through Git history.
 
 ## Candidate capabilities
 

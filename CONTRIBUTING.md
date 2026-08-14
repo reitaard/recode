@@ -7,7 +7,7 @@ Thank you for helping improve Recode.
 - Search existing issues and documentation.
 - Discuss substantial features, public API changes, package additions, protocol changes, or release-system changes before implementation.
 - Report vulnerabilities through the private route in [SECURITY.md](SECURITY.md), never a public issue.
-- Treat `docs/old/` as historical evidence, not current product authority.
+- Treat Git history as historical evidence, not current product authority.
 
 ## Development
 

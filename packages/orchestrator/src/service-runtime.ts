@@ -37,8 +37,10 @@ function parseSupervisionMode(value: string | undefined): MaestroSupervisionMode
 }
 
 export async function serveMaestro(options: { supervisionMode?: MaestroSupervisionMode } = {}): Promise<void> {
-	const supervisionMode = options.supervisionMode ?? parseSupervisionMode(process.env.REPI_MAESTRO_SUPERVISION);
-	if (process.env.REPI_MAESTRO_WATCHER) {
+	const supervisionMode =
+		options.supervisionMode ??
+		parseSupervisionMode(process.env.RECODE_MAESTRO_SUPERVISION ?? process.env.REPI_MAESTRO_SUPERVISION);
+	if (process.env.RECODE_MAESTRO_WATCHER ?? process.env.REPI_MAESTRO_WATCHER) {
 		throw new Error("Fallback Maestro watchers are forbidden while native service supervision is available");
 	}
 	if (process.platform === "linux" && supervisionMode === "windows-task") {

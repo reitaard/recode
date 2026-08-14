@@ -179,6 +179,14 @@ export function compareVersions(v1: ChangelogEntry, v2: ChangelogEntry): number 
 /**
  * Get entries newer than lastVersion
  */
+export function getStandaloneChangelogBaseline(lastVersion: string, currentVersion: string): string {
+	const previous = lastVersion.split(".").map(Number);
+	const current = currentVersion.split(".").map(Number);
+	const inheritedRepiTrain =
+		previous[0] === 0 && (previous[1] ?? 0) >= 70 && current[0] === 0 && (current[1] ?? 0) < 70;
+	return inheritedRepiTrain ? "0.0.0" : lastVersion;
+}
+
 export function getNewEntries(entries: ChangelogEntry[], lastVersion: string): ChangelogEntry[] {
 	// Parse lastVersion
 	const parts = lastVersion.split(".").map(Number);

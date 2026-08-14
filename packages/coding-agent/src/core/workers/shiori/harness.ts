@@ -11,7 +11,7 @@ const SHIORI_MAX_ITERATIONS = 50;
 const RECODE_SHIORI_RESPONSE_FORMAT = {
 	type: "json_schema",
 	json_schema: {
-		name: "repi_shiori_memories",
+		name: "recode_shiori_memories",
 		strict: true,
 		schema: {
 			type: "object",

@@ -1,6 +1,6 @@
 {
 	"name": "recode-workspace",
-	"version": "0.1.2",
+	"version": "0.1.3",
 	"private": true,
 	"type": "module",
 	"workspaces": [
@@ -15,8 +15,9 @@
 	"scripts": {
 		"clean": "npm run clean --workspaces --if-present",
 		"build": "npm run build -w @reitaard/recode-tui && npm run build -w @reitaard/recode-telemetry && npm run build -w @reitaard/recode-ai && npm run build -w @reitaard/recode-agent-core && npm run build -w @reitaard/recode-storage-sqlite-node && npm run build -w @reitaard/recode-coding-agent && npm run build -w @reitaard/recode-orchestrator",
-		"check": "npm run check:identity && npm run check:migration-safety && npm run check:shrinkwrap && npm run check:telemetry-docs && npm run check:examples && npm run check:ts-imports && tsc --noEmit",
+		"check": "npm run check:identity && npm run check:migration-closure && npm run check:migration-safety && npm run check:shrinkwrap && npm run check:telemetry-docs && npm run check:examples && npm run check:ts-imports && tsc --noEmit",
 		"check:identity": "node scripts/check-standalone-identity.mjs",
+		"check:migration-closure": "node scripts/check-migration-closure.mjs",
 		"check:shrinkwrap": "node scripts/generate-coding-agent-shrinkwrap.mjs --check",
 		"shrinkwrap:coding-agent": "node scripts/generate-coding-agent-shrinkwrap.mjs",
 		"check:migration-safety": "node scripts/check-migration-safety.mjs",

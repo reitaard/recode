@@ -435,6 +435,9 @@ async function loadExtensionModule(extensionPath: string, cacheToken?: Extension
 
 	const jiti = createJiti(import.meta.url, {
 		moduleCache: false,
+		// Avoid shared OS-temp cache files. Concurrent Pi/Recode processes and
+		// Windows scanners can lock Jiti's generated files and cause EPERM.
+		fsCache: false,
 		// Bun uses modules embedded in the executable. Source TypeScript reuses the
 		// host-resolved modules and root tsconfig paths. Built Node uses dist aliases.
 		...(isBunBinary

@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.1.2]
+
+- Added a distinct `pi` executable for upstream-compatible package installation and management while retaining `recode` for the Recode application.
+- Made bare `pi update` update installed packages without changing bare `recode update` self-update semantics.
+- Disabled Jiti's shared filesystem cache to prevent Windows `EPERM` extension-loading failures.
+- Disclosed that a global Recode `pi` command replaces or shadows an existing upstream Pi command.
+
 ## [Unreleased]
 
 ### Added

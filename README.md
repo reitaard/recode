@@ -2,6 +2,14 @@
 
 A coding harness built around Aizen, reusable agent runtimes, workers, durable memory, code intelligence, and Maestro.
 
-> Standalone `0.1.0` release preparation is in progress. npm publication is disabled.
+The `recode` command runs Aizen, Maestro, and Recode-specific features. Recode `0.1.2` also provides a `pi` compatibility command so existing Pi ecosystem installation instructions work unchanged:
 
-See [the documentation index](docs/INDEX.md).
+```powershell
+pi install npm:pi-better-harness
+pi list
+pi update
+```
+
+A global Recode installation that exposes `pi` replaces or shadows any existing upstream `pi` command. npm publication remains disabled; releases are distributed through GitHub.
+
+See [the documentation index](docs/INDEX.md) and [changelog](CHANGELOG.md).

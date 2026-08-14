@@ -2,7 +2,7 @@
 
 Optional Node SQLite storage for Recode AgentHarness sessions. It uses the built-in `node:sqlite` module and requires Node `>=22.19.0`.
 
-> Source and manifest are present under the standalone `0.1.0` identity. This backend is not the coding-agent default; installation, build, tests, packing, and publication remain uncertified.
+> The package participates in the synchronized private `0.1.2` release candidate. This backend is not the coding-agent default; npm publication remains disabled.
 
 ## Public API
 

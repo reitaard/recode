@@ -2,7 +2,7 @@
 
 `@reitaard/recode-ai` is Recode's provider-neutral model, authentication, message, tool, streaming, image, and catalog layer. It separates provider ownership from wire-protocol implementations and keeps the preferred root API side-effect-light.
 
-> **Migration status:** source and manifest are present under the standalone `0.1.0` identity. Installation, build, tests, consumer compilation, package-content certification, and publication remain pending until root workspace infrastructure and dependencies are transferred.
+> The package participates in the synchronized private `0.1.2` release candidate. npm publication remains disabled.
 
 ## Public entry points
 

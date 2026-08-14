@@ -1,6 +1,15 @@
 # Recode Packages
 
-A Recode package distributes extensions, skills, prompts, and themes from npm, Git, URL/SSH Git, or local sources. Package installation executes package-manager and Git operations and may later load arbitrary extension code. Review and pin third-party sources.
+Recode consumes packages from the existing Pi ecosystem; no separate Recode catalog is required. The `pi` compatibility command preserves upstream copy-and-paste installation syntax:
+
+```text
+pi install npm:pi-better-harness
+pi install https://github.com/user/repository
+pi list
+pi update
+```
+
+A package distributes extensions, skills, prompts, and themes from npm, Git, URL/SSH Git, or local sources. Package installation executes package-manager and Git operations and may later load arbitrary extension code. Review and pin third-party sources. A global Recode `pi` command replaces or shadows an existing upstream `pi` executable.
 
 ## Sources and scopes
 
@@ -25,6 +34,8 @@ Packages may declare a compatibility `pi` manifest listing resource paths; conve
 
 ## Updating
 
+Bare `pi update` updates installed compatible packages. Bare `recode update` targets the Recode application; `recode update --extensions` remains an explicit equivalent for package updates.
+
 Exact npm versions and Git refs are pinned. Bulk updates skip pinned sources. Offline mode suppresses package network operations but is not a sandbox. Custom `npmCommand` is an argv array and changes the executable trust boundary.
 
-Do not publish package discovery commands or registry claims as stable until standalone package naming is approved. Package authors must put runtime dependencies in `dependencies`, compile examples against public imports, and test packed contents rather than relying on workspace resolution.
+Package authors must put runtime dependencies in `dependencies`, compile examples against public imports, and test packed contents rather than relying on workspace resolution. Individual packages can still depend on unsupported upstream APIs, so compatibility must be verified rather than inferred from catalog presence.

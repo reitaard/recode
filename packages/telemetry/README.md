@@ -2,7 +2,7 @@
 
 Vendor-neutral callback telemetry contracts and typed schema utilities for Recode packages. Node `>=22.19.0` is required by the package manifest.
 
-> **Migration status:** source and manifest are present under the standalone `0.1.0` identity. Installation, build, tests, package-content certification, and publication remain pending until root workspace infrastructure and dependencies are transferred.
+> The package participates in the synchronized private `0.1.2` release candidate. npm publication remains disabled.
 
 ## Public entry points
 

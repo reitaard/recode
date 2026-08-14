@@ -2,7 +2,9 @@
 
 The coding-agent package integrates Recode's CLI, interactive terminal application, Aizen runtime, legacy AgentSession compatibility runtime, resource system, SDK, headless protocols, workers, memory, Maestro routing, and Telegram gateway.
 
-The standalone repository is still being assembled. Normal installation and publication instructions are intentionally withheld until package identity, version lineage, artifacts, and registry publication are certified.
+Recode is distributed through certified GitHub release artifacts; npm publication remains disabled.
+
+`recode` is the primary application command. The additional `pi` compatibility command manages packages from the existing Pi ecosystem, allowing upstream installation instructions such as `pi install npm:pi-better-harness` to work unchanged. Globally installing this command replaces or shadows any existing upstream `pi` executable.
 
 ## Runtime modes
 
@@ -12,6 +14,7 @@ The standalone repository is still being assembled. Normal installation and publ
 - `--mode json` emits session events as JSONL.
 - `--mode rpc` accepts commands and emits responses/events as JSONL.
 - `recode maestro`, `doctor`, package commands, and `telegram` route to dedicated command handlers.
+- `pi install`, `remove`, `uninstall`, `list`, `config`, and `update` use the same package manager; bare `pi update` updates installed packages, while bare `recode update` targets Recode itself.
 
 Aizen is the product default. The SDK, extension host, JSON mode, and RPC mode retain AgentSession compatibility contracts; do not infer that every legacy API is an Aizen CLI feature.
 
@@ -38,6 +41,6 @@ Never import package-private `src/` paths.
 
 Provider implementation belongs to the AI package; terminal rendering belongs to the TUI package; AgentHarness belongs to Agent core; Maestro execution belongs to the orchestrator package.
 
-## Status
+## Distribution boundary
 
-These pre-transfer drafts were checked against focused upstream source and recorded audits, but they are not certified package contracts yet. Product source has not been transferred; settings/protocol tables, build, examples, links, platforms, package contents, and public installation require post-transfer drift checks and certification.
+The package remains private on npm. Use inspected GitHub release artifacts. Native TUI addons are omitted until separately certified.

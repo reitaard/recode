@@ -2,7 +2,7 @@
 
 Terminal UI primitives and differential renderers used by Recode. Node `>=22.19.0` is required.
 
-> The standalone `0.1.0` JavaScript package has passed build, tests, packing, isolated installation, and Windows x64 fallback smoke checks. Native addons remain uncertified and are deliberately omitted. Publication remains disabled.
+> The `0.1.2` JavaScript release candidate retains the certified fallback boundary. Native addons remain uncertified and deliberately omitted. npm publication remains disabled.
 
 ## Choose a renderer
 

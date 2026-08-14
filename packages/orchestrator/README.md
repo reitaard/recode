@@ -2,7 +2,7 @@
 
 Recode Maestro service supervision and live-session TUI. Maestro owns durable **full Aizen session processes**; it is separate from the lightweight named-worker tools that run bounded tasks inside an Aizen session.
 
-Node `>=22.19.0` is required. Source and manifest are present under the standalone `0.1.0` identity; installation, build, tests, native service installation, packing, and publication remain uncertified.
+Node `>=22.19.0` is required. The package participates in the synchronized private `0.1.2` release candidate. Native service installation remains platform-specific and npm publication remains disabled.
 
 ## Entry points
 

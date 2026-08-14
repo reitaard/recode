@@ -12,10 +12,10 @@ recode [aizen] [options] [@files...] [messages...]
 |---|---|
 | `maestro [tui|service]` | Route to Maestro before foreground runtime startup. |
 | `doctor [--json]` | Bounded read-only diagnostics. |
-| `install`, `remove`, `uninstall`, `update`, `list`, `config` | Package/resource management. |
+| `pi install`, `remove`, `uninstall`, `update`, `list`, `config` | Pi-compatible package/resource management. |
 | `telegram` | Telegram long-polling gateway. |
 
-Use `<command> --help` for package-command details. Self-update and publication remain fail-closed until standalone release identity is certified.
+Use `<command> --help` for package-command details. `pi update` updates installed packages; `recode update` targets Recode itself. Self-update and npm publication remain fail-closed until their release endpoints are explicitly enabled.
 
 ## Core options
 
@@ -39,4 +39,4 @@ An allowlist supplied by `--tools` is applied before `--exclude-tools`. Extensio
 
 Session selectors are mutually consequential: continue/resume/path/ID/fork resolution must be tested rather than combined speculatively. Project resources in non-interactive modes follow saved/default trust or explicit trust flags because no trust prompt is available.
 
-Installation syntax is intentionally absent until publication is approved.
+Packages from npm, Git, or local paths use upstream-compatible syntax, for example `pi install npm:pi-better-harness`. Installing the global `pi` compatibility command replaces or shadows another globally installed `pi` command.

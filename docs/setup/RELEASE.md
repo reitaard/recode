@@ -1,6 +1,6 @@
 # Release
 
-Recode uses the synchronized private `@reitaard/recode-*` `0.1.0` package train. npm publication and dist-tag mutation are disabled.
+Recode uses the synchronized private `@reitaard/recode-*` `0.1.2` package train. npm publication and dist-tag mutation are disabled.
 
 ## GitHub release boundary
 
@@ -12,14 +12,18 @@ Before creating a tag or release:
 2. run `npm run check`, `npm run build`, and deterministic tests;
 3. create and inspect all seven tarballs;
 4. install them together with lifecycle scripts disabled in an isolated project;
-5. verify maintained imports and generated command shims;
+5. verify maintained imports and generated `recode`, `pi`, and `recode-maestro` command shims, including distinct bare-update behavior;
 6. verify package names, versions, dependency ranges, assets, shrinkwrap, and absence of legacy package dependencies;
 7. generate SHA-256 hashes and provenance containing source commit, version, package identities, Node version, and platform limitations;
 8. obtain explicit approval for the tag push and GitHub Release mutation.
 
 ## Platform statement
 
-The local `0.1.0` lane is certified on Windows x64 with Node `26.5.0`. TUI native addons and platform binaries are omitted. Other operating systems, architectures, native addons, Termux, containers, and external services require separate evidence.
+The `0.1.2` candidate must be certified on Windows x64 with Node `26.5.0` before release. TUI native addons and platform binaries are omitted. Other operating systems, architectures, native addons, Termux, containers, and external services require separate evidence.
+
+## Command ownership
+
+The coding-agent tarball exposes both `recode` and `pi`. A global installation may replace or shadow an existing upstream `pi` executable; disclose this prominently and never describe the two global commands as safely co-installable. `pi update` updates installed packages, while `recode update` targets Recode itself.
 
 ## Safety
 

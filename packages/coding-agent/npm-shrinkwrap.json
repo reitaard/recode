@@ -820,6 +820,7 @@
 			"resolved": "https://registry.npmjs.org/@reitaard/recode-agent-core/-/recode-agent-core-0.1.3.tgz",
 			"license": "MIT",
 			"dependencies": {
+				"diff": "8.0.4",
 				"ignore": "7.0.5",
 				"typebox": "1.1.38",
 				"yaml": "2.9.0",

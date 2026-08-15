@@ -49,12 +49,18 @@ After compilation, run package tests, repository checks, example compilation, ge
 
 ## Global migration on Windows
 
-The repository provides `install-global.sh` for a deliberate migration. The script requires Git Bash, a clean `main` checkout, and Node `>=22.19.0`. It backs up `~/.pi/agent`, removes only verified stale global harness shims and packages, certifies and packs all seven packages in an isolated temporary Git clone, smoke-installs the exact artifacts, installs them into the active npm prefix, and verifies the `recode` and `pi` shims.
+The repository provides `install-global.sh` for a deliberate migration from Git Bash and `install-global.ps1` for machines without Bash. Both require a clean `main` checkout and Node `>=22.19.0`. They back up `~/.pi/agent`, remove only verified stale global harness shims and packages, certify and pack all seven packages in an isolated temporary Git clone, smoke-install the exact artifacts, install them into the active npm prefix, and verify the `recode` and `pi` shims.
 
-Close every running harness window. Do not delete `~/.pi/agent`; it contains sessions, settings, credentials, memory, and extensions. From Git Bash in the released Recode checkout, run:
+Each installer detects running Recode/Node processes, warns that unsaved work may be lost, and asks before force-closing the process tree. Declining cancels the installation. Do not delete `~/.pi/agent`; it contains sessions, settings, credentials, memory, and extensions. From Git Bash in the released Recode checkout, run:
 
 ```text
 bash ./install-global.sh
+```
+
+From PowerShell when Bash is unavailable, run:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\install-global.ps1
 ```
 
 Open another new terminal and update extension packages:

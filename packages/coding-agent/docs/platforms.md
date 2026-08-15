@@ -8,7 +8,7 @@ Node.js must satisfy the root engine floor. Linux, Windows, and macOS require se
 
 ## Windows
 
-Shell selection, process replacement, clipboard/native helpers, file locking, and terminal key conflicts require Windows-specific tests. Stop running Recode before replacing binaries. The standalone `0.1.0` certification ran on Windows x64 with Node `26.5.0`; the `0.1.2` candidate must repeat workspace checks/builds/tests, tarball installation, both npm command shims, credential-free CLI help/version/model listing, extension loading, and the no-addon TUI fallback before release. This is evidence for that environment, not a claim that every Windows terminal is certified.
+Shell selection, process replacement, clipboard/native helpers, file locking, and terminal key conflicts require Windows-specific tests. The global installer detects Recode and Node processes using the runtime, warns that unsaved work may be lost, and asks for explicit confirmation before force-closing the process tree and replacing binaries. Declining cancels installation. The standalone `0.1.0` certification ran on Windows x64 with Node `26.5.0`; the `0.1.2` candidate must repeat workspace checks/builds/tests, tarball installation, both npm command shims, credential-free CLI help/version/model listing, extension loading, and the no-addon TUI fallback before release. This is evidence for that environment, not a claim that every Windows terminal is certified.
 
 TUI native addons are deliberately omitted from package contents. The reviewed C sources/builders remain available for future reproducible certification, but no `.node` prebuild is shipped.
 

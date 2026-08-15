@@ -209,7 +209,15 @@ function createWorkerTools(
 			}
 			case "web_search":
 			case "fetch_content":
-			case "get_search_content":
+			case "get_search_content": {
+				const tool = externalToolsByName.get(name);
+				if (!tool) {
+					throw new Error(
+						`Web research tool "${name}" is unavailable. Install optional web access with: pi install npm:pi-web-access`,
+					);
+				}
+				return tool;
+			}
 			case "kioku_search": {
 				const tool = externalToolsByName.get(name);
 				if (!tool) throw new Error(`Required named-worker tool is unavailable: ${name}`);
@@ -371,7 +379,13 @@ export async function runNamedWorker(options: RunNamedWorkerOptions): Promise<Na
 	};
 	const models = options.models ?? createHarnessModels(requestModel, options.modelRegistry!, "named workers");
 	const toolNames = options.worker.tools ?? (["read", "grep", "find", "ls"] as const);
-	const tools = createWorkerTools(options.worker, options.cwd, toolNames, options.externalTools);
+	let tools: AgentTool[];
+	try {
+		tools = createWorkerTools(options.worker, options.cwd, toolNames, options.externalTools);
+	} catch (error: unknown) {
+		harnessSetupDurationMs = performance.now() - startedAt;
+		return finish("failed", "", error instanceof Error ? error.message : String(error));
+	}
 	const harness = new AgentHarness({
 		env: new NodeExecutionEnv({ cwd: options.cwd }),
 		session: new Session(new InMemorySessionStorage()),

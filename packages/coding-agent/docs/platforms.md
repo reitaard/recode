@@ -18,7 +18,25 @@ Tmux can alter keyboard and image capabilities. Terminal setup is opt-in; previe
 
 ## Termux/Android
 
-Clipboard and release paths have special handling, but Termux publication remains uncertified. Do not advertise an artifact until the dedicated build, dependency, install, and smoke-test lane passes.
+The repository contains a dedicated seven-package Termux build lane. It produces a single package named `recode`; it does not bundle third-party extensions, the `librarian` skill, or optional native clipboard/TUI addons. Web research remains optional and is installed separately with:
+
+```text
+pi install npm:pi-web-access
+```
+
+Build the aarch64 candidate with Docker when `dpkg-deb` is unavailable:
+
+```text
+bash scripts/build-termux-release.sh --docker
+node scripts/test-termux-package.mjs --root .termux-build/stage
+node scripts/generate-termux-release-metadata.mjs \
+  --package .termux-build/recode_0.1.5-1_aarch64.deb \
+  --output .termux-build \
+  --version 0.1.5 \
+  --architecture aarch64
+```
+
+The candidate is not fully supported or publishable until a real Android/Termux aarch64 device passes installation, upgrade/removal, TUI, session, memory, SQLite, and optional web-access smoke tests. Live providers and external services remain separate certification lanes.
 
 ## Containers
 

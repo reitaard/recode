@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.1.5]
+
+- Added the Termux/aarch64 release candidate and low-noise bundle packaging.
+- Kept Mayuri web access optional; install `npm:pi-web-access` separately when needed.
+
 ## [0.1.4]
 
 - Moved the status-area spacer above active indicators, keeping the editor aligned without a trailing gap.

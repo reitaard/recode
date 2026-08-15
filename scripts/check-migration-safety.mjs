@@ -4,12 +4,12 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import { join, relative } from "node:path";
 
 const roots = ["package.json", "packages", "scripts"]; // Historical docs are intentionally outside active safety scanning.
+// Local package and Termux bundle staging are intentionally allowed; they perform no GitHub/npm mutation.
 const forbiddenFiles = [
 	"scripts/publish.mjs",
 	"scripts/release.mjs",
 	"scripts/install-local.mjs",
 	"scripts/build-binaries.sh",
-	"scripts/build-termux-release.sh",
 	"scripts/publish-release-announcement.mjs",
 ];
 const failures = [];

@@ -2,7 +2,12 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import type { AgentTool } from "@reitaard/recode-agent-core";
-import { createModels, fauxAssistantMessage, fauxProvider, type RegisterFauxProviderOptions } from "@reitaard/recode-ai";
+import {
+	createModels,
+	fauxAssistantMessage,
+	fauxProvider,
+	type RegisterFauxProviderOptions,
+} from "@reitaard/recode-ai";
 import { Type } from "typebox";
 import { describe, expect, it } from "vitest";
 import { createDelegateTool } from "../src/core/delegation/delegate-tool.ts";
@@ -48,7 +53,7 @@ describe("named worker delegation", () => {
 			{ id: "audit", displayName: "Levi", aliases: ["監査"] },
 			{ id: "shiori", displayName: "Shiori", aliases: ["栞"] },
 		]);
-		expect(RECODE_NAMED_WORKERS.find((candidate) => candidate.id === "research")?.skillName).toBe("librarian");
+		expect(RECODE_NAMED_WORKERS.find((candidate) => candidate.id === "research")?.skillName).toBeUndefined();
 		expect(RECODE_NAMED_WORKERS.find((candidate) => candidate.id === "research")?.tools).toEqual([
 			"web_search",
 			"fetch_content",
@@ -124,7 +129,7 @@ describe("named worker delegation", () => {
 		expect(systemPrompt).toContain("Cardinal remains the only admission path into Kioku");
 	});
 
-	it("explicitly invokes Mayuri's loaded librarian skill", async () => {
+	it("supports an explicitly selected skill for a worker", async () => {
 		const { registration, models } = createFaux();
 		const dir = await mkdtemp(join(tmpdir(), "repi-librarian-"));
 		const skillPath = join(dir, "SKILL.md");
@@ -221,15 +226,14 @@ describe("named worker delegation", () => {
 			execute: async () => ({ content: [{ type: "text", text: "ok" }], details: undefined }),
 		}));
 
+		const mayuri = RECODE_NAMED_WORKERS.find((candidate) => candidate.id === "research");
+		if (!mayuri) throw new Error("Mayuri worker missing");
+
 		const result = await runNamedWorker({
 			cwd: process.cwd(),
 			model: registration.getModel(),
 			models,
-			worker: worker({
-				id: "research",
-				displayName: "Mayuri",
-				tools: ["web_search", "fetch_content", "get_search_content"],
-			}),
+			worker: mayuri,
 			externalTools,
 			task: "Research an external technical source.",
 		});
@@ -238,6 +242,24 @@ describe("named worker delegation", () => {
 		expect(toolNames).toEqual(["web_search", "fetch_content", "get_search_content"]);
 		expect(systemPrompt).toContain("Local workspace access is unavailable");
 		expect(systemPrompt).not.toContain(`Workspace: ${process.cwd()}`);
+	});
+
+	it("reports the optional web-access installation when Mayuri has no web tools", async () => {
+		const { registration, models } = createFaux();
+		const mayuri = RECODE_NAMED_WORKERS.find((candidate) => candidate.id === "research");
+		if (!mayuri) throw new Error("Mayuri worker missing");
+
+		const result = await runNamedWorker({
+			cwd: process.cwd(),
+			model: registration.getModel(),
+			models,
+			worker: mayuri,
+			task: "Research an external technical source.",
+		});
+
+		expect(result.status).toBe("failed");
+		expect(result.error).toContain("pi install npm:pi-web-access");
+		expect(result.error).not.toContain("librarian");
 	});
 
 	it("clips oversized worker output before returning it to the parent", async () => {

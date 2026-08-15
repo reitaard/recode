@@ -1,6 +1,6 @@
 {
 	"name": "@reitaard/recode-ai",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"description": "Unified LLM API with automatic model discovery and provider configuration",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -65,7 +65,7 @@
 		"openai": "6.26.0",
 		"partial-json": "0.1.7",
 		"typebox": "1.1.38",
-		"@reitaard/recode-telemetry": "^0.1.4",
+		"@reitaard/recode-telemetry": "^0.1.5",
 		"@smithy/types": "4.16.1"
 	},
 	"keywords": [

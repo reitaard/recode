@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.5]
+
+- Aligned Maestro with the `0.1.5` Termux release candidate and low-noise bundle.
+
 ## [0.1.4]
 
 - Aligned Maestro with the `0.1.4` Recode maintenance release.

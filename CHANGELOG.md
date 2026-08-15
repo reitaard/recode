@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.5
+
+- Added the Termux/aarch64 release candidate and a low-noise bundle containing the seven package tarballs, the Termux package, checksums, provenance, and release notes.
+- Kept third-party extensions and optional web research outside the core runtime; install web access separately with `pi install npm:pi-web-access`.
+
 ## 0.1.4
 
 - Moved the status-area spacer above active indicators, keeping the editor aligned without a trailing gap.

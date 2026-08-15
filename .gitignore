@@ -24,6 +24,11 @@ out.jsonl
 out.html
 *.html
 packages/coding-agent/binaries/
+.termux-build/
+.release/
+.release-input/
+.release-work/
+termux/*.deb
 /docs/old/
 .pi/hf-sessions/
 .pi/hf-sessions-backup/

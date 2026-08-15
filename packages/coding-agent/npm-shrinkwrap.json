@@ -1,17 +1,17 @@
 {
 	"name": "@reitaard/recode-coding-agent",
-	"version": "0.1.4",
+	"version": "0.1.5",
 	"lockfileVersion": 3,
 	"requires": true,
 	"packages": {
 		"": {
 			"name": "@reitaard/recode-coding-agent",
-			"version": "0.1.4",
+			"version": "0.1.5",
 			"dependencies": {
-				"@reitaard/recode-agent-core": "^0.1.4",
-				"@reitaard/recode-ai": "^0.1.4",
-				"@reitaard/recode-orchestrator": "^0.1.4",
-				"@reitaard/recode-tui": "^0.1.4",
+				"@reitaard/recode-agent-core": "^0.1.5",
+				"@reitaard/recode-ai": "^0.1.5",
+				"@reitaard/recode-orchestrator": "^0.1.5",
+				"@reitaard/recode-tui": "^0.1.5",
 				"@silvia-odwyer/photon-node": "0.3.4",
 				"chalk": "5.6.2",
 				"cross-spawn": "7.0.6",
@@ -816,24 +816,24 @@
 			"license": "BSD-3-Clause"
 		},
 		"node_modules/@reitaard/recode-agent-core": {
-			"version": "0.1.4",
-			"resolved": "https://registry.npmjs.org/@reitaard/recode-agent-core/-/recode-agent-core-0.1.4.tgz",
+			"version": "0.1.5",
+			"resolved": "https://registry.npmjs.org/@reitaard/recode-agent-core/-/recode-agent-core-0.1.5.tgz",
 			"license": "MIT",
 			"dependencies": {
 				"diff": "8.0.4",
 				"ignore": "7.0.5",
 				"typebox": "1.1.38",
 				"yaml": "2.9.0",
-				"@reitaard/recode-ai": "^0.1.4",
-				"@reitaard/recode-telemetry": "^0.1.4"
+				"@reitaard/recode-ai": "^0.1.5",
+				"@reitaard/recode-telemetry": "^0.1.5"
 			},
 			"engines": {
 				"node": ">=22.19.0"
 			}
 		},
 		"node_modules/@reitaard/recode-ai": {
-			"version": "0.1.4",
-			"resolved": "https://registry.npmjs.org/@reitaard/recode-ai/-/recode-ai-0.1.4.tgz",
+			"version": "0.1.5",
+			"resolved": "https://registry.npmjs.org/@reitaard/recode-ai/-/recode-ai-0.1.5.tgz",
 			"license": "MIT",
 			"dependencies": {
 				"@anthropic-ai/sdk": "0.91.1",
@@ -847,7 +847,7 @@
 				"openai": "6.26.0",
 				"partial-json": "0.1.7",
 				"typebox": "1.1.38",
-				"@reitaard/recode-telemetry": "^0.1.4",
+				"@reitaard/recode-telemetry": "^0.1.5",
 				"@smithy/types": "4.16.1"
 			},
 			"bin": {
@@ -858,15 +858,15 @@
 			}
 		},
 		"node_modules/@reitaard/recode-orchestrator": {
-			"version": "0.1.4",
-			"resolved": "https://registry.npmjs.org/@reitaard/recode-orchestrator/-/recode-orchestrator-0.1.4.tgz",
+			"version": "0.1.5",
+			"resolved": "https://registry.npmjs.org/@reitaard/recode-orchestrator/-/recode-orchestrator-0.1.5.tgz",
 			"license": "MIT",
 			"dependencies": {
 				"chalk": "5.6.2",
-				"@reitaard/recode-tui": "^0.1.4"
+				"@reitaard/recode-tui": "^0.1.5"
 			},
 			"peerDependencies": {
-				"@reitaard/recode-coding-agent": "^0.1.4"
+				"@reitaard/recode-coding-agent": "^0.1.5"
 			},
 			"bin": {
 				"recode-maestro": "dist/cli.js"
@@ -876,16 +876,16 @@
 			}
 		},
 		"node_modules/@reitaard/recode-telemetry": {
-			"version": "0.1.4",
-			"resolved": "https://registry.npmjs.org/@reitaard/recode-telemetry/-/recode-telemetry-0.1.4.tgz",
+			"version": "0.1.5",
+			"resolved": "https://registry.npmjs.org/@reitaard/recode-telemetry/-/recode-telemetry-0.1.5.tgz",
 			"license": "MIT",
 			"engines": {
 				"node": ">=22.19.0"
 			}
 		},
 		"node_modules/@reitaard/recode-tui": {
-			"version": "0.1.4",
-			"resolved": "https://registry.npmjs.org/@reitaard/recode-tui/-/recode-tui-0.1.4.tgz",
+			"version": "0.1.5",
+			"resolved": "https://registry.npmjs.org/@reitaard/recode-tui/-/recode-tui-0.1.5.tgz",
 			"license": "MIT",
 			"dependencies": {
 				"get-east-asian-width": "1.6.0",

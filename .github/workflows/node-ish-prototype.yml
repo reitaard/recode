@@ -20,7 +20,6 @@ jobs:
         shell: bash
         run: |
           set -euxo pipefail
-          NODE_VERSION=24.18.1
           ALPINE_VERSION=3.23.5
           ROOT="$RUNNER_TEMP/alpine-x86"
           OUT="$GITHUB_WORKSPACE/out"
@@ -30,7 +29,6 @@ jobs:
             "https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/x86/alpine-minirootfs-${ALPINE_VERSION}-x86.tar.gz" \
             -o "$RUNNER_TEMP/alpine-x86.tar.gz"
           sudo tar -xzf "$RUNNER_TEMP/alpine-x86.tar.gz" -C "$ROOT"
-
           sudo chroot "$ROOT" /bin/sh -c '/bin/busybox echo ia32-ok'
 
           sudo cp /etc/resolv.conf "$ROOT/etc/resolv.conf"
@@ -50,8 +48,9 @@ jobs:
 
           sudo chroot "$ROOT" /bin/sh -euxc '
             apk add --no-cache \
-              bash build-base lld python3 linux-headers curl ca-certificates \
-              tar xz perl pkgconf git
+              bash build-base python3 linux-headers curl ca-certificates tar xz perl pkgconf git \
+              ada-dev brotli-dev c-ares-dev nghttp2-dev openssl-dev \
+              simdjson-dev simdutf-dev sqlite-dev zlib-dev zstd-dev
 
             cd /tmp
             curl -fL --retry 5 \
@@ -73,20 +72,31 @@ jobs:
 
             grep -A8 "static int uv__use_io_uring" deps/uv/src/unix/linux.c
 
-            # GCC already compiled the complete ia32 tree successfully in the
-            # previous run. Keep it, but use lld for the memory-heavy final link.
+            # Keep V8 conservative. Shared Alpine libraries drastically reduce
+            # the memory needed for Node's final link while bundled libuv stays
+            # patched specifically for iSH.
             export CC=gcc
             export CXX=g++
             export CFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
             export CXXFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
-            export LDFLAGS="-fuse-ld=lld -Wl,--threads=1"
+            export LDFLAGS="-Wl,--no-keep-memory"
 
             ./configure \
               --dest-cpu=ia32 \
               --without-intl \
               --without-node-snapshot \
               --without-node-code-cache \
-              --openssl-no-asm
+              --shared-ada \
+              --shared-brotli \
+              --shared-zlib \
+              --shared-openssl \
+              --shared-cares \
+              --shared-nghttp2 \
+              --shared-simdjson \
+              --shared-simdutf \
+              --shared-sqlite \
+              --shared-zstd \
+              --openssl-use-def-ca-store
 
             make -j2
 
@@ -97,10 +107,31 @@ jobs:
             "$NODE" --no-turbofan -e "const fs=require(\"node:fs\"); fs.writeFileSync(\"/tmp/node-ish-test\",\"ok\"); console.log(fs.readFileSync(\"/tmp/node-ish-test\",\"utf8\"))"
             "$NODE" --no-turbofan -e "const {DatabaseSync}=require(\"node:sqlite\"); const db=new DatabaseSync(\":memory:\"); console.log(db.prepare(\"select 1 as ok\").get()); db.close()"
 
-            mkdir -p /tmp/node-ish
-            cp "$NODE" /tmp/node-ish/node
+            mkdir -p /tmp/node-ish/bin /tmp/node-ish/lib
+            cp "$NODE" /tmp/node-ish/bin/node-real
+            chmod 0755 /tmp/node-ish/bin/node-real
+            strip /tmp/node-ish/bin/node-real || true
+
+            # Bundle non-libc shared dependencies so the tarball can be tested
+            # directly without requiring the user to hunt package names.
+            ldd /tmp/node-ish/bin/node-real | tee /tmp/node-ish/ldd.txt
+            ldd /tmp/node-ish/bin/node-real | awk '\''/=> \/(usr\/)?lib\// {print $3} /^\/(usr\/)?lib\// {print $1}'\'' | while read -r lib; do
+              case "$lib" in
+                *ld-musl-*|*/libc.musl-*) ;;
+                *) cp -L "$lib" /tmp/node-ish/lib/ ;;
+              esac
+            done
+
+            cat > /tmp/node-ish/node <<"SH"
+          #!/bin/sh
+          HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+          export LD_LIBRARY_PATH="$HERE/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+          exec "$HERE/bin/node-real" --no-turbofan "$@"
+          SH
             chmod 0755 /tmp/node-ish/node
-            strip /tmp/node-ish/node || true
+
+            /tmp/node-ish/node --version
+            /tmp/node-ish/node -e "console.log(\"wrapper-ok\")"
 
             cd /tmp
             tar -czf /out/node-ish-24.18.1-alpine-i386.tar.gz node-ish

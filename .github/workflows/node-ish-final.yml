@@ -1,0 +1,76 @@
+name: Build node-ish final
+on:
+  push:
+    branches: [build/node-ish-prototype]
+    paths: [.github/workflows/node-ish-final.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - name: Build
+        shell: bash
+        run: |
+          set -euxo pipefail
+          ROOT="$RUNNER_TEMP/alpine-x86"
+          OUT="$GITHUB_WORKSPACE/out"
+          mkdir -p "$ROOT" "$OUT"
+          curl -fL --retry 5 https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/x86/alpine-minirootfs-3.23.5-x86.tar.gz -o "$RUNNER_TEMP/a.tar.gz"
+          sudo tar -xzf "$RUNNER_TEMP/a.tar.gz" -C "$ROOT"
+          sudo cp /etc/resolv.conf "$ROOT/etc/resolv.conf"
+          sudo mkdir -p "$ROOT/proc" "$ROOT/sys" "$ROOT/dev" "$ROOT/out"
+          sudo mount -t proc proc "$ROOT/proc"
+          sudo mount --rbind /sys "$ROOT/sys"
+          sudo mount --rbind /dev "$ROOT/dev"
+          sudo mount --bind "$OUT" "$ROOT/out"
+          trap 'sudo umount -l "$ROOT/out" || true; sudo umount -l "$ROOT/dev" || true; sudo umount -l "$ROOT/sys" || true; sudo umount -l "$ROOT/proc" || true' EXIT
+          sudo chroot "$ROOT" /bin/sh -euxc '
+            apk add --no-cache bash build-base python3 linux-headers curl ca-certificates tar xz perl pkgconf git ada-dev brotli-dev c-ares-dev nghttp2-dev openssl-dev simdjson-dev simdutf-dev sqlite-dev zlib-dev zstd-dev
+            cd /tmp
+            curl -fL --retry 5 https://nodejs.org/dist/v24.18.1/node-v24.18.1.tar.xz -o node.tar.xz
+            tar -xf node.tar.xz
+            cd node-v24.18.1
+            python3 - <<"PY"
+          from pathlib import Path
+          p=Path("deps/uv/src/unix/linux.c")
+          s=p.read_text()
+          n="#if defined(__ANDROID_API__)\n"
+          r="#if defined(__i386__)\n  return 0; /* iSH: no io_uring */\n#elif defined(__ANDROID_API__)\n"
+          assert n in s
+          p.write_text(s.replace(n,r,1))
+          PY
+            export CC=gcc CXX=g++
+            export CFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
+            export CXXFLAGS="$CFLAGS"
+            export LDFLAGS="-Wl,--no-keep-memory"
+            python3 configure.py --dest-cpu=ia32 --without-intl --without-node-snapshot --without-node-code-cache --shared-ada --shared-brotli --shared-zlib --shared-openssl --shared-cares --shared-nghttp2 --shared-simdjson --shared-simdutf --shared-sqlite --shared-zstd --openssl-use-def-ca-store
+            make -j2
+            NODE=out/Release/node
+            "$NODE" --version
+            "$NODE" --no-turbofan -e "console.log({arch:process.arch,platform:process.platform})"
+            "$NODE" --no-turbofan -e "const fs=require(\"node:fs\");fs.writeFileSync(\"/tmp/x\",\"ok\");console.log(fs.readFileSync(\"/tmp/x\",\"utf8\"))"
+            "$NODE" --no-turbofan -e "const {DatabaseSync}=require(\"node:sqlite\");const db=new DatabaseSync(\":memory:\");console.log(db.prepare(\"select 1 as ok\").get());db.close()"
+            mkdir -p /tmp/node-ish/bin /tmp/node-ish/lib
+            cp "$NODE" /tmp/node-ish/bin/node-real
+            strip /tmp/node-ish/bin/node-real || true
+            ldd /tmp/node-ish/bin/node-real > /tmp/node-ish/ldd.txt
+            ldd /tmp/node-ish/bin/node-real | awk '\''/=> \/(usr\/)?lib\// {print $3} /^\/(usr\/)?lib\// {print $1}'\'' | while read -r lib; do case "$lib" in *ld-musl-*|*/libc.musl-*) ;; *) cp -L "$lib" /tmp/node-ish/lib/ ;; esac; done
+            printf "%s\n" "#!/bin/sh" "HERE=\$(CDPATH= cd -- \"\$(dirname -- \"\$0\")\" && pwd)" "export LD_LIBRARY_PATH=\"\$HERE/lib\${LD_LIBRARY_PATH:+:\$LD_LIBRARY_PATH}\"" "exec \"\$HERE/bin/node-real\" --no-turbofan \"\$@\"" > /tmp/node-ish/node
+            chmod 0755 /tmp/node-ish/node
+            /tmp/node-ish/node --version
+            /tmp/node-ish/node -e "console.log(\"wrapper-ok\")"
+            cd /tmp
+            tar -czf /out/node-ish-24.18.1-alpine-i386.tar.gz node-ish
+            sha256sum /out/node-ish-24.18.1-alpine-i386.tar.gz > /out/node-ish-24.18.1-alpine-i386.tar.gz.sha256
+          '
+          ls -lh "$OUT"
+          cat "$OUT/node-ish-24.18.1-alpine-i386.tar.gz.sha256"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: node-ish-24.18.1-alpine-i386
+          path: out/node-ish-24.18.1-alpine-i386.tar.gz*
+          if-no-files-found: error
+          retention-days: 7

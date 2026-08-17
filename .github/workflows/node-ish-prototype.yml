@@ -16,17 +16,15 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 180
     steps:
-      - name: Enable i386 emulation
-        uses: docker/setup-qemu-action@v3
-        with:
-          platforms: 386
-
       - name: Build Node 24 for Alpine i386 / iSH
         shell: bash
         run: |
           set -euxo pipefail
           mkdir -p "$GITHUB_WORKSPACE/out"
 
+          # GitHub's x86_64 Linux runners can normally execute 32-bit x86
+          # processes directly through the kernel's IA32 compatibility mode.
+          # Avoid QEMU here because it makes the full V8 build much slower.
           docker run --rm --platform linux/386 \
             -v "$GITHUB_WORKSPACE/out:/out" \
             alpine:3.23 /bin/sh -euxc '
@@ -43,8 +41,6 @@ jobs:
               tar -xf node.tar.xz
               cd "node-v${NODE_VERSION}"
 
-              # iSH does not implement io_uring. Compile that probe out instead
-              # of depending on the emulator returning ENOSYS correctly.
               python3 - <<"PY"
           from pathlib import Path
           p = Path("deps/uv/src/unix/linux.c")
@@ -68,7 +64,7 @@ jobs:
                 --without-node-code-cache \
                 --openssl-no-asm
 
-              make -j2
+              make -j4
 
               NODE=out/Release/node
               "$NODE" --version

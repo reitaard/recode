@@ -1,0 +1,102 @@
+name: Build node-ish prototype
+
+on:
+  push:
+    branches:
+      - build/node-ish-prototype
+    paths:
+      - .github/workflows/node-ish-prototype.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Enable i386 emulation
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: 386
+
+      - name: Build Node 24 for Alpine i386 / iSH
+        shell: bash
+        run: |
+          set -euxo pipefail
+          mkdir -p "$GITHUB_WORKSPACE/out"
+
+          docker run --rm --platform linux/386 \
+            -v "$GITHUB_WORKSPACE/out:/out" \
+            alpine:3.23 /bin/sh -euxc '
+              NODE_VERSION=24.18.1
+
+              apk add --no-cache \
+                bash build-base python3 linux-headers curl ca-certificates \
+                tar xz perl pkgconf git
+
+              cd /tmp
+              curl -fL --retry 5 \
+                "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.xz" \
+                -o node.tar.xz
+              tar -xf node.tar.xz
+              cd "node-v${NODE_VERSION}"
+
+              # iSH does not implement io_uring. Compile that probe out instead
+              # of depending on the emulator returning ENOSYS correctly.
+              python3 - <<"PY"
+          from pathlib import Path
+          p = Path("deps/uv/src/unix/linux.c")
+          s = p.read_text()
+          needle = "#if defined(__ANDROID_API__)\n"
+          replacement = "#if defined(__i386__)\n  return 0;  /* iSH: no io_uring */\n#elif defined(__ANDROID_API__)\n"
+          if needle not in s:
+              raise SystemExit("libuv io_uring patch point not found")
+          p.write_text(s.replace(needle, replacement, 1))
+          PY
+
+              grep -A8 "static int uv__use_io_uring" deps/uv/src/unix/linux.c
+
+              export CFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
+              export CXXFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
+
+              ./configure \
+                --dest-cpu=ia32 \
+                --without-intl \
+                --without-node-snapshot \
+                --without-node-code-cache \
+                --openssl-no-asm
+
+              make -j2
+
+              NODE=out/Release/node
+              "$NODE" --version
+              "$NODE" -e "console.log({arch:process.arch,platform:process.platform})"
+              "$NODE" --no-turbofan -e "let x=0; for(let i=0;i<1000000;i++) x+=i; console.log(x)"
+              "$NODE" --no-turbofan -e "const fs=require(\"node:fs\"); fs.writeFileSync(\"/tmp/node-ish-test\",\"ok\"); console.log(fs.readFileSync(\"/tmp/node-ish-test\",\"utf8\"))"
+              "$NODE" --no-turbofan -e "const {DatabaseSync}=require(\"node:sqlite\"); const db=new DatabaseSync(\":memory:\"); console.log(db.prepare(\"select 1 as ok\").get()); db.close()"
+
+              mkdir -p /tmp/node-ish
+              cp "$NODE" /tmp/node-ish/node
+              chmod 0755 /tmp/node-ish/node
+              strip /tmp/node-ish/node || true
+
+              cd /tmp
+              tar -czf "/out/node-ish-${NODE_VERSION}-alpine-i386.tar.gz" node-ish
+              sha256sum "/out/node-ish-${NODE_VERSION}-alpine-i386.tar.gz" \
+                > "/out/node-ish-${NODE_VERSION}-alpine-i386.tar.gz.sha256"
+            '
+
+          ls -lh "$GITHUB_WORKSPACE/out"
+          cat "$GITHUB_WORKSPACE/out/node-ish-24.18.1-alpine-i386.tar.gz.sha256"
+
+      - name: Upload node-ish tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: node-ish-24.18.1-alpine-i386
+          path: |
+            out/node-ish-24.18.1-alpine-i386.tar.gz
+            out/node-ish-24.18.1-alpine-i386.tar.gz.sha256
+          if-no-files-found: error
+          retention-days: 7

@@ -31,7 +31,6 @@ jobs:
             -o "$RUNNER_TEMP/alpine-x86.tar.gz"
           sudo tar -xzf "$RUNNER_TEMP/alpine-x86.tar.gz" -C "$ROOT"
 
-          # Verify the runner kernel can execute 32-bit x86 directly.
           sudo chroot "$ROOT" /bin/sh -c 'uname -m; /bin/busybox echo ia32-ok'
 
           sudo cp /etc/resolv.conf "$ROOT/etc/resolv.conf"
@@ -51,7 +50,7 @@ jobs:
 
           sudo chroot "$ROOT" /bin/sh -euxc '
             apk add --no-cache \
-              bash build-base python3 linux-headers curl ca-certificates \
+              bash build-base clang lld python3 linux-headers curl ca-certificates \
               tar xz perl pkgconf git
 
             cd /tmp
@@ -74,8 +73,11 @@ jobs:
 
             grep -A8 "static int uv__use_io_uring" deps/uv/src/unix/linux.c
 
+            export CC=clang
+            export CXX=clang++
             export CFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
             export CXXFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
+            export LDFLAGS="-fuse-ld=lld -Wl,--threads=1"
 
             ./configure \
               --dest-cpu=ia32 \
@@ -84,7 +86,8 @@ jobs:
               --without-node-code-cache \
               --openssl-no-asm
 
-            make -j4
+            # Keep compile concurrency low so the final link has maximum headroom.
+            make -j2
 
             NODE=out/Release/node
             "$NODE" --version

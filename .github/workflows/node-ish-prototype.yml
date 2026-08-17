@@ -14,34 +14,54 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-    timeout-minutes: 180
+    timeout-minutes: 120
     steps:
-      - name: Build Node 24 for Alpine i386 / iSH
+      - name: Build Node 24 in native Alpine x86 chroot
         shell: bash
         run: |
           set -euxo pipefail
-          mkdir -p "$GITHUB_WORKSPACE/out"
+          NODE_VERSION=24.18.1
+          ALPINE_VERSION=3.23.5
+          ROOT="$RUNNER_TEMP/alpine-x86"
+          OUT="$GITHUB_WORKSPACE/out"
 
-          # GitHub's x86_64 Linux runners can normally execute 32-bit x86
-          # processes directly through the kernel's IA32 compatibility mode.
-          # Avoid QEMU here because it makes the full V8 build much slower.
-          docker run --rm --platform linux/386 \
-            -v "$GITHUB_WORKSPACE/out:/out" \
-            alpine:3.23 /bin/sh -euxc '
-              NODE_VERSION=24.18.1
+          mkdir -p "$ROOT" "$OUT"
+          curl -fL --retry 5 \
+            "https://dl-cdn.alpinelinux.org/alpine/v3.23/releases/x86/alpine-minirootfs-${ALPINE_VERSION}-x86.tar.gz" \
+            -o "$RUNNER_TEMP/alpine-x86.tar.gz"
+          sudo tar -xzf "$RUNNER_TEMP/alpine-x86.tar.gz" -C "$ROOT"
 
-              apk add --no-cache \
-                bash build-base python3 linux-headers curl ca-certificates \
-                tar xz perl pkgconf git
+          # Verify the runner kernel can execute 32-bit x86 directly.
+          sudo chroot "$ROOT" /bin/sh -c 'uname -m; /bin/busybox echo ia32-ok'
 
-              cd /tmp
-              curl -fL --retry 5 \
-                "https://nodejs.org/dist/v${NODE_VERSION}/node-v${NODE_VERSION}.tar.xz" \
-                -o node.tar.xz
-              tar -xf node.tar.xz
-              cd "node-v${NODE_VERSION}"
+          sudo cp /etc/resolv.conf "$ROOT/etc/resolv.conf"
+          sudo mkdir -p "$ROOT/proc" "$ROOT/sys" "$ROOT/dev" "$ROOT/out"
+          sudo mount -t proc proc "$ROOT/proc"
+          sudo mount --rbind /sys "$ROOT/sys"
+          sudo mount --rbind /dev "$ROOT/dev"
+          sudo mount --bind "$OUT" "$ROOT/out"
 
-              python3 - <<"PY"
+          cleanup() {
+            sudo umount -l "$ROOT/out" || true
+            sudo umount -l "$ROOT/dev" || true
+            sudo umount -l "$ROOT/sys" || true
+            sudo umount -l "$ROOT/proc" || true
+          }
+          trap cleanup EXIT
+
+          sudo chroot "$ROOT" /bin/sh -euxc '
+            apk add --no-cache \
+              bash build-base python3 linux-headers curl ca-certificates \
+              tar xz perl pkgconf git
+
+            cd /tmp
+            curl -fL --retry 5 \
+              "https://nodejs.org/dist/v24.18.1/node-v24.18.1.tar.xz" \
+              -o node.tar.xz
+            tar -xf node.tar.xz
+            cd node-v24.18.1
+
+            python3 - <<"PY"
           from pathlib import Path
           p = Path("deps/uv/src/unix/linux.c")
           s = p.read_text()
@@ -52,40 +72,40 @@ jobs:
           p.write_text(s.replace(needle, replacement, 1))
           PY
 
-              grep -A8 "static int uv__use_io_uring" deps/uv/src/unix/linux.c
+            grep -A8 "static int uv__use_io_uring" deps/uv/src/unix/linux.c
 
-              export CFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
-              export CXXFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
+            export CFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
+            export CXXFLAGS="-O1 -fno-omit-frame-pointer -march=i686 -mtune=generic"
 
-              ./configure \
-                --dest-cpu=ia32 \
-                --without-intl \
-                --without-node-snapshot \
-                --without-node-code-cache \
-                --openssl-no-asm
+            ./configure \
+              --dest-cpu=ia32 \
+              --without-intl \
+              --without-node-snapshot \
+              --without-node-code-cache \
+              --openssl-no-asm
 
-              make -j4
+            make -j4
 
-              NODE=out/Release/node
-              "$NODE" --version
-              "$NODE" -e "console.log({arch:process.arch,platform:process.platform})"
-              "$NODE" --no-turbofan -e "let x=0; for(let i=0;i<1000000;i++) x+=i; console.log(x)"
-              "$NODE" --no-turbofan -e "const fs=require(\"node:fs\"); fs.writeFileSync(\"/tmp/node-ish-test\",\"ok\"); console.log(fs.readFileSync(\"/tmp/node-ish-test\",\"utf8\"))"
-              "$NODE" --no-turbofan -e "const {DatabaseSync}=require(\"node:sqlite\"); const db=new DatabaseSync(\":memory:\"); console.log(db.prepare(\"select 1 as ok\").get()); db.close()"
+            NODE=out/Release/node
+            "$NODE" --version
+            "$NODE" -e "console.log({arch:process.arch,platform:process.platform})"
+            "$NODE" --no-turbofan -e "let x=0; for(let i=0;i<1000000;i++) x+=i; console.log(x)"
+            "$NODE" --no-turbofan -e "const fs=require(\"node:fs\"); fs.writeFileSync(\"/tmp/node-ish-test\",\"ok\"); console.log(fs.readFileSync(\"/tmp/node-ish-test\",\"utf8\"))"
+            "$NODE" --no-turbofan -e "const {DatabaseSync}=require(\"node:sqlite\"); const db=new DatabaseSync(\":memory:\"); console.log(db.prepare(\"select 1 as ok\").get()); db.close()"
 
-              mkdir -p /tmp/node-ish
-              cp "$NODE" /tmp/node-ish/node
-              chmod 0755 /tmp/node-ish/node
-              strip /tmp/node-ish/node || true
+            mkdir -p /tmp/node-ish
+            cp "$NODE" /tmp/node-ish/node
+            chmod 0755 /tmp/node-ish/node
+            strip /tmp/node-ish/node || true
 
-              cd /tmp
-              tar -czf "/out/node-ish-${NODE_VERSION}-alpine-i386.tar.gz" node-ish
-              sha256sum "/out/node-ish-${NODE_VERSION}-alpine-i386.tar.gz" \
-                > "/out/node-ish-${NODE_VERSION}-alpine-i386.tar.gz.sha256"
-            '
+            cd /tmp
+            tar -czf /out/node-ish-24.18.1-alpine-i386.tar.gz node-ish
+            sha256sum /out/node-ish-24.18.1-alpine-i386.tar.gz \
+              > /out/node-ish-24.18.1-alpine-i386.tar.gz.sha256
+          '
 
-          ls -lh "$GITHUB_WORKSPACE/out"
-          cat "$GITHUB_WORKSPACE/out/node-ish-24.18.1-alpine-i386.tar.gz.sha256"
+          ls -lh "$OUT"
+          cat "$OUT/node-ish-24.18.1-alpine-i386.tar.gz.sha256"
 
       - name: Upload node-ish tarball
         uses: actions/upload-artifact@v4

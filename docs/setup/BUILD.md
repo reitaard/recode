@@ -47,7 +47,7 @@ The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All s
 
 After compilation, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
 
-## Global migration on Windows
+## Global migration
 
 The repository provides `install-global.sh` for a deliberate migration from Git Bash and `install-global.ps1` for machines without Bash. Both require a clean `main` checkout and Node `>=22.19.0`. They back up `~/.pi/agent`, remove only verified stale global harness shims and packages, certify and pack all seven packages in an isolated temporary Git clone, smoke-install the exact artifacts, install them into the active npm prefix, and verify the `recode` and `pi` shims.
 
@@ -71,6 +71,20 @@ recode
 ```
 
 The global coding-agent installation exposes both `recode` and `pi`, so it may replace an existing upstream `pi` command in the same npm prefix. The script does not publish, tag, or mutate a remote repository.
+
+### Linux VPS
+
+On Linux, `install-global.sh` delegates to the guarded VPS installer. Run it as root from a clean `main` checkout:
+
+```text
+sudo bash ./install-global.sh
+```
+
+Run `sudo bash ./install-global.sh --check` first for a non-mutating VPS preflight.
+
+The Linux implementation is also available directly as `install-vps.sh` at the repository root.
+
+The VPS path certifies all seven packages before mutation, installs into a versioned directory under `~/opt/recode`, backs up `~/.pi/agent`, switches only `/usr/local/bin/recode` atomically, migrates an installed Maestro user service, restarts an already-active Telegram service, and rolls back the command and services if verification fails. It retains only the newest rollback backup. External n8n, Spotify, Reddit, bridge, and bot directories are not moved or deleted.
 
 ## Termux candidate
 

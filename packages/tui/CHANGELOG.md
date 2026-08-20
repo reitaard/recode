@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.6]
+
+- Added fullscreen transcript search, scrollbar theming, terminal color-scheme notifications, improved input buffering, and terminal timeout handling.
+- Preserved Recode-specific scrolling and editor keybinding behavior.
+
 ## [0.1.5]
 
 - Aligned the terminal UI with the `0.1.5` Termux release candidate and low-noise bundle.

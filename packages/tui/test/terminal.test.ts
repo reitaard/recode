@@ -1,7 +1,31 @@
 import assert from "node:assert";
 import { describe, it, mock } from "node:test";
 import { setKittyProtocolActive } from "../src/keys.ts";
-import { normalizeAppleTerminalInput, ProcessTerminal } from "../src/terminal.ts";
+import {
+	normalizeAppleTerminalInput,
+	ProcessTerminal,
+	resolveEscapeTimeoutMs,
+} from "../src/terminal.ts";
+
+describe("resolveEscapeTimeoutMs", () => {
+	it("uses RECODE_TUI_ESC_TIMEOUT when configured", () => {
+		assert.equal(resolveEscapeTimeoutMs({ RECODE_TUI_ESC_TIMEOUT: "80" }), 80);
+		assert.equal(resolveEscapeTimeoutMs({ RECODE_TUI_ESC_TIMEOUT: "80", SSH_TTY: "/dev/pts/1" }), 80);
+	});
+
+	it("ignores invalid RECODE_TUI_ESC_TIMEOUT values", () => {
+		assert.equal(resolveEscapeTimeoutMs({ RECODE_TUI_ESC_TIMEOUT: "abc" }), 10);
+		assert.equal(resolveEscapeTimeoutMs({ RECODE_TUI_ESC_TIMEOUT: "0" }), 10);
+		assert.equal(resolveEscapeTimeoutMs({ RECODE_TUI_ESC_TIMEOUT: "-5" }), 10);
+		assert.equal(resolveEscapeTimeoutMs({ RECODE_TUI_ESC_TIMEOUT: "" }), 10);
+	});
+
+	it("defaults to 100ms over SSH and 10ms otherwise", () => {
+		assert.equal(resolveEscapeTimeoutMs({ SSH_CONNECTION: "10.0.0.1 22" }), 100);
+		assert.equal(resolveEscapeTimeoutMs({ SSH_TTY: "/dev/pts/1" }), 100);
+		assert.equal(resolveEscapeTimeoutMs({}), 10);
+	});
+});
 
 describe("normalizeAppleTerminalInput", () => {
 	it("rewrites Apple Terminal Return to CSI-u Shift+Enter when Shift is pressed", () => {
@@ -201,7 +225,7 @@ describe("ProcessTerminal Kitty keyboard protocol negotiation", () => {
 		const harness = setupNegotiation();
 		try {
 			harness.send("\x1b[");
-			mock.timers.tick(10);
+			mock.timers.tick(50); // StdinBuffer sequence timeout, not the lone-ESC timeout
 
 			assert.equal(harness.getInput(), undefined);
 

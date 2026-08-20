@@ -12,6 +12,7 @@ import {
 import type { ModelRegistry } from "../../../core/model-registry.ts";
 import type { ModelRuntime } from "../../../core/model-runtime.ts";
 import type { SettingsManager } from "../../../core/settings-manager.ts";
+import { refreshModelCatalogs } from "../model-catalog-refresh.ts";
 import { getModelSelectorSearchText } from "../model-search.ts";
 import { theme } from "../theme/theme.ts";
 import { DynamicBorder } from "./dynamic-border.ts";
@@ -65,6 +66,8 @@ export class ModelSelectorComponent extends Container implements Focusable {
 	private scope: ModelScope = "all";
 	private scopeText?: Text;
 	private scopeHintText?: Text;
+	private readonly refreshAbortController = new AbortController();
+	private closed = false;
 
 	constructor(
 		tui: TUI,
@@ -130,6 +133,7 @@ export class ModelSelectorComponent extends Container implements Focusable {
 
 		// Load models and do initial render
 		this.loadModels().then(() => {
+			if (this.closed) return;
 			if (initialSearchInput) {
 				this.filterModels(initialSearchInput);
 			} else {
@@ -144,7 +148,17 @@ export class ModelSelectorComponent extends Container implements Focusable {
 		let models: ModelItem[];
 
 		// Refresh to pick up any changes to models.json and remote catalogs.
-		const refreshResult = await this.modelRegistry.refresh();
+		let refreshResult: Awaited<ReturnType<ModelSelectorRegistry["refresh"]>>;
+		try {
+			refreshResult =
+				"getAvailableSnapshot" in this.modelRegistry
+					? await refreshModelCatalogs(this.modelRegistry, this.refreshAbortController.signal)
+					: await this.modelRegistry.refresh();
+		} catch (error) {
+			if (this.refreshAbortController.signal.aborted) return;
+			throw error;
+		}
+		if (this.closed) return;
 
 		// Check for models.json errors separately from catalog refresh errors.
 		const loadError = this.modelRegistry.getError();
@@ -339,6 +353,7 @@ export class ModelSelectorComponent extends Container implements Focusable {
 		}
 		// Escape or Ctrl+C
 		else if (kb.matches(keyData, "tui.select.cancel")) {
+			this.close();
 			this.onCancelCallback();
 		}
 		// Pass everything else to search input
@@ -351,9 +366,16 @@ export class ModelSelectorComponent extends Container implements Focusable {
 	}
 
 	private handleSelect(model: Model<any>): void {
+		this.close();
 		// Save as new default
 		this.settingsManager.setDefaultModelAndProvider(model.provider, model.id);
 		this.onSelectCallback(model);
+	}
+
+	private close(): void {
+		if (this.closed) return;
+		this.closed = true;
+		this.refreshAbortController.abort();
 	}
 
 	getSearchInput(): Input {

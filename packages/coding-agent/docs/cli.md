@@ -26,7 +26,7 @@ Use `<command> --help` for package-command details. `pi update` updates installe
 | Output | `--mode text|json|rpc`, `--print`/`-p`, `--export`, `--list-models`, `--verbose` |
 | Session | `--continue`, `--resume`, `--session`, `--session-id`, `--fork`, `--session-dir`, `--no-session`, `--name` |
 | Tools | `--no-tools`, `--no-builtin-tools`, `--tools`, `--exclude-tools` |
-| Resources | repeatable `--extension`, `--skill`, `--prompt-template`, `--theme`; corresponding `--no-*` discovery flags |
+| Resources | repeatable `--extension`, `--skill`, `--prompt-template`, `--theme`; `--use-theme <name[/name]>` selects the interactive theme for one run without changing settings; corresponding `--no-*` discovery flags |
 | Trust/network | `--approve`, `--no-approve`, `--offline`, `--no-context-files` |
 
 Thinking levels are `off`, `minimal`, `low`, `medium`, `high`, `xhigh`, and `max`; unsupported levels are diagnosed and runtime selection may clamp them to model capabilities.

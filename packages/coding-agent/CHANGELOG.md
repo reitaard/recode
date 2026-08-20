@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.1.6]
+
+- Added configurable default tools, per-run theme selection, fullscreen exit output, transcript-search styling, and visible managed-tool startup progress.
+- Improved model-catalog refresh coordination, JSON/RPC streaming usage, fallback extension-tool output, and deferred-tool integration.
+
 ## [0.1.5]
 
 - Added the Termux/aarch64 release candidate and low-noise bundle packaging.

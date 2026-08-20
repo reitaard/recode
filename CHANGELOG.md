@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.6
+
+- Integrated the selected upstream Pi 0.84.2 provider, deferred-tool, streaming, model-catalog, terminal, fullscreen, theme, and transcript-search improvements while preserving Recode behavior.
+- Added per-run theme selection, configurable default tools and fullscreen exit output, visible managed-tool startup status, and safer shared model-catalog refreshes.
+- Regenerated the checked-in text and image model catalogs from the updated generator and refreshed provider compatibility metadata.
+
 ## 0.1.5
 
 - Added the Termux/aarch64 release candidate and a low-noise bundle containing the seven package tarballs, the Termux package, checksums, provenance, and release notes.

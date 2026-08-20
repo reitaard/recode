@@ -10,7 +10,7 @@ OUTPUT_DIR="${TERMUX_PKG_TMPDIR:-$REPO_ROOT/.termux-build}"
 
 bash "$REPO_ROOT/scripts/build-termux-release.sh" \
 	--output "$OUTPUT_DIR" \
-	--version "${RECODE_VERSION:-0.1.5}" \
+	--version "${RECODE_VERSION:-0.1.6}" \
 	--revision "${RECODE_REVISION:-1}" \
 	--architecture "${TERMUX_ARCH:-aarch64}" \
 	--prefix "$TERMUX_PREFIX" \

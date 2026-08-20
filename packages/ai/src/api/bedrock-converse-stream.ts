@@ -816,6 +816,16 @@ function convertToolResultContent(content: (TextContent | ImageContent)[]): Tool
 	return result;
 }
 
+function removeEmptyPropertyNames<T>(value: T): T {
+	if (Array.isArray(value)) return value.map(removeEmptyPropertyNames) as T;
+	if (typeof value !== "object" || value === null) return value;
+	return Object.fromEntries(
+		Object.entries(value)
+			.filter(([key]) => key.length > 0)
+			.map(([key, nested]) => [key, removeEmptyPropertyNames(nested)]),
+	) as T;
+}
+
 function convertMessages(
 	context: Context,
 	model: Model<"bedrock-converse-stream">,
@@ -874,7 +884,7 @@ function convertMessages(
 						}
 						case "toolCall":
 							contentBlocks.push({
-								toolUse: { toolUseId: c.id, name: c.name, input: c.arguments },
+								toolUse: { toolUseId: c.id, name: c.name, input: removeEmptyPropertyNames(c.arguments) },
 							});
 							break;
 						case "thinking": {

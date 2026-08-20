@@ -428,6 +428,20 @@ describe("SettingsManager", () => {
 		});
 	});
 
+	it("validates and persists fullscreen exit output", async () => {
+		const manager = SettingsManager.create(projectDir, agentDir);
+		expect(manager.getFullscreenExitOutput()).toBe("transcript");
+
+		manager.setFullscreenExitOutput("resume-hint");
+		await manager.flush();
+		expect(JSON.parse(readFileSync(join(agentDir, "settings.json"), "utf-8")).fullscreenExitOutput).toBe(
+			"resume-hint",
+		);
+
+		writeFileSync(join(agentDir, "settings.json"), JSON.stringify({ fullscreenExitOutput: "other" }));
+		expect(SettingsManager.create(projectDir, agentDir).getFullscreenExitOutput()).toBe("transcript");
+	});
+
 	it("validates and persists the fullscreen scrollbar mode", async () => {
 		const manager = SettingsManager.create(projectDir, agentDir);
 		expect(manager.getFullscreenScrollbar()).toBe("auto");
@@ -570,6 +584,22 @@ describe("SettingsManager", () => {
 			writeFileSync(join(agentDir, "settings.json"), JSON.stringify({ shellPath: "~" }));
 			const manager = SettingsManager.create(projectDir, agentDir);
 			expect(manager.getShellPath()).toBe(homedir());
+		});
+	});
+
+	describe("default tools", () => {
+		it("uses project defaults over global defaults and preserves an explicit empty list", () => {
+			writeFileSync(join(agentDir, "settings.json"), JSON.stringify({ defaultTools: ["read", "bash"] }));
+			writeFileSync(join(projectDir, ".pi", "settings.json"), JSON.stringify({ defaultTools: [] }));
+
+			const manager = SettingsManager.create(projectDir, agentDir);
+			expect(manager.getDefaultTools()).toEqual([]);
+		});
+
+		it("deduplicates stored default tools and ignores malformed values", () => {
+			const manager = SettingsManager.inMemory({ defaultTools: ["read", "read", "bash"] });
+			expect(manager.getDefaultTools()).toEqual(["read", "bash"]);
+			expect(SettingsManager.inMemory({ defaultTools: ["read", 3] as unknown as string[] }).getDefaultTools()).toBeUndefined();
 		});
 	});
 });

@@ -14,7 +14,7 @@ Read this map before changing architecture or package documentation. Verify exac
 | `packages/coding-agent` | Recode CLI, modes, tools, resources, extensions, Aizen, workers, and memory | package docs, public exports, CLI registration, focused tests |
 | `packages/orchestrator` | Maestro service, IPC, durable sessions, and dashboard | package README, CLI/source, Node tests |
 
-All seven packages are root npm workspaces and build participants on the synchronized private `@reitaard/recode-*` `0.1.5` train, including SQLite. Historical wiring is retained only in Git history and is not part of the active package graph.
+All seven packages are root npm workspaces and build participants on the synchronized private `@reitaard/recode-*` `0.1.6` train, including SQLite. Historical wiring is retained only in Git history and is not part of the active package graph.
 
 `packages/evals` is repository test infrastructure, not a runtime package. `packages/protocol`, `packages/client`, `packages/server`, and `packages/session-backends/sqlite-node` are outside the verified root workspace, build, and publication paths.
 

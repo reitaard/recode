@@ -176,7 +176,7 @@ export function createGrepToolDefinition(
 
 				(async () => {
 					try {
-						const rgPath = await ensureTool("rg", true);
+						const rgPath = await ensureTool("rg");
 						if (signal?.aborted) {
 							settle(() => reject(new Error("Operation aborted")));
 							return;

@@ -111,7 +111,7 @@ import { parseRecodeCreatorMessage } from "../../core/recode-teach/recode-creato
 import type { ResourceDiagnostic } from "../../core/resource-loader.ts";
 import { formatMissingSessionCwdPrompt, MissingSessionCwdError } from "../../core/session-cwd.ts";
 import { type SessionEntry, SessionManager, sessionEntryToContextMessages } from "../../core/session-manager.ts";
-import type { TuiMode } from "../../core/settings-manager.ts";
+import type { FullscreenExitOutput, TuiMode } from "../../core/settings-manager.ts";
 import { BUILTIN_SLASH_COMMANDS } from "../../core/slash-commands.ts";
 import type { SourceInfo } from "../../core/source-info.ts";
 import { emitStartupMilestone, isStartupProbeEnabled } from "../../core/startup-probe.ts";
@@ -151,7 +151,7 @@ import { parseGitUrl } from "../../utils/git.ts";
 import { openBrowser } from "../../utils/open-browser.ts";
 import { getCwdRelativePath } from "../../utils/paths.ts";
 import { killTrackedDetachedChildren } from "../../utils/shell.ts";
-import { ensureTool } from "../../utils/tools-manager.ts";
+import { ensureTool, type ToolStatus } from "../../utils/tools-manager.ts";
 import { checkForNewPiVersion, type LatestPiRelease } from "../../utils/version-check.ts";
 import { ArminComponent } from "./components/armin.ts";
 import { AssistantMessageComponent } from "./components/assistant-message.ts";
@@ -200,6 +200,7 @@ import { TrustSelectorComponent } from "./components/trust-selector.ts";
 import { UserMessageComponent } from "./components/user-message.ts";
 import { UserMessageSelectorComponent } from "./components/user-message-selector.ts";
 import { getConfiguredMcpServerNames } from "./mcp-startup-summary.ts";
+import { refreshModelCatalogs } from "./model-catalog-refresh.ts";
 import { getModelSearchText } from "./model-search.ts";
 import { RecodeProcessTerminal } from "./recode-process-terminal.ts";
 import {
@@ -397,6 +398,8 @@ export interface InteractiveModeOptions {
 	initialMessages?: string[];
 	/** Force verbose startup (overrides quietStartup setting) */
 	verbose?: boolean;
+	/** Initial interactive theme setting for this invocation. */
+	initialThemeSetting?: string;
 }
 
 interface InteractiveTuiOptions {
@@ -413,9 +416,20 @@ export function createInteractiveTui(options: InteractiveTuiOptions): TuiMainScr
 		options.terminal ??
 		new RecodeProcessTerminal({ writeLogPath: process.env.PI_TUI_WRITE_LOG || getTuiRawLogPath() });
 	if (options.tuiMode === "fullscreen") {
+		const styleSearchMatch = (text: string) => theme.bg("searchMatchBg", theme.fg("searchMatchText", text));
 		return new TuiAltScreen(terminal, options.showHardwareCursor, options.logDirectory, {
+			searchMatchStyle: (text) => theme.underline(styleSearchMatch(text)),
+			searchCurrentMatchStyle: (text) => theme.bold(theme.inverse(styleSearchMatch(text))),
 			openUrl: openBrowser,
 			onRightClickPaste: options.onRightClickPaste,
+			copySelection: async (text) => {
+				try {
+					await copyToClipboard(text);
+					return true;
+				} catch {
+					return false;
+				}
+			},
 		});
 	}
 	return new TuiMainScreen(terminal, options.showHardwareCursor, options.logDirectory);
@@ -505,6 +519,7 @@ export class InteractiveMode {
 	// Status line tracking (for mutating immediately-sequential status updates)
 	private lastStatusSpacer: Spacer | undefined = undefined;
 	private lastStatusText: Text | undefined = undefined;
+	private managedToolStatusStarted = false;
 
 	// Streaming message tracking
 	private streamingComponent: AssistantMessageComponent | undefined = undefined;
@@ -795,12 +810,12 @@ export class InteractiveMode {
 
 		// Register themes from resource loader and initialize
 		setRegisteredThemes(this.session.resourceLoader.getThemes().themes);
-		this.themeController = new InteractiveThemeController(
-			this.ui,
-			this.settingsManager,
-			(message) => this.showError(message),
-			() => this.updateEditorBorderColor(),
-		);
+		this.themeController = new InteractiveThemeController(this.ui, {
+			getSettingsManager: () => this.settingsManager,
+			showError: (message) => this.showError(message),
+			onChanged: () => this.updateEditorBorderColor(),
+			initialThemeSetting: options.initialThemeSetting,
+		});
 	}
 
 	private getAutocompleteSourceTag(sourceInfo?: SourceInfo): string | undefined {
@@ -1039,13 +1054,13 @@ export class InteractiveMode {
 		}
 	}
 
-	private stopInteractiveTui(): void {
-		if (this.renderer.mode === "fullscreen") {
+	private stopInteractiveTui(fullscreenExitOutput: FullscreenExitOutput): void {
+		if (this.renderer.mode === "fullscreen" && fullscreenExitOutput === "transcript") {
 			while (this.renderer.hasOverlayEntries) this.renderer.hideOverlay();
 			this.switchTuiMode("regular", false, false);
 			this.renderer.renderNow();
 		}
-		this.ui.stop();
+		this.ui.stop({ preserveScreen: this.renderer.mode === "fullscreen" });
 	}
 
 	private switchTuiMode(mode: TuiMode, restoreProgress = true, startRenderer = true): boolean {
@@ -1096,11 +1111,6 @@ export class InteractiveMode {
 
 		// Load changelog (only show new entries, skip for resumed sessions)
 		this.changelogMarkdown = this.getChangelogForDisplay();
-
-		// Ensure fd and rg are available (downloads if missing, adds to PATH via getBinDir)
-		// Both are needed: fd for autocomplete, rg for grep tool and bash commands
-		const [fdPath] = await Promise.all([ensureTool("fd"), ensureTool("rg")]);
-		this.fdPath = fdPath;
 
 		if (this.session.scopedModels.length > 0 && (this.options.verbose || !this.settingsManager.getQuietStartup())) {
 			const modelList = this.session.scopedModels
@@ -1169,6 +1179,13 @@ export class InteractiveMode {
 		this.runtimeHost.readiness.markReady("frame-ready");
 		this.runtimeHost.readiness.markReady("input-ready");
 		this.isInitialized = true;
+
+		// Mount the TUI before managed-tool setup so slow downloads remain visible.
+		const [fdPath] = await Promise.all([
+			ensureTool("fd", (status) => this.showManagedToolStatus(status)),
+			ensureTool("rg", (status) => this.showManagedToolStatus(status)),
+		]);
+		this.fdPath = fdPath;
 		this.signalCleanupHandlers.push(
 			subscribeLspLifecycle((event) => {
 				if (event.cwd !== path.resolve(this.sessionManager.getCwd()) || !this.isInitialized) return;
@@ -3789,6 +3806,20 @@ export class InteractiveMode {
 		return textBlocks.map((c) => (c as { text: string }).text).join("");
 	}
 
+	/** Show a managed-tool status update in the chat. */
+	private showManagedToolStatus(status: ToolStatus): void {
+		if (!this.managedToolStatusStarted) {
+			this.chatContainer.addChild(new Spacer(1));
+			this.managedToolStatusStarted = true;
+		}
+		const message = status.type === "warning" ? `Warning: ${status.message}` : status.message;
+		const color = status.type === "warning" ? "warning" : "dim";
+		this.chatContainer.addChild(new Text(theme.fg(color, message), 1, 0));
+		this.lastStatusSpacer = undefined;
+		this.lastStatusText = undefined;
+		this.ui.requestRender();
+	}
+
 	/**
 	 * Show a status message in the chat.
 	 *
@@ -4892,7 +4923,7 @@ export class InteractiveMode {
 					httpIdleTimeoutMs: this.settingsManager.getHttpIdleTimeoutMs(),
 					thinkingLevel: this.session.thinkingLevel,
 					availableThinkingLevels: this.session.getAvailableThinkingLevels(),
-					currentTheme: this.settingsManager.getThemeSetting() || "dark",
+					currentTheme: this.themeController.getThemeSelection() || "dark",
 					terminalTheme: this.themeController.getTerminalTheme(),
 					availableThemes: getAvailableThemes(),
 					hideThinkingBlock: this.hideThinkingBlock,
@@ -4912,6 +4943,7 @@ export class InteractiveMode {
 					clearOnShrink: this.settingsManager.getClearOnShrink(),
 					showTerminalProgress: this.settingsManager.getShowTerminalProgress(),
 					tuiMode: this.ui.mode,
+					fullscreenExitOutput: this.settingsManager.getFullscreenExitOutput(),
 					fullscreenScrollbar: this.settingsManager.getFullscreenScrollbar(),
 					warnings: this.settingsManager.getWarnings(),
 				},
@@ -4980,7 +5012,7 @@ export class InteractiveMode {
 					},
 					onThemeChange: (themeSetting) => {
 						this.settingsManager.setTheme(themeSetting);
-						void this.themeController.applyFromSettings();
+						void this.themeController.setThemeSetting(themeSetting);
 					},
 					onThemePreview: (themeName) => this.themeController.preview(themeName),
 					onHideThinkingBlockChange: (hidden) => {
@@ -5079,6 +5111,9 @@ export class InteractiveMode {
 						if (!this.activeStatusIndicator) this.statusContainer.clear();
 						this.showStatus(`TUI mode: ${mode}`);
 					},
+					onFullscreenExitOutputChange: (output) => {
+						this.settingsManager.setFullscreenExitOutput(output);
+					},
 					onFullscreenScrollbarChange: (mode) => {
 						this.settingsManager.setFullscreenScrollbar(mode);
 						this.applyFullscreenScrollbarSetting();
@@ -5130,7 +5165,7 @@ export class InteractiveMode {
 
 		this.showStatus("Refreshing model catalogs…");
 		const signal = AbortSignal.timeout(5000);
-		await this.session.modelRuntime.refresh({ signal });
+		await refreshModelCatalogs(this.session.modelRuntime, signal);
 		return findExactModelReferenceMatch(searchTerm, [...this.session.modelRuntime.getAvailableSnapshot()]);
 	}
 
@@ -5355,7 +5390,7 @@ export class InteractiveMode {
 					},
 				},
 			);
-			if (modelRuntime) void modelRuntime.refresh({ signal: refreshController.signal }).then((result) => {
+			if (modelRuntime) void refreshModelCatalogs(modelRuntime, refreshController.signal).then((result) => {
 				if (result.aborted) return;
 				allModels = [...modelRuntime.getAvailableSnapshot()];
 				selector.updateModels(allModels, currentEnabledIds);
@@ -7067,7 +7102,7 @@ export class InteractiveMode {
 		}
 	}
 
-	stop(): void {
+	stop(fullscreenExitOutput = this.settingsManager.getFullscreenExitOutput()): void {
 		this.stopRemoteSessionMonitoring();
 		if (this.settingsManager.getShowTerminalProgress()) {
 			this.ui.terminal.setProgress(false);
@@ -7082,7 +7117,7 @@ export class InteractiveMode {
 			this.unsubscribe();
 		}
 		if (this.isInitialized) {
-			this.stopInteractiveTui();
+			this.stopInteractiveTui(fullscreenExitOutput);
 			this.isInitialized = false;
 		}
 		this.unregisterSignalHandlers();

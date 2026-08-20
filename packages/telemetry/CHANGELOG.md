@@ -1,5 +1,9 @@
 # Changelog
 
+## [0.1.6]
+
+- Aligned telemetry with the `0.1.6` upstream-integration release.
+
 ## [0.1.5]
 
 - Aligned telemetry with the `0.1.5` Termux release candidate and low-noise bundle.

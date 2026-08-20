@@ -894,6 +894,7 @@ export async function main(args: string[], options?: MainOptions) {
 			initialImages,
 			initialMessages: parsed.messages,
 			verbose: parsed.verbose,
+			initialThemeSetting: parsed.useTheme,
 		});
 		emitStartupMilestone("interactive-mode-created");
 		if (startupBenchmark) {

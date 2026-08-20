@@ -1,10 +1,10 @@
 # Release
 
-Recode uses the synchronized private `@reitaard/recode-*` `0.1.5` package train. npm publication and dist-tag mutation are disabled.
+Recode uses the synchronized private `@reitaard/recode-*` `0.1.6` package train. npm publication and dist-tag mutation are disabled.
 
 ## GitHub release boundary
 
-A GitHub release should prefer one low-noise `recode-0.1.5-bundle.tar.gz` asset containing the seven inspected npm-format package tarballs, the Termux/aarch64 `.deb`, `SHA256SUMS`, provenance metadata, and release notes bound to the exact source commit. Keep a standalone bundle checksum beside it when convenient. It does not imply npm publication or native-binary support.
+A GitHub release should prefer one low-noise `recode-0.1.6-bundle.tar.gz` asset containing the seven inspected npm-format package tarballs, the Termux/aarch64 `.deb`, `SHA256SUMS`, provenance metadata, and release notes bound to the exact source commit. Keep a standalone bundle checksum beside it when convenient. It does not imply npm publication or native-binary support.
 
 Before creating a tag or release:
 
@@ -20,7 +20,7 @@ Before creating a tag or release:
 
 ## Platform statement
 
-The `0.1.5` candidate must be certified on Windows x64 with Node `26.5.0` before release. The Termux/aarch64 package remains a separate candidate until a real device passes its install, upgrade/removal, TUI, session, memory, SQLite, and optional web-access smoke tests. TUI native addons and platform binaries are omitted; other operating systems, architectures, containers, and external services require separate evidence.
+The `0.1.6` candidate must be certified on Windows x64 with Node `26.5.0` before release. The Termux/aarch64 package remains a separate candidate until a real device passes its install, upgrade/removal, TUI, session, memory, SQLite, and optional web-access smoke tests. TUI native addons and platform binaries are omitted; other operating systems, architectures, containers, and external services require separate evidence.
 
 ## Command ownership
 

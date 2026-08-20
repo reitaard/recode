@@ -55,6 +55,7 @@ export interface ThinkingBudgetsSettings {
 }
 
 export type { TuiMode } from "@reitaard/recode-tui";
+export type FullscreenExitOutput = "transcript" | "resume-hint";
 
 export type MermaidRenderingMode = "off" | "final" | "streaming";
 
@@ -129,6 +130,8 @@ export interface Settings {
 	terminal?: TerminalSettings;
 	images?: ImageSettings;
 	enabledModels?: string[]; // Model patterns for cycling (same format as --models CLI flag)
+	/** Built-in tools enabled when no CLI/SDK tool override is supplied. Undefined preserves the standard defaults. */
+	defaultTools?: string[];
 	doubleEscapeAction?: "fork" | "tree" | "none"; // Action for double-escape with empty editor (default: "tree")
 	treeFilterMode?: "default" | "no-tools" | "user-only" | "labeled-only" | "all"; // Default filter when opening /tree
 	thinkingBudgets?: ThinkingBudgetsSettings; // Custom token budgets for thinking levels
@@ -144,6 +147,7 @@ export interface Settings {
 	httpIdleTimeoutMs?: number; // HTTP header/body idle timeout in milliseconds; 0 disables it
 	websocketConnectTimeoutMs?: number; // WebSocket connect/open handshake timeout in milliseconds; 0 disables it
 	tuiMode?: TuiMode; // default: "regular"
+	fullscreenExitOutput?: FullscreenExitOutput; // default: "transcript"; no effect in regular TUI mode
 	fullscreenScrollbar?: ScrollViewScrollbar; // default: "auto"; no effect in regular TUI mode
 }
 
@@ -1224,6 +1228,16 @@ export class SettingsManager {
 		this.save();
 	}
 
+	getFullscreenExitOutput(): FullscreenExitOutput {
+		return this.settings.fullscreenExitOutput === "resume-hint" ? "resume-hint" : "transcript";
+	}
+
+	setFullscreenExitOutput(output: FullscreenExitOutput): void {
+		this.globalSettings.fullscreenExitOutput = output;
+		this.markModified("fullscreenExitOutput");
+		this.save();
+	}
+
 	getFullscreenScrollbar(): ScrollViewScrollbar {
 		const mode = this.settings.fullscreenScrollbar;
 		return mode === "always" || mode === "hidden" ? mode : "auto";
@@ -1269,6 +1283,24 @@ export class SettingsManager {
 		this.globalSettings.enabledModels = patterns;
 		this.markModified("enabledModels");
 		this.save();
+	}
+
+	getDefaultTools(): string[] | undefined {
+		const tools = this.settings.defaultTools;
+		if (!Array.isArray(tools) || tools.some((tool) => typeof tool !== "string")) return undefined;
+		return [...new Set(tools)];
+	}
+
+	setDefaultTools(tools: string[] | undefined): void {
+		this.globalSettings.defaultTools = tools ? [...new Set(tools)] : undefined;
+		this.markModified("defaultTools");
+		this.save();
+	}
+
+	setProjectDefaultTools(tools: string[] | undefined): void {
+		this.updateProjectSettings("defaultTools", (settings) => {
+			settings.defaultTools = tools ? [...new Set(tools)] : undefined;
+		});
 	}
 
 	getDoubleEscapeAction(): "fork" | "tree" | "none" {

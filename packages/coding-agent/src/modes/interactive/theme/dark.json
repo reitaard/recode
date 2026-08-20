@@ -48,6 +48,9 @@
 		"thinkingText": "gray",
 
 		"selectedBg": "selectedBg",
+		"scrollbarThumb": "selectedBg",
+		"searchMatchBg": "selectedBg",
+		"searchMatchText": "text",
 		"userMessageBg": "userMsgBg",
 		"userMessageText": "userMsgText",
 		"customMessageBg": "customMsgBg",

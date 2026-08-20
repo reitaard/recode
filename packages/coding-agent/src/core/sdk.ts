@@ -20,6 +20,7 @@ import { SettingsManager } from "./settings-manager.ts";
 import { emitStartupMilestone } from "./startup-probe.ts";
 import { time } from "./timings.ts";
 import {
+	allToolNames,
 	createBashTool,
 	createCodingTools,
 	createEditTool,
@@ -62,8 +63,8 @@ export interface CreateAgentSessionOptions {
 	/**
 	 * Optional allowlist of tool names.
 	 *
-	 * When omitted, pi enables the default built-in tools (read, bash, edit, write)
-	 * and leaves extension/custom tools enabled unless `noTools` changes that default.
+	 * When omitted, Recode uses `defaultTools` from settings when present; otherwise it enables
+	 * the standard built-in tools. Extension/custom tools remain enabled unless `noTools` changes that default.
 	 * When provided, only the listed tool names are enabled.
 	 */
 	tools?: string[];
@@ -244,7 +245,10 @@ export async function createAgentSession(options: CreateAgentSessionOptions = {}
 		thinkingLevel = clampThinkingLevel(model, thinkingLevel) as ThinkingLevel;
 	}
 
-	const defaultActiveToolNames: ToolName[] = [
+	const configuredDefaultTools = settingsManager
+		.getDefaultTools()
+		?.filter((name): name is ToolName => allToolNames.has(name as ToolName));
+	const defaultActiveToolNames: ToolName[] = configuredDefaultTools ?? [
 		"read",
 		"bash",
 		"edit",

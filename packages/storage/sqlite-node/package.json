@@ -1,6 +1,6 @@
 {
 	"name": "@reitaard/recode-storage-sqlite-node",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "Optional Node SQLite storage backend for Recode AgentHarness sessions",
 	"type": "module",
 	"main": "./dist/index.js",
@@ -32,8 +32,8 @@
 		"node": ">=22.19.0"
 	},
 	"dependencies": {
-		"@reitaard/recode-ai": "^0.1.5",
-		"@reitaard/recode-agent-core": "^0.1.5"
+		"@reitaard/recode-ai": "^0.1.6",
+		"@reitaard/recode-agent-core": "^0.1.6"
 	},
 	"private": true,
 	"devDependencies": {

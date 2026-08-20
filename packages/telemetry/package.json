@@ -1,6 +1,6 @@
 {
 	"name": "@reitaard/recode-telemetry",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "Vendor-neutral telemetry contracts and typed schema utilities for Recode",
 	"type": "module",
 	"main": "./dist/index.js",

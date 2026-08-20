@@ -34,7 +34,7 @@
 		},
 		"colors": {
 			"type": "object",
-			"description": "Theme color definitions (thinkingMax is optional and falls back to thinkingXhigh)",
+			"description": "Theme color definitions; thinkingMax, scrollbarThumb, and transcript-search colors use compatible fallbacks when omitted",
 			"required": [
 				"accent",
 				"border",
@@ -140,6 +140,18 @@
 				"selectedBg": {
 					"$ref": "#/$defs/colorValue",
 					"description": "Selected item background"
+				},
+				"scrollbarThumb": {
+					"$ref": "#/$defs/colorValue",
+					"description": "Fullscreen scrollbar thumb background (falls back to selectedBg when omitted)"
+				},
+				"searchMatchBg": {
+					"$ref": "#/$defs/colorValue",
+					"description": "Transcript search match background and current-match text (falls back to selectedBg when omitted)"
+				},
+				"searchMatchText": {
+					"$ref": "#/$defs/colorValue",
+					"description": "Transcript search match text and current-match background (falls back to text when omitted)"
 				},
 				"userMessageBg": {
 					"$ref": "#/$defs/colorValue",

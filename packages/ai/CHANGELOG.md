@@ -1,5 +1,10 @@
 # Changelog
 
+## [0.1.6]
+
+- Added deferred-tool capability handling, stricter provider schemas, improved streaming compatibility, retry behavior, and raw stop-reason preservation.
+- Regenerated provider and image catalogs with the updated compatibility metadata.
+
 ## [0.1.5]
 
 - Aligned the AI package with the `0.1.5` Termux release candidate and low-noise bundle.

@@ -75,7 +75,7 @@ export function buildSystemPrompt(options: BuildSystemPromptOptions): string {
 
 		// Add date and working directory last
 		prompt += `\nCurrent date: ${date}`;
-		prompt += `\nCurrent working directory: ${promptCwd}`;
+		prompt += `\nCurrent working directory: ${promptCwd}\n`;
 
 		return prompt;
 	}
@@ -167,7 +167,7 @@ Recode documentation (read only when the Creator asks about Recode itself, its S
 
 	// Add date and working directory last
 	prompt += `\nCurrent date: ${date}`;
-	prompt += `\nCurrent working directory: ${promptCwd}`;
+	prompt += `\nCurrent working directory: ${promptCwd}\n`;
 
 	return prompt;
 }

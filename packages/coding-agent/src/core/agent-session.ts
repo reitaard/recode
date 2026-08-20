@@ -255,7 +255,7 @@ export interface ExtensionBindings {
 
 /** Options for AgentSession.prompt() */
 export interface PromptOptions {
-	/** Whether to expand file-based prompt templates (default: true) */
+	/** Whether to dispatch extension commands and expand skill commands and prompt templates (default: true) */
 	expandPromptTemplates?: boolean;
 	/** Image attachments */
 	images?: ImageContent[];
@@ -1596,7 +1596,7 @@ export class AgentSession {
 		} satisfies CustomMessage<T>;
 		if (options?.deliverAs === "nextTurn") {
 			this._pendingNextTurnMessages.push(appMessage);
-		} else if (this.isStreaming) {
+		} else if (this.isStreaming && options?.triggerTurn !== false) {
 			if (options?.deliverAs === "followUp") {
 				this.agent.followUp(appMessage);
 			} else {
@@ -1617,16 +1617,45 @@ export class AgentSession {
 		}
 	}
 
+	/** Prepare an extension user message without starting the legacy agent loop. */
+	async prepareExtensionUserMessage(
+		text: string,
+		images: ImageContent[] | undefined,
+		deliverAs: "steer" | "followUp" | undefined,
+	): Promise<{ handled: boolean; text: string; images?: ImageContent[] }> {
+		if (text.startsWith("/") && (await this._tryExecuteExtensionCommand(text))) {
+			return { handled: true, text, images };
+		}
+
+		let currentText = text;
+		let currentImages = images;
+		if (this._extensionRunner.hasHandlers("input")) {
+			const inputResult = await this._extensionRunner.emitInput(currentText, currentImages, "extension", deliverAs);
+			if (inputResult.action === "handled") return { handled: true, text: currentText, images: currentImages };
+			if (inputResult.action === "transform") {
+				currentText = inputResult.text;
+				currentImages = inputResult.images ?? currentImages;
+			}
+		}
+
+		return {
+			handled: false,
+			text: expandPromptTemplate(this._expandSkillCommand(currentText), [...this.promptTemplates]),
+			images: currentImages,
+		};
+	}
+
 	/**
 	 * Send a user message to the agent. Always triggers a turn.
 	 * When the agent is streaming, use deliverAs to specify how to queue the message.
 	 *
 	 * @param content User message content (string or content array)
 	 * @param options.deliverAs Delivery mode when streaming: "steer" or "followUp"
+	 * @param options.expandPromptTemplates Whether to dispatch extension commands and expand skill commands and prompt templates. Default: false.
 	 */
 	async sendUserMessage(
 		content: string | (TextContent | ImageContent)[],
-		options?: { deliverAs?: "steer" | "followUp" },
+		options?: { deliverAs?: "steer" | "followUp"; expandPromptTemplates?: boolean },
 	): Promise<void> {
 		// Normalize content to text string + optional images
 		let text: string;
@@ -1648,9 +1677,8 @@ export class AgentSession {
 			if (images.length === 0) images = undefined;
 		}
 
-		// Use prompt() with expandPromptTemplates: false to skip command handling and template expansion
 		await this.prompt(text, {
-			expandPromptTemplates: false,
+			expandPromptTemplates: options?.expandPromptTemplates ?? false,
 			streamingBehavior: options?.deliverAs,
 			images,
 			source: "extension",

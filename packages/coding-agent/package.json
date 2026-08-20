@@ -1,6 +1,6 @@
 {
 	"name": "@reitaard/recode-coding-agent",
-	"version": "0.1.5",
+	"version": "0.1.6",
 	"description": "Recode coding-agent CLI, runtime, tools, sessions, workers, and memory",
 	"private": true,
 	"type": "module",
@@ -43,10 +43,10 @@
 		"prepublishOnly": "node -e \"throw new Error('Publication is disabled until standalone certification completes')\""
 	},
 	"dependencies": {
-		"@reitaard/recode-agent-core": "^0.1.5",
-		"@reitaard/recode-ai": "^0.1.5",
-		"@reitaard/recode-orchestrator": "^0.1.5",
-		"@reitaard/recode-tui": "^0.1.5",
+		"@reitaard/recode-agent-core": "^0.1.6",
+		"@reitaard/recode-ai": "^0.1.6",
+		"@reitaard/recode-orchestrator": "^0.1.6",
+		"@reitaard/recode-tui": "^0.1.6",
 		"@silvia-odwyer/photon-node": "0.3.4",
 		"chalk": "5.6.2",
 		"cross-spawn": "7.0.6",

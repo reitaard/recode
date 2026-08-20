@@ -291,6 +291,18 @@ describe("parseArgs", () => {
 		});
 	});
 
+	describe("--use-theme flag", () => {
+		test("sets a per-run interactive theme", () => {
+			const result = parseArgs(["--use-theme", "light/dark"]);
+			expect(result.useTheme).toBe("light/dark");
+		});
+
+		test("reports a missing theme name", () => {
+			const result = parseArgs(["--use-theme"]);
+			expect(result.diagnostics).toContainEqual({ type: "error", message: "--use-theme requires a theme name" });
+		});
+	});
+
 	describe("--no-themes flag", () => {
 		test("parses --no-themes flag", () => {
 			const result = parseArgs(["--no-themes"]);

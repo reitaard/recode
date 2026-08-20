@@ -35,7 +35,7 @@ export interface AizenRuntime {
 	): Promise<void>;
 	sendUserMessage(
 		content: string | (TextContent | ImageContent)[],
-		options?: { deliverAs?: "steer" | "followUp" },
+		options?: { deliverAs?: "steer" | "followUp"; expandPromptTemplates?: boolean },
 	): Promise<void>;
 	appendEntry(customType: string, data?: unknown, options?: { persistImmediately?: boolean }): Promise<void>;
 	compact(customInstructions?: string): ReturnType<AgentHarness["compact"]>;
@@ -326,7 +326,7 @@ export function createAizenRuntime(options: CreateAizenRuntimeOptions): AizenRun
 		};
 		if (messageOptions?.deliverAs === "nextTurn") {
 			await harness.nextTurnMessage(appMessage);
-		} else if (activeRun) {
+		} else if (activeRun && messageOptions?.triggerTurn !== false) {
 			const currentRun = activeRun;
 			try {
 				if (messageOptions?.deliverAs === "followUp") await harness.followUpMessage(appMessage);
@@ -346,10 +346,27 @@ export function createAizenRuntime(options: CreateAizenRuntimeOptions): AizenRun
 	};
 	const sendUserMessage = async (
 		content: string | (TextContent | ImageContent)[],
-		messageOptions?: { deliverAs?: "steer" | "followUp" },
+		messageOptions?: { deliverAs?: "steer" | "followUp"; expandPromptTemplates?: boolean },
 	): Promise<void> => {
 		acceptUiMessages = true;
-		const parts = typeof content === "string" ? [{ type: "text" as const, text: content }] : content;
+		let parts = typeof content === "string" ? [{ type: "text" as const, text: content }] : content;
+		if (messageOptions?.expandPromptTemplates) {
+			const text = parts
+				.filter((part): part is TextContent => part.type === "text")
+				.map((part) => part.text)
+				.join("\n");
+			const images = parts.filter((part): part is ImageContent => part.type === "image");
+			const prepared = await options.agentSession.prepareExtensionUserMessage(
+				text,
+				images,
+				activeRun ? messageOptions.deliverAs : undefined,
+			);
+			if (prepared.handled) return;
+			parts = [
+				{ type: "text" as const, text: prepared.text },
+				...(prepared.images ?? []),
+			];
+		}
 		const userMessage: UserMessage = { role: "user", content: parts, timestamp: Date.now() };
 		if (!activeRun) {
 			await runWithRecovery(async () => await harness.sendMessage(userMessage));

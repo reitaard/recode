@@ -2,7 +2,7 @@
 
 Requires Node `>=22.19.0`.
 
-> The seven-package workspace uses the synchronized `0.1.5` candidate train. Release certification requires checks, builds, deterministic tests, inspected tarballs, and an isolated lifecycle-disabled installation.
+> The seven-package workspace uses the synchronized `0.1.6` candidate train. Release certification requires checks, builds, deterministic tests, inspected tarballs, and an isolated lifecycle-disabled installation.
 
 ## Installed dependencies and validation
 
@@ -43,7 +43,7 @@ The completed standalone bootstrap followed these requirements:
 5. use the deterministic build path that consumes reviewed checked-in catalogs without a network refresh;
 6. build in a clean environment and inspect all generated diffs before running tests.
 
-The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All seven workspace packages use the synchronized `0.1.5` train, including SQLite.
+The standalone build must not inherit deprecated `0.83.x`/`0.84.x` values. All seven workspace packages use the synchronized `0.1.6` train, including SQLite.
 
 After compilation, run package tests, repository checks, example compilation, generated-file scans, and package-content inspection. A successful compile alone does not certify installation or release.
 

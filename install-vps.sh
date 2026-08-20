@@ -36,7 +36,9 @@ BUILD_ROOT="$INSTALL_ROOT/build-$SHORT_COMMIT"
 ROLLBACK_ROOT="$INSTALL_ROOT/rollback"
 AGENT_DIR="${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
 GLOBAL_COMMAND="/usr/local/bin/recode"
+GLOBAL_PI_COMMAND="/usr/local/bin/pi"
 NEW_COMMAND="$RUNTIME_PREFIX/bin/recode"
+NEW_PI_COMMAND="$RUNTIME_PREFIX/bin/pi"
 STAMP="$(date -u +%Y%m%dT%H%M%SZ)"
 ROLLBACK="$ROLLBACK_ROOT/$STAMP-before-$VERSION-$SHORT_COMMIT"
 TELEGRAM_UNIT="recode-telegram.service"
@@ -87,7 +89,9 @@ sha256sum "${TARBALLS[@]}" > "$BUILD_ROOT/SHA256SUMS"
 log "Installing the certified package set at $RUNTIME_PREFIX"
 npm install --global --prefix "$RUNTIME_PREFIX" --ignore-scripts --no-audit --no-fund "${TARBALLS[@]}"
 [[ -x "$NEW_COMMAND" ]] || fail "Installed Recode command is missing: $NEW_COMMAND"
+[[ -x "$NEW_PI_COMMAND" ]] || fail "Installed Pi compatibility command is missing: $NEW_PI_COMMAND"
 [[ "$("$NEW_COMMAND" --version)" == "$VERSION" ]] || fail "Staged Recode version check failed"
+[[ "$("$NEW_PI_COMMAND" --version)" == "$VERSION" ]] || fail "Staged Pi version check failed"
 "$NEW_COMMAND" --help >/dev/null
 "$NEW_COMMAND" --offline --list-models >/dev/null
 
@@ -98,6 +102,9 @@ MAESTRO_WAS_INSTALLED=false
 
 if [[ -e "$GLOBAL_COMMAND" || -L "$GLOBAL_COMMAND" ]]; then
 	cp -a -- "$GLOBAL_COMMAND" "$ROLLBACK/recode.command"
+fi
+if [[ -e "$GLOBAL_PI_COMMAND" || -L "$GLOBAL_PI_COMMAND" ]]; then
+	cp -a -- "$GLOBAL_PI_COMMAND" "$ROLLBACK/pi.command"
 fi
 [[ -f /etc/systemd/system/$TELEGRAM_UNIT ]] && cp -a -- "/etc/systemd/system/$TELEGRAM_UNIT" "$ROLLBACK/"
 [[ -d /etc/systemd/system/$TELEGRAM_UNIT.d ]] && cp -a -- "/etc/systemd/system/$TELEGRAM_UNIT.d" "$ROLLBACK/"
@@ -111,6 +118,11 @@ rollback_install() {
 		cp -a --remove-destination -- "$ROLLBACK/recode.command" "$GLOBAL_COMMAND"
 	else
 		rm -f -- "$GLOBAL_COMMAND"
+	fi
+	if [[ -e "$ROLLBACK/pi.command" || -L "$ROLLBACK/pi.command" ]]; then
+		cp -a --remove-destination -- "$ROLLBACK/pi.command" "$GLOBAL_PI_COMMAND"
+	else
+		rm -f -- "$GLOBAL_PI_COMMAND"
 	fi
 	systemctl daemon-reload || true
 	$TELEGRAM_WAS_ACTIVE && systemctl restart "$TELEGRAM_UNIT" || true
@@ -134,7 +146,10 @@ fi
 
 ln -s "$NEW_COMMAND" "$GLOBAL_COMMAND.next"
 mv -Tf "$GLOBAL_COMMAND.next" "$GLOBAL_COMMAND"
+ln -s "$NEW_PI_COMMAND" "$GLOBAL_PI_COMMAND.next"
+mv -Tf "$GLOBAL_PI_COMMAND.next" "$GLOBAL_PI_COMMAND"
 [[ "$("$GLOBAL_COMMAND" --version)" == "$VERSION" ]] || fail "Global Recode version check failed"
+[[ "$("$GLOBAL_PI_COMMAND" --version)" == "$VERSION" ]] || fail "Global Pi version check failed"
 
 if $MAESTRO_WAS_INSTALLED; then
 	"$GLOBAL_COMMAND" maestro service install

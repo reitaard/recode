@@ -13,10 +13,13 @@ import {
 	normalizeTelegramText,
 	parseTelegramConversationId,
 	renderTelegramHtml,
+	rpcProcessOptions,
+	TelegramRpcRuntime,
 	telegramConversationId,
 	telegramTopicSessionsDirectory,
 	telegramTopicWorkspaceDirectory,
 } from "../src/recode-telegram-gateway.ts";
+import type { RpcClient } from "../src/modes/rpc/rpc-client.ts";
 
 const temporaryRoots: string[] = [];
 
@@ -63,6 +66,41 @@ describe("RecodeGateway", () => {
 		expect(telegramTopicWorkspaceDirectory("/root/telegram", -100123, 42)).toBe(
 			join(resolve("/root/telegram"), "Topics", "workspaces", "-100123-42"),
 		);
+	});
+
+	it("starts Telegram child runtimes in RPC mode", () => {
+		expect(rpcProcessOptions("/root/telegram", "telegram-42-7").args).toEqual([
+			"--mode",
+			"rpc",
+			"--session-id",
+			"telegram-42-7",
+		]);
+		expect(rpcProcessOptions("/root/telegram", "telegram-42-7", "/root/telegram/sessions").args).toEqual([
+			"--mode",
+			"rpc",
+			"--session-id",
+			"telegram-42-7",
+			"--session-dir",
+			"/root/telegram/sessions",
+		]);
+	});
+
+	it("stops the RPC child when runtime startup fails", async () => {
+		const startupError = new Error("readiness failed");
+		const rpc = {
+			onEvent: vi.fn(() => () => undefined),
+			start: vi.fn(async () => undefined),
+			waitUntilReady: vi.fn(async () => {
+				throw startupError;
+			}),
+			stop: vi.fn(async () => undefined),
+		} as unknown as RpcClient;
+		const runtime = new TelegramRpcRuntime(rpc);
+
+		await expect(runtime.start()).rejects.toThrow(startupError);
+		expect(rpc.start).toHaveBeenCalledOnce();
+		expect(rpc.waitUntilReady).toHaveBeenCalledWith(5 * 60 * 1000);
+		expect(rpc.stop).toHaveBeenCalledOnce();
 	});
 
 	it("renders common Markdown as Telegram HTML with monospace code", () => {

@@ -121,13 +121,13 @@ function extractAssistantText(message: AgentMessage): string | undefined {
 		.join("");
 }
 
-function rpcProcessOptions(cwd: string, sessionId: string, sessionDir?: string): RpcClientOptions {
+export function rpcProcessOptions(cwd: string, sessionId: string, sessionDir?: string): RpcClientOptions {
 	const isNode = basename(process.execPath).toLowerCase().startsWith("node");
 	return {
 		cwd,
 		runtimeExecutable: process.execPath,
 		runtimeArgs: isNode ? [process.argv[1]] : [],
-		args: ["--session-id", sessionId, ...(sessionDir ? ["--session-dir", sessionDir] : [])],
+		args: ["--mode", "rpc", "--session-id", sessionId, ...(sessionDir ? ["--session-dir", sessionDir] : [])],
 	};
 }
 
@@ -308,7 +308,7 @@ class TelegramApi {
 	}
 }
 
-class TelegramRpcRuntime implements RecodeGatewayRuntime {
+export class TelegramRpcRuntime implements RecodeGatewayRuntime {
 	private readonly rpc: RpcClient;
 	private onText: ((text: string) => void) | undefined;
 	private onActivity: ((text: string) => void) | undefined;
@@ -319,8 +319,13 @@ class TelegramRpcRuntime implements RecodeGatewayRuntime {
 	}
 
 	async start(): Promise<void> {
-		await this.rpc.start();
-		await this.rpc.waitUntilReady(5 * 60 * 1000);
+		try {
+			await this.rpc.start();
+			await this.rpc.waitUntilReady(5 * 60 * 1000);
+		} catch (error) {
+			await this.rpc.stop().catch(() => undefined);
+			throw error;
+		}
 	}
 
 	async run(
